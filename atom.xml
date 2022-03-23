@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://font-ds.github.io</id>
     <title>font-ds</title>
-    <updated>2022-03-23T06:33:08.440Z</updated>
+    <updated>2022-03-23T07:00:13.127Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://font-ds.github.io"/>
     <link rel="self" href="https://font-ds.github.io/atom.xml"/>
@@ -586,10 +586,10 @@ camry.sell();
 <h1 id="29-1-2-3mapparseint-答案是多少">29. [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;].map(parseInt) 答案是多少</h1>
 <ul>
 <li><code>[1,NaN,NaN]</code> 因为 <code>parseInt</code> 需要两个参数 <code>(val,radix)</code> ，其中 <code>radix</code> 表示解析时用的参数</li>
-<li><code>map</code> 穿了 3 个 <code>(element,index,array)</code>,对应的 <code>raidx</code> 不合法导致解析失败返回 <code>NaN</code></li>
+<li><code>map</code> 穿了 3 个 <code>(element,index,array)</code>,对应的 <code>radix</code> 不合法导致解析失败返回 <code>NaN</code></li>
 <li>失败原因：
 <ul>
-<li>当传入 <code>(&quot;2&quot;,1)</code> 时，因为 <code>parseInt</code> 要求 <code>radix</code> 范围为 2~36 ，所有传入的 <code>radix</code> 不合法返回 <code>NaN</code></li>
+<li>当传入 <code>(&quot;2&quot;,1)</code> 时，因为 <code>parseInt</code> 要求 <code>radix</code> 范围为 2~36 ，所以传入的 <code>radix</code> 不合法返回 <code>NaN</code></li>
 <li>当传入 <code>(&quot;3&quot;,2)</code> 时，即把 <code>&quot;3&quot;</code> 从二进制转换为十进制，2进制中没有 3 ，所以不合法返回NaN</li>
 </ul>
 </li>

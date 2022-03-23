@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1648017162611">
+<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1648018809574">
 <link rel="stylesheet" href="https://font-ds.github.io/styles/main.css">
 
 
@@ -34,7 +34,7 @@ js几种类型的值
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://font-ds.github.io">
-        <img src="https://font-ds.github.io/images/avatar.png?v=1648017162611" class="site-logo">
+        <img src="https://font-ds.github.io/images/avatar.png?v=1648018809574" class="site-logo">
         <h1 class="site-title">font-ds</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -667,10 +667,10 @@ camry.sell();
 <h1 id="29-1-2-3mapparseint-答案是多少">29. [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;].map(parseInt) 答案是多少</h1>
 <ul>
 <li><code>[1,NaN,NaN]</code> 因为 <code>parseInt</code> 需要两个参数 <code>(val,radix)</code> ，其中 <code>radix</code> 表示解析时用的参数</li>
-<li><code>map</code> 穿了 3 个 <code>(element,index,array)</code>,对应的 <code>raidx</code> 不合法导致解析失败返回 <code>NaN</code></li>
+<li><code>map</code> 穿了 3 个 <code>(element,index,array)</code>,对应的 <code>radix</code> 不合法导致解析失败返回 <code>NaN</code></li>
 <li>失败原因：
 <ul>
-<li>当传入 <code>(&quot;2&quot;,1)</code> 时，因为 <code>parseInt</code> 要求 <code>radix</code> 范围为 2~36 ，所有传入的 <code>radix</code> 不合法返回 <code>NaN</code></li>
+<li>当传入 <code>(&quot;2&quot;,1)</code> 时，因为 <code>parseInt</code> 要求 <code>radix</code> 范围为 2~36 ，所以传入的 <code>radix</code> 不合法返回 <code>NaN</code></li>
 <li>当传入 <code>(&quot;3&quot;,2)</code> 时，即把 <code>&quot;3&quot;</code> 从二进制转换为十进制，2进制中没有 3 ，所以不合法返回NaN</li>
 </ul>
 </li>
