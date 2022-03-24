@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>CSS 复习汇总 | font-ds</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1648097676198">
+<link rel="stylesheet" href="https://font-ds.github.io/styles/main.css">
+
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+    <meta name="description" content="1. BFC
+BFC是什么
+文档流三种方式： 1. 普通流     2. 定位流    3. 浮动流
+block formatting context      块级元素格式化上下文 (被隔离的区间：BFC的子元素不会对外边的元素产生影响)..." />
+    <meta name="keywords" content="css" />
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://font-ds.github.io">
+        <img src="https://font-ds.github.io/images/avatar.png?v=1648097676198" class="site-logo">
+        <h1 class="site-title">font-ds</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      温故而知新
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://font-ds.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">CSS 复习汇总</h2>
+            <div class="post-date">2022-03-24</div>
+            
+              <div class="feature-container" style="background-image: url('https://font-ds.github.io/post-images/css-fu-xi-hui-zong.jpeg')">
+              </div>
+            
+            <div class="post-content" v-pre>
+              <h1 id="1-bfc">1. BFC</h1>
+<h2 id="bfc是什么">BFC是什么</h2>
+<p>文档流三种方式： 1. 普通流     2. 定位流    3. 浮动流</p>
+<p>block formatting context      块级元素格式化上下文 (被隔离的区间：BFC的子元素不会对外边的元素产生影响)</p>
+<p>BFC元素：</p>
+<pre><code>1. body
+2. float：left | right
+3. overflow：hidden | scroll | auto ；   不是visible
+4. display：inline-block | table-cell | table-caption | flex | grid
+5. position：absolute | fixed   非 relative
+</code></pre>
+<p>一个BFC区域，只包含其所有子元素，不包含子元素的子元素。</p>
+<p>BFC有一个特点是：<strong>每一个BFC区域都是相互独立，互不影响的。</strong></p>
+<h2 id="利用bfc解决问题">利用BFC解决问题</h2>
+<h3 id="解决外边距的塌陷问题垂直塌陷"><strong>解决外边距的塌陷问题(垂直塌陷)</strong></h3>
+<p>开发中，前端的布局手段，离不开外边距margin，那么，也会遇到一些问题，例如外边距的垂直塌陷问题。</p>
+<p>通过以上的实例，我们会发现，代码给两个div盒子，都添加了四个方向的margin，讲道理，学过数学的都知道，100+100=200.可是，盒子之间的距离，现在却之后100px。这就是很典型的margin的塌陷，两段margin重叠到了一块，互相影响。那么，如何利用BFC，让这个问题得到解决呢。回忆下，上文说过，BFC，就是一个与世隔绝的独立区域，不会互相影响，那么，我们可以将这两个盒子，放到两个BFC区域中，即可解决这个问题。</p>
+<figure data-type="image" tabindex="1"><img src="http://www.itcast.cn/files/image/202010/20201016160053011.gif" alt="BFC04" loading="lazy"></figure>
+<h3 id="利用bfc解决包含塌陷"><strong>利用BFC解决包含塌陷</strong></h3>
+<p>当父子关系的盒子，给子元素添加margin-top，有可能会把父元素一起带跑。</p>
+<figure data-type="image" tabindex="2"><img src="http://www.itcast.cn/files/image/202010/20201016162038423.jpg" alt="BFC05" loading="lazy"></figure>
+<p>原本，正确的显示方式，应该是粉色盒子与红色盒子的顶部距离为50px，但是由于margin的塌陷问题，导致盒子内部的布局影响到了外部。这个时候，就可以触发BFC，将父盒子变成一个独立的区域，这样在BFC区域内部的任何操作，都不会影响到外部。</p>
+<figure data-type="image" tabindex="3"><img src="http://www.itcast.cn/files/image/202010/20201016162111734.gif" alt="BFC06" loading="lazy"></figure>
+<h3 id="当浮动产生影响的时候可以利用bfc来清除浮动的影响"><strong>当浮动产生影响的时候，可以利用BFC来清除浮动的影响</strong></h3>
+<figure data-type="image" tabindex="4"><img src="http://www.itcast.cn/files/image/202010/20201016162155258.jpg" alt="BFC07" loading="lazy"></figure>
+<p>以上代码表示，一个没有设置高度的父盒子，包含着七个子元素。如果此时，所有的子元素都浮动的话</p>
+<figure data-type="image" tabindex="5"><img src="http://www.itcast.cn/files/image/202010/20201016162222822.gif" alt="BFC08" loading="lazy"></figure>
+<p>当所有的子元素都浮动了，这个时候，父盒子失去了原有的高度，这就是浮动的影响。这个时候，同样也可用BFC的机制，来清除浮动带来的影响。使用BFC，将所有的浮动元素包裹起来。</p>
+<figure data-type="image" tabindex="6"><img src="http://www.itcast.cn/files/image/202010/20201016162302990.gif" alt="BFC09" loading="lazy"></figure>
+<h3 id="bfc可以阻止标准流元素被浮动元素覆盖"><strong>BFC可以阻止标准流元素被浮动元素覆盖</strong></h3>
+<figure data-type="image" tabindex="7"><img src="http://www.itcast.cn/files/image/202010/20201016162336022.jpg" alt="BFC10" loading="lazy"></figure>
+<p>以上情况，红色盒子浮动，蓝色盒子是标准流，默认情况下，浮动元素覆盖了标准流元素。但是，如果将蓝色盒子的BFC触发，那么情况将有所变化。</p>
+<figure data-type="image" tabindex="8"><img src="http://www.itcast.cn/files/image/202010/20201016162411159.gif" alt="BFC10" loading="lazy"></figure>
+<p>当蓝色盒子触发了BFC之后，浮动元素再也不能覆盖它了，而且还能利用这个特性，来实现蓝色盒子宽度根据红色盒子的宽度来做自动适应</p>
+<h1 id="2-ifc">2. IFC</h1>
+<p>FC IFC(Inline Formatting Contexts)直译为&quot;内联格式化上下文&quot;，IFC 的 line box（线框）高度由其包含行内元素中最高的实际高度计算而来（不受到竖直方向的padding/margin影响)</p>
+<p>IFC一般有什么用呢？</p>
+<p>水平居中：当一个块要在环境中水平居中时，设置其为inline-block则会在外层产生IFC，通过text-align则可以使其水平居中。<br>
+垂直居中：创建一个IFC，用其中一个元素撑开父元素的高度，然后设置其vertical-align:middle，其他行内元素则可以在此父元素下垂直居中。</p>
+<h1 id="3-实现边框宽度05px">3. 实现边框宽度0.5px</h1>
+<h2 id="单边框">单边框</h2>
+<pre><code class="language-css">// 方法一 ： border + border-image + linear-gradint
+.border{
+	width:200px;
+	height:200px;
+    background-color:red;
+    margin:0 auto;
+    border-bottom: 1px solid transparent;
+    border-image:linear-gradient(to bottom,transparent 50%,Green 50%) 0 0 100% 0;
+}
+
+
+// 方法二：伪元素 + background-image
+.border{
+    width:200px;
+	height:200px;
+    background-color:red;
+    margin:0 auto;
+    position:relative;
+}
+.border::before{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:1px;
+    border-image:linear-gradient(to bottom,transparent 50%,Green 50%);
+}
+
+
+// 方法三：定位 + 伪元素 + transfrom缩放(scale)
+.border{
+    width:200px;
+    height:200px;
+    background-color:red;
+    margin:0 auto;
+    position:relative;
+}
+.border::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:0px;
+    width:100%;
+    height:1px;
+    background:blue;
+    transform:scaleY(0.5);
+}
+</code></pre>
+<h2 id="多边框">多边框</h2>
+<pre><code class="language-css">// 定位 + 伪元素 + transform缩放(scale)
+.border{
+    width:200px;
+    height:200px;
+    background-color:red;
+    margin:0 auto;
+    position:relative
+}
+.border::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    border:1px solid blue;
+    transform:scale(0.5)
+}
+</code></pre>
+<h1 id="4-实现半圆形">4.  实现半圆形</h1>
+<pre><code class="language-js">// css
+width:100px;
+height:50px;
+border-radius:50px 50px 0 0;
+background-color:red
+</code></pre>
+<h1 id="5-css盒模型">5. CSS盒模型</h1>
+<blockquote>
+<ul>
+<li>有两种， <code>IE</code>盒子模型、<code>W3C</code>盒子模型；</li>
+<li>盒模型： 内容(content)、填充(<code>padding</code>)、边界(<code>margin</code>)、 边框(<code>border</code>)；</li>
+<li>区 别： <code>IE</code>的c<code>ontent</code>部分把 <code>border</code> 和 <code>padding</code>计算了进去;</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>标准盒模型</p>
+<ul>
+<li>元素宽度 = <code>width + padding + border + margin</code></li>
+</ul>
+</li>
+</ul>
+<figure data-type="image" tabindex="9"><img src="https://font-ds.github.io/post-images/1648097529430.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>怪异盒模块（IE盒模型）</p>
+<ul>
+<li>元素宽度 = <code>width + margin</code></li>
+</ul>
+</li>
+</ul>
+<figure data-type="image" tabindex="10"><img src="https://font-ds.github.io/post-images/1648097602589.jpeg" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>flex弹性伸缩盒模型</p>
+<ul>
+<li>主轴</li>
+<li>交叉轴</li>
+</ul>
+</li>
+<li>
+<p>多列布局盒模型（columns，基本不用）</p>
+</li>
+</ul>
+<p><strong>box-sizing 常用的属性有哪些？分别有什么作用</strong></p>
+<ul>
+<li><code>box-sizing: content-box;</code> 默认的标准(W3C)盒模型元素效果</li>
+<li><code>box-sizing: border-box;</code> 触发怪异(IE)盒模型元素的效果</li>
+<li><code>box-sizing: inherit;</code> 继承父元素 <code>box-sizing</code> 属性的值</li>
+</ul>
+<h1 id="6-line-height和height区别">6. line-height和height区别</h1>
+<ol>
+<li>
+<p>height就是元素的高度值，是一个死值，就是这个盒子的高度</p>
+</li>
+<li>
+<p>line-height是行高，是每一行文字的高，如果文字换行则整个盒子高度会增大（行数*行高）</p>
+</li>
+</ol>
+<h1 id="7-css的选择符">7. CSS的选择符</h1>
+<h2 id="css选择符">css选择符</h2>
+<pre><code>1. 通配（*）
+1. 选择器（#）
+1. 类选择器（.）
+1. 标签选择器（div、p、h1...）
+1. 相邻选择器（+）
+1. 后代选择器（空格）
+1. 子元素选择器（&gt;）
+1. 属性选择器（a[href]）
+</code></pre>
+<h2 id="css属性哪些可以继承">css属性哪些可以继承</h2>
+<p>​		文字系列：font-size、color、line-height、text-align、opacity ......</p>
+<p><strong>不可继承</strong>：border、padding、margin ......</p>
+<h1 id="8-css优先级算法">8. CSS优先级算法</h1>
+<p>优先级比较：!important &gt; 内联样式 &gt; id &gt; class &gt; 标签 &gt; 通配</p>
+<h2 id="css权重计算">css权重计算</h2>
+<ol>
+<li>
+<p>!important —— 最高权值</p>
+<ol start="2">
+<li>内联样式 style —— 权重值：1000</li>
+<li>ID选择器 —— 权重值：100</li>
+<li>Class选择器 —— 权重值：10</li>
+<li>HTML标签选择器&amp;伪元素 —— 权重值：1</li>
+<li>通配符选择器 —— 权重值：0</li>
+</ol>
+</li>
+</ol>
+<h1 id="9-盒子水平垂直居中">9. 盒子水平垂直居中</h1>
+<p>这种需求在我之前的项目中十分常见，随着flex兴起，，后来看blog发现这种方式也十分好</p>
+<pre><code class="language-shell">//1、定位
+body{
+  position:relative
+}
+ // 有固定高度的是用margin
+.box{
+  width:100px;
+  height:100px;
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin-left:-50px;
+  margin-right:-50%;
+}
+ //无固定高度用transform
+.box{
+  translateX:-50%;
+  translateY:-50%;
+}
+
+//2、flex
+body{
+  display:flex;
+  justify-content:center;
+  align-item:center
+}
+
+//table本身控制文本；要求父级有固定宽高
+body{
+  width:500px;
+  height:500px;
+  display:table-ceil;
+  vertical-align:center;
+  text-align:center;ß
+}
+.box{
+  display:inline-block;
+}
+
+
+</code></pre>
+<h4 id=""></h4>
+<h1 id="10-css画三角形">10. CSS画三角形</h1>
+<pre><code class="language-js">// 用border画边框
+// 通过将其他三个边框设置为透明色，实现某个方向的三角形
+div{
+  width: 0;
+  height: 0;
+  border-width: 20px;
+  border-style: solid;
+  border-color: transparent transparent red transparent;
+}
+</code></pre>
+<h1 id="11-display属性">11. display属性</h1>
+<ul>
+<li><code>block</code> 转换成块状元素。</li>
+<li><code>inline</code> 转换成行内元素。</li>
+<li><code>none</code> 设置元素不可见。</li>
+<li><code>inline-block</code> 象行内元素一样显示，但其内容象块类型元素一样显示。</li>
+<li><code>list-item</code> 象块类型元素一样显示，并添加样式列表标记。</li>
+<li><code>table</code> 此元素会作为块级表格来显示</li>
+<li><code>inherit</code> 规定应该从父元素继承 <code>display</code> 属性的值</li>
+</ul>
+<h1 id="12-清除浮动">12. 清除浮动</h1>
+<ul>
+<li>父级<code>div</code>定义<code>height</code></li>
+<li>结尾处加空<code>div</code>标签<code>clear:both</code></li>
+<li>父级<code>div</code>定义伪类<code>:after</code>和<code>zoom</code></li>
+<li>父级<code>div</code>定义<code>overflow:hidden</code></li>
+<li>父级<code>div</code>也浮动，需要定义宽度</li>
+<li>结尾处加<code>br</code>标签<code>clear:both</code></li>
+<li>比较好的是第3种方式，好多网站都这么用</li>
+</ul>
+<h1 id="13-position属性">13. position属性</h1>
+<ol>
+<li>static（默认值） —— 没有定位</li>
+<li>fixed —— 固定定位，相对于浏览器窗口进行定位</li>
+<li>relative —— 相对于自身定位，不脱离文档流</li>
+<li>absolute —— 相对于第一个有relative的父元素定位，脱离文档流</li>
+<li>inherit —— 规定从父元素继承osition属性</li>
+</ol>
+<p><strong>relative和absolute区别</strong></p>
+<ol>
+<li>relative不脱离文档流，absolute脱离文档流</li>
+<li>relative相对于自身定位，absolute相对于一个有relative的父元素定位</li>
+<li>relative如果有left、right、top、bottom 只能有 left、top；  absolute中四个属性都可以存在</li>
+</ol>
+<h1 id="14-圣杯布局">14. 圣杯布局</h1>
+<p>浮动 + 负margin</p>
+<pre><code class="language-html">		&lt;style&gt;
+        html,body{
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .container{
+            height: 100%;
+            padding: 0 200px;
+        }
+
+        .center{
+            float: left;
+            width: 100%;
+            height: 400px;
+            background-color: blue;
+        }
+
+        .left,.right{
+            float: left;
+            width: 200px;
+            height: 200px;
+            background-color: burlywood;
+        }
+
+        .left{
+            margin-left: -100%;
+            position: relative;
+            left: -200px;
+        }
+        .right{
+            margin-right: -200px;
+        }
+   &lt;/style&gt;
+
+	&lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;left&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+<h1 id="15-双飞翼布局">15. 双飞翼布局</h1>
+<p>浮动 + 负margin</p>
+<pre><code class="language-html">    &lt;style&gt;
+        .container{
+            width: 100%;
+        }
+
+        .center{
+            height: 400px;
+            min-width: 400px;
+            margin: 0 200px;
+            background-color: blue;
+        }
+
+        .left,
+        .container,
+        .right{ 
+            float: left;
+        }
+
+        .left,.right{
+            width: 200px;
+            height: 200px;
+            background-color:burlywood;
+        }
+
+        .left{
+            margin-left: -100%;
+        }
+
+        .right{
+            margin-left: -200px;
+        }
+    &lt;/style&gt;
+
+	 &lt;div class=&quot;clearfix&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;left&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+<h1 id="16-calc实现两边固定中间自适应百分百">16. CALC实现两边固定，中间自适应百分百</h1>
+<pre><code class="language-html">	&lt;style&gt;
+        .container{
+            width:100%;
+            height:100%;
+        }
+        
+        .center,
+        .left,
+        .right{
+            float:left;
+        }
+        
+        .center{
+            /* 兼容到IE9 */
+            width:calc(100%-400px);
+            min-height:400px;
+            background-color:blue;
+        }
+        
+        .left,.right{
+            width:200px;
+            height:200px;
+            background-color:burlywood;
+        }
+        
+	&lt;/style&gt;
+	&lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;left&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+<h1 id="17-flex实现两边固定中间宽度自适应">17. flex实现两边固定，中间宽度自适应</h1>
+<pre><code class="language-html">	&lt;style&gt;
+        .container{
+            width:100%;
+            height:100%;
+            display:flex;
+            justify-content:space-between;
+        }
+        
+        .center{
+            flex:1;
+            min-height:400px;
+            background-color:blue;
+        }
+        
+        .left,.right{
+            flex:0 0 200px;
+            height:200px;
+            background-color:burlywood;
+        }
+        
+	&lt;/style&gt;
+	&lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;left&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+<h1 id="18-css-reset初始化">18. CSS reset（初始化）</h1>
+<p>reset.css  是一个css文件，用来重置css样式</p>
+<p>浏览器的兼容问题，不同浏览器对有些标签的默认值是不同的，如果没对CSS初始化往往会出现浏览器之间的页面显示差异</p>
+<p>Normalize.css 为了增强跨浏览器渲染的一致性，我们使用了Normalize.css，这是由Nicolas Gallagher 和 Jonathan Neal 维护一个CSS重置样式库</p>
+<h1 id="19-css选择器渲染机制">19. CSS选择器渲染机制</h1>
+<pre><code class="language-css">.box a {
+    ...
+} 
+
+a{
+    ...
+}
+</code></pre>
+<p>第二种渲染性能更高，css选择器渲染机制是<strong>从右向左查询</strong></p>
+<h1 id="20-css-sprite是什么有什么优缺点">20. css sprite是什么,有什么优缺点</h1>
+<ul>
+<li>概念：将多个小图片拼接到一个图片中。通过<code>background-position</code>和元素尺寸调节需要显示的背景图案。</li>
+<li>优点：
+<ul>
+<li>减少<code>HTTP</code>请求数，极大地提高页面加载速度</li>
+<li>增加图片信息重复度，提高压缩比，减少图片大小</li>
+<li>更换风格方便，只需在一张或几张图片上修改颜色或样式即可实现</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>图片合并麻烦</li>
+<li>维护麻烦，修改一个图片可能需要从新布局整个图片，样式</li>
+</ul>
+</li>
+</ul>
+<h1 id="21-display-none与visibility-hidden的区别">21. <code>display: none;</code>与<code>visibility: hidden;</code>的区别</h1>
+<ul>
+<li>联系：它们都能让元素不可见</li>
+<li>区别：
+<ul>
+<li><code>display:none</code>;会让元素完全从渲染树中消失，渲染的时候不占据任何空间；<code>visibility: hidden</code>;不会让元素从渲染树消失，渲染师元素继续占据空间，只是内容不可见</li>
+<li><code>display: none</code>;是非继承属性，子孙节点消失由于元素从渲染树消失造成，通过修改子孙节点属性无法显示<code>；visibility: hidden;</code>是继承属性，子孙节点消失由于继承了<code>hidden</code>，通过设置<code>visibility: visible;</code>可以让子孙节点显式</li>
+<li>修改常规流中元素的<code>display</code>通常会造成文档重排。修改<code>visibility</code>属性只会造成本元素的重绘。</li>
+<li>读屏器不会读取<code>display: none</code>;元素内容；会读取<code>visibility: hidden;</code>元素内容</li>
+</ul>
+</li>
+</ul>
+<h1 id="22-link与import的区别">22.  <code>link</code>与<code>@import</code>的区别</h1>
+<ol>
+<li><code>link</code>是<code>HTML</code>方式， <code>@import</code>是CSS方式</li>
+<li><code>link</code>最大限度支持并行下载，<code>@import</code>过多嵌套导致串行下载，出现<code>FOUC</code>(文档样式短暂失效)</li>
+<li><code>link</code>可以通过<code>rel=&quot;alternate stylesheet&quot;</code>指定候选样式</li>
+<li>浏览器对<code>link</code>支持早于<code>@import</code>，可以使用<code>@import</code>对老浏览器隐藏样式</li>
+<li><code>@import</code>必须在样式规则之前，可以在css文件中引用其他文件</li>
+<li>总体来说：<code>link</code>优于<code>@import</code></li>
+</ol>
+<h1 id="23-什么是fouc如何避免">23. 什么是FOUC?如何避免</h1>
+<ul>
+<li><code>Flash Of Unstyled Content</code>：用户定义样式表加载之前浏览器使用默认样式显示文档，用户样式加载渲染之后再从新显示文档，造成页面闪烁。</li>
+<li><strong>解决方法</strong>：把样式表放到文档的<code>&lt;head&gt;</code></li>
+</ul>
+<h1 id="24-为什么要初始化css样式">24. 为什么要初始化CSS样式?</h1>
+<ul>
+<li>因为浏览器的兼容问题，不同浏览器对有些标签的默认值是不同的，如果没对<code>CSS</code>初始化往往会出现浏览器之间的页面显示差异。</li>
+<li>当然，初始化样式会对<code>SEO</code>有一定的影响，但鱼和熊掌不可兼得，但力求影响最小的情况下初始化</li>
+</ul>
+<h1 id="25-css3有哪些新特性">25. CSS3有哪些新特性</h1>
+<ul>
+<li>新增选择器 <code>p:nth-child(n){color: rgba(255, 0, 0, 0.75)}</code></li>
+<li>弹性盒模型 <code>display: flex;</code></li>
+<li>多列布局 <code>column-count: 5;</code></li>
+<li>媒体查询 <code>@media (max-width: 480px) {.box: {column-count: 1;}}</code></li>
+<li>个性化字体 <code>@font-face{font-family: BorderWeb; src:url(BORDERW0.eot);}</code></li>
+<li>颜色透明度 <code>color: rgba(255, 0, 0, 0.75);</code></li>
+<li>圆角 <code>border-radius: 5px;</code></li>
+<li>渐变 <code>background:linear-gradient(red, green, blue);</code></li>
+<li>阴影 <code>box-shadow:3px 3px 3px rgba(0, 64, 128, 0.3);</code></li>
+<li>倒影 <code>box-reflect: below 2px;</code></li>
+<li>文字装饰 <code>text-stroke-color: red;</code></li>
+<li>文字溢出 <code>text-overflow:ellipsis;</code></li>
+<li>背景效果 <code>background-size: 100px 100px;</code></li>
+<li>边框效果 <code>border-image:url(bt_blue.png) 0 10;</code></li>
+<li>转换
+<ul>
+<li>旋转 <code>transform: rotate(20deg);</code></li>
+<li>倾斜 <code>transform: skew(150deg, -10deg);</code></li>
+<li>位移 <code>transform: translate(20px, 20px);</code></li>
+<li>缩放 <code>transform: scale(.5);</code></li>
+</ul>
+</li>
+<li>平滑过渡 <code>transition: all .3s ease-in .1s;</code></li>
+<li>动画 <code>@keyframes anim-1 {50% {border-radius: 50%;}} animation: anim-1 1s;</code></li>
+</ul>
+<p><strong>CSS3新增伪类有那些？</strong></p>
+<ul>
+<li><code>p:first-of-type</code> 选择属于其父元素的首个<code>&lt;p&gt;</code>元素的每个<code>&lt;p&gt;</code> 元素。</li>
+<li><code>p:last-of-type</code> 选择属于其父元素的最后 <code>&lt;p&gt;</code> 元素的每个<code>&lt;p&gt;</code> 元素。</li>
+<li><code>p:only-of-type</code> 选择属于其父元素唯一的 <code>&lt;p&gt;</code>元素的每个 <code>&lt;p&gt;</code> 元素。</li>
+<li><code>p:only-child</code> 选择属于其父元素的唯一子元素的每个 <code>&lt;p&gt;</code> 元素。</li>
+<li><code>p:nth-child(2)</code> 选择属于其父元素的第二个子元素的每个 <code>&lt;p&gt;</code> 元素。</li>
+<li><code>:after</code> 在元素之前添加内容,也可以用来做清除浮动。</li>
+<li><code>:before</code> 在元素之后添加内容。</li>
+<li><code>:enabled</code> 已启用的表单元素。</li>
+<li><code>:disabled</code> 已禁用的表单元素。</li>
+<li><code>:checked</code> 单选框或复选框被选中。</li>
+</ul>
+<h1 id="26-displayinline-block-什么时候不会显示间隙">26. display:inline-block 什么时候不会显示间隙？</h1>
+<ul>
+<li>移除空格</li>
+<li>使用<code>margin</code>负值</li>
+<li>为父元素中设置<code>font-size: 0</code>，在子元素上重置正确的<code>font-size</code></li>
+<li><code>letter-spacing</code></li>
+<li>设置父元素，<code>display:table</code> 和 <code>word-spacing</code></li>
+</ul>
+<h1 id="27-pnggifjpg的区别及如何选">27. PNG\GIF\JPG的区别及如何选</h1>
+<ul>
+<li><code>GIF</code>
+<ul>
+<li><code>8</code>位像素，<code>256</code>色</li>
+<li>无损压缩</li>
+<li>支持简单动画</li>
+<li>支持<code>boolean</code>透明</li>
+<li>适合简单动画</li>
+</ul>
+</li>
+<li><code>JPEG</code>
+<ul>
+<li>颜色限于<code>256</code></li>
+<li>有损压缩</li>
+<li>可控制压缩质量</li>
+<li>不支持透明</li>
+<li>适合照片</li>
+</ul>
+</li>
+<li><code>PNG</code>
+<ul>
+<li>有<code>PNG8</code>和<code>truecolor PNG</code></li>
+<li><code>PNG8</code>类似<code>GIF</code>颜色上限为<code>256</code>，文件小，支持<code>alpha</code>透明度，无动画</li>
+<li>适合图标、背景、按钮</li>
+</ul>
+</li>
+</ul>
+<h1 id="28-行内元素floatleft后是否变为块级元素">28. 行内元素float:left后是否变为块级元素？</h1>
+<blockquote>
+<p>行内元素设置成浮动之后变得更加像是<code>inline-block</code>（行内块级元素，设置成这个属性的元素会同时拥有行内和块级的特性，最明显的不同是它的默认宽度不是<code>100%</code>），这时候给行内元素设置<code>padding-top</code>和<code>padding-bottom</code>或者<code>width</code>、<code>height</code>都是有效果的</p>
+</blockquote>
+<h1 id="29-before-和-after中双冒号和单冒号-有什么区别解释一下这2个伪元素的作用">29. ::before 和 :after中双冒号和单冒号 有什么区别？解释一下这2个伪元素的作用</h1>
+<ul>
+<li>单冒号(<code>:</code>)用于<code>CSS3</code>伪类，双冒号(<code>::</code>)用于<code>CSS3</code>伪元素</li>
+<li>用于区分伪类和伪元素</li>
+</ul>
+<h1 id="30-如果需要手动写动画你认为最小时间间隔是多久">30. 如果需要手动写动画，你认为最小时间间隔是多久</h1>
+<ul>
+<li>多数显示器默认频率是<code>60Hz</code>，即<code>1</code>秒刷新<code>60</code>次，所以理论上最小间隔为<code>1/60*1000ms ＝ 16.7ms</code></li>
+</ul>
+<h1 id="31-css合并方法">31. CSS合并方法</h1>
+<ul>
+<li>避免使用<code>@import</code>引入多个<code>css</code>文件，可以使用<code>CSS</code>工具将<code>CSS</code>合并为一个<code>CSS</code>文件，例如使用<code>Sass\Compass</code>等</li>
+</ul>
+<h1 id="32-列出你所知道可以改变页面布局的属性">32. 列出你所知道可以改变页面布局的属性</h1>
+<ul>
+<li><code>position</code>、<code>display</code>、<code>float</code>、<code>width</code>、<code>height</code>、<code>margin</code>、<code>padding</code>、<code>top</code>、<code>left</code>、<code>right</code></li>
+</ul>
+<h1 id="33-css在性能优化方面的实践">33. CSS在性能优化方面的实践</h1>
+<ul>
+<li><code>css</code>压缩与合并、<code>Gzip</code>压缩</li>
+<li><code>css</code>文件放在<code>head</code>里、不要用<code>@import</code></li>
+<li>尽量用缩写、避免用滤镜、合理使用选择器</li>
+</ul>
+<h1 id="34-css3动画简单动画的实现如旋转等">34. CSS3动画（简单动画的实现，如旋转等）</h1>
+<ul>
+<li>依靠<code>CSS3</code>中提出的三个属性：<code>transition</code>、<code>transform</code>、<code>animation</code></li>
+<li><code>transition</code>：定义了元素在变化过程中是怎么样的，包含<code>transition-property</code>、<code>transition-duration</code>、<code>transition-timing-function</code>、<code>transition-delay</code>。</li>
+<li><code>transform</code>：定义元素的变化结果，包含<code>rotate</code>、<code>scale</code>、<code>skew</code>、<code>translate</code>。</li>
+<li><code>animation</code>：动画定义了动作的每一帧（<code>@keyframes</code>）有什么效果，包括<code>animation-name</code>，<code>animation-duration</code>、<code>animation-timing-function</code>、<code>animation-delay</code>、<code>animation-iteration-count</code>、<code>animation-direction</code></li>
+</ul>
+<h1 id="35-base64的原理及优缺点">35. base64的原理及优缺点</h1>
+<ul>
+<li>优点可以加密，减少了<code>HTTTP</code>请求</li>
+<li>缺点是需要消耗<code>CPU</code>进行编解码</li>
+</ul>
+<h1 id="36-stylussassless区别">36. stylus/sass/less区别</h1>
+<ul>
+<li>均具有“变量”、“混合”、“嵌套”、“继承”、“颜色混合”五大基本特性</li>
+<li><code>Scss</code>和<code>LESS</code>语法较为严谨，<code>LESS</code>要求一定要使用大括号“{}”，<code>Scss</code>和<code>Stylus</code>可以通过缩进表示层次与嵌套关系</li>
+<li><code>Scss</code>无全局变量的概念，<code>LESS</code>和<code>Stylus</code>有类似于其它语言的作用域概念</li>
+<li><code>Sass</code>是基于<code>Ruby</code>语言的，而<code>LESS</code>和<code>Stylus</code>可以基于<code>NodeJS</code> <code>NPM</code>下载相应库后进行编译；</li>
+</ul>
+<h1 id="37-postcss的作用">37. postcss的作用</h1>
+<ul>
+<li>可以直观的理解为：它就是一个平台。为什么说它是一个平台呢？因为我们直接用它，感觉不能干什么事情，但是如果让一些插件在它上面跑，那么将会很强大</li>
+<li><code>PostCSS</code> 提供了一个解析器，它能够将 <code>CSS</code> 解析成抽象语法树</li>
+<li>通过在 <code>PostCSS</code> 这个平台上，我们能够开发一些插件，来处理我们的<code>CSS</code>，比如热门的：<code>autoprefixer</code></li>
+<li><code>postcss</code>可以对sass处理过后的<code>css</code>再处理 最常见的就是<code>autoprefixer</code></li>
+</ul>
+<h1 id="38-如何美化checkbox">38. 如何美化CheckBox</h1>
+<ul>
+<li><code>&lt;label&gt;</code> 属性 <code>for</code> 和 <code>id</code></li>
+<li>隐藏原生的 <code>&lt;input&gt;</code></li>
+<li><code>:checked + &lt;label&gt;</code></li>
+</ul>
+<h1 id="39-伪类和伪元素的区别">39. 伪类和伪元素的区别</h1>
+<ul>
+<li>伪类表状态</li>
+<li>伪类 -- 将特殊的效果添加到特定选择器上。它是已有元素上添加类别的，不会产生新的元素</li>
+<li>伪元素是真的有元素</li>
+<li>伪元素 -- 在内容元素的前后插入额外的元素或样式，但是这些元素实际上并不在文档中生成</li>
+<li>前者单冒号，后者双冒号</li>
+</ul>
+<h1 id="40-请用css写一个简单的幻灯片效果页面">40. 请用CSS写一个简单的幻灯片效果页面</h1>
+<blockquote>
+<p>知道是要用<code>CSS3</code>。使用<code>animation</code>动画实现一个简单的幻灯片效果</p>
+</blockquote>
+<pre><code class="language-css">/**css**/
+.ani{
+  width:480px;
+  height:320px;
+  margin:50px auto;
+  overflow: hidden;
+  box-shadow:0 0 5px rgba(0,0,0,1);
+  background-size: cover;
+  background-position: center;
+  animation-name: loops;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+}
+@keyframes loops {
+    0% {
+       background:url(url) no-repeat;           
+    } 
+    25% {
+       background:url(url) no-repeat;
+    }
+    50% {
+       background:url(url) no-repeat;
+    }
+    75% {
+       background:url(url) no-repeat;
+    }
+    100% {
+        background:url(url) no-repeat;
+    }
+}
+</code></pre>
+<h1 id="41-什么是外边距重叠重叠的结果是什么">41. 什么是外边距重叠？重叠的结果是什么？</h1>
+<blockquote>
+<p>外边距重叠就是margin-collapse</p>
+</blockquote>
+<ul>
+<li>在CSS当中，相邻的两个盒子（可能是兄弟关系也可能是祖先关系）的外边距可以结合成一个单独的外边距。这种合并外边距的方式被称为折叠，并且因而所结合成的外边距称为折叠外边距。</li>
+</ul>
+<p><strong>折叠规则</strong></p>
+<ul>
+<li>两个或多个毗邻的普通流中的块元素垂直方向上的<code>margin</code>会折叠</li>
+<li>浮动元素或<code>inline-block</code>元素或绝对定位元素的<code>margin</code>不会和垂直方向上的其他元素的margin折叠</li>
+<li>创建了块级格式化上下文的元素，不会和它的子元素发生margin折叠</li>
+<li>元素自身的<code>margin-bottom</code>和<code>margin-top</code>相邻时也会折</li>
+</ul>
+<p><strong>折叠结果遵循下列计算规则</strong>：</p>
+<ul>
+<li>两个相邻的外边距都是正数时，折叠结果是它们两者之间较大的值。</li>
+<li>两个相邻的外边距都是负数时，折叠结果是两者绝对值的较大值。</li>
+<li>两个外边距一正一负时，折叠结果是两者的相加的和。</li>
+</ul>
+<h1 id="41-rgba和opacity的透明效果有什么不同">41. rgba()和opacity的透明效果有什么不同？</h1>
+<ul>
+<li><code>rgba()</code>和<code>opacity</code>都能实现透明效果，但最大的不同是<code>opacity</code>作用于元素，以及元素内的所有内容的透明度，</li>
+<li>而<code>rgba()</code>只作用于元素自身的颜色或其背景色。（设置<code>rgba</code>透明的元素的子元素不会继承透明效果！）</li>
+</ul>
+<h1 id="42-css中可以让文字在垂直和水平方向上重叠的两个属性是什么">42. css中可以让文字在垂直和水平方向上重叠的两个属性是什么？</h1>
+<ul>
+<li>垂直方向：<code>line-height</code></li>
+<li>水平方向：<code>letter-spacing</code></li>
+</ul>
+<h1 id="43-px和em的区别">43. px和em的区别</h1>
+<ul>
+<li><code>px</code>和<code>em</code>都是长度单位，区别是，<code>px</code>的值是固定的，指定是多少就是多少，计算比较容易。<code>em</code>得值不是固定的，并且<code>em</code>会继承父级元素的字体大小。</li>
+<li>浏览器的默认字体高都是<code>16px</code>。所以未经调整的浏览器都符合: <code>1em=16px</code>。那么<code>12px=0.75em</code>, <code>10px=0.625em</code>。</li>
+</ul>
+<blockquote>
+<ul>
+<li>px 相对于显示器屏幕分辨率，无法用浏览器字体放大功能</li>
+<li>em 值并不是固定的，会继承父级的字体大小： em = 像素值 / 父级font-size</li>
+</ul>
+</blockquote>
+<h1 id="44-sass-less是什么大家为什么要使用他们">44. Sass、LESS是什么？大家为什么要使用他们？</h1>
+<ul>
+<li>他们是<code>CSS</code>预处理器。他是<code>CSS</code>上的一种抽象层。他们是一种特殊的语法/语言编译成<code>CSS</code>。</li>
+<li>例如Less是一种动态样式语言. 将CSS赋予了动态语言的特性，如变量，继承，运算， 函数. <code>LESS</code> 既可以在客户端上运行 (支持<code>IE 6+</code>, <code>Webkit</code>, <code>Firefox</code>)，也可一在服务端运行 (借助 <code>Node.js</code>)</li>
+</ul>
+<p><strong>为什么要使用它们？</strong></p>
+<ul>
+<li>结构清晰，便于扩展。</li>
+<li>可以方便地屏蔽浏览器私有语法差异。这个不用多说，封装对- 浏览器语法差异的重复处理，减少无意义的机械劳动。</li>
+<li>可以轻松实现多重继承。</li>
+<li>完全兼容 CSS 代码，可以方便地应用到老项目中。LESS 只- 是在 CSS 语法上做了扩展，所以老的 CSS 代码也可以与 LESS 代码一同编译</li>
+</ul>
+<h1 id="45-知道css有个content属性吗有什么作用有什么应用">45. 知道css有个content属性吗？有什么作用？有什么应用？</h1>
+<blockquote>
+<p>css的<code>content</code>属性专门应用在 <code>before/after</code>伪元素上，用于来插入生成内容。最常见的应用是利用伪类清除浮动。</p>
+</blockquote>
+<pre><code class="language-css">/**一种常见利用伪类清除浮动的代码**/
+.clearfix:after {
+    content:&quot;.&quot;;       //这里利用到了content属性
+    display:block;
+    height:0;
+    visibility:hidden;
+    clear:both; 
+ }
+.clearfix {
+    *zoom:1;
+}
+</code></pre>
+<h1 id="46-水平居中的方法">46. 水平居中的方法</h1>
+<ul>
+<li>元素为行内元素，设置父元素<code>text-align:center</code></li>
+<li>如果元素宽度固定，可以设置左右<code>margin</code>为<code>auto</code>;</li>
+<li>绝对定位和移动: <code>absolute + transform</code></li>
+<li>使用<code>flex-box</code>布局，指定<code>justify-content</code>属性为center</li>
+<li><code>display</code>设置为<code>tabel-ceil</code></li>
+</ul>
+<h1 id="47-垂直居中的方法">47. 垂直居中的方法</h1>
+<ul>
+<li>
+<p>将显示方式设置为表格，<code>display:table-cell</code>,同时设置<code>vertial-align：middle</code></p>
+</li>
+<li>
+<p>使用<code>flex</code>布局，设置为<code>align-item：center</code></p>
+</li>
+<li>
+<p>绝对定位中设置<code>bottom:0,top:0</code>,并设置<code>margin:auto</code></p>
+</li>
+<li>
+<p>绝对定位中固定高度时设置<code>top:50%，margin-top</code>值为高度一半的负值</p>
+</li>
+<li>
+<p>文本垂直居中设置<code>line-height</code>为<code>height</code>值</p>
+</li>
+<li>
+<p>如果是单行文本, line-height 设置成和 height 值</p>
+</li>
+</ul>
+<pre><code class="language-css">.vertical {
+    height: 100px;
+    line-height: 100px;
+  }
+</code></pre>
+<ul>
+<li>已知高度的块级子元素，采用绝对定位和负边距</li>
+</ul>
+<pre><code class="language-css">.container {
+  position: relative;
+}
+.vertical {
+  height: 300px;  /*子元素高度*/
+  position: absolute;
+  top:50%;  /*父元素高度50%*/
+  margin-top: -150px; /*自身高度一半*/
+}
+</code></pre>
+<ul>
+<li>未知高度的块级父子元素居中，模拟表格布局</li>
+<li>缺点：IE67不兼容，父级 overflow：hidden 失效</li>
+</ul>
+<pre><code class="language-css">.container {
+    display: table;
+  }
+  .content {
+    display: table-cell;
+    vertical-align: middle;
+  }
+</code></pre>
+<ul>
+<li>新增 inline-block 兄弟元素，设置 vertical-align
+<ul>
+<li>缺点：需要增加额外标签，IE67不兼容</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-css">.container {
+  height: 100%;/*定义父级高度，作为参考*/
+}
+.extra .vertical{
+  display: inline-block;  /*行内块显示*/
+  vertical-align: middle; /*垂直居中*/
+}
+.extra {
+  height: 100%; /*设置新增元素高度为100%*/
+}
+</code></pre>
+<ul>
+<li>绝对定位配合 CSS3 位移</li>
+</ul>
+<pre><code class="language-css">.vertical {
+  position: absolute;
+  top:50%;  /*父元素高度50%*/
+  transform:translateY(-50%, -50%);
+}
+</code></pre>
+<ul>
+<li>CSS3弹性盒模型</li>
+</ul>
+<pre><code class="language-css">.container {
+  display:flex;
+  justify-content: center; /*子元素水平居中*/
+  align-items: center; /*子元素垂直居中*/
+}
+</code></pre>
+<h1 id="48-如何使用css实现硬件加速">48. 如何使用CSS实现硬件加速？</h1>
+<blockquote>
+<p>硬件加速是指通过创建独立的复合图层，让GPU来渲染这个图层，从而提高性能，</p>
+</blockquote>
+<ul>
+<li>一般触发硬件加速的<code>CSS</code>属性有<code>transform</code>、<code>opacity</code>、<code>filter</code>，为了避免2D动画在开始和结束的时候的<code>repaint</code>操作，一般使用<code>tranform:translateZ(0）</code></li>
+</ul>
+<h1 id="49-重绘和回流重排是什么如何避免">49. 重绘和回流（重排）是什么，如何避免？</h1>
+<ul>
+<li>重绘：当渲染树中的元素外观（如：颜色）发生改变，不影响布局时，产生重绘</li>
+<li>回流：当渲染树中的元素的布局（如：尺寸、位置、隐藏/状态状态）发生改变时，产生重绘回流</li>
+<li>注意：JS获取Layout属性值（如：<code>offsetLeft</code>、<code>scrollTop</code>、<code>getComputedStyle</code>等）也会引起回流。因为浏览器需要通过回流计算最新值</li>
+<li>回流必将引起重绘，而重绘不一定会引起回流</li>
+</ul>
+<p><strong>如何最小化重绘(repaint)和回流(reflow)</strong>：</p>
+<ul>
+<li>需要要对元素进行复杂的操作时，可以先隐藏(<code>display:&quot;none&quot;</code>)，操作完成后再显示</li>
+<li>需要创建多个<code>DOM</code>节点时，使用<code>DocumentFragment</code>创建完后一次性的加入<code>document</code></li>
+<li>缓存<code>Layout</code>属性值，如：<code>var left = elem.offsetLeft;</code> 这样，多次使用 <code>left</code> 只产生一次回流</li>
+<li>尽量避免用<code>table</code>布局（<code>table</code>元素一旦触发回流就会导致table里所有的其它元素回流）</li>
+<li>避免使用<code>css</code>表达式(<code>expression</code>)，因为每次调用都会重新计算值（包括加载页面）</li>
+<li>尽量使用 <code>css</code> 属性简写，如：用 <code>border</code> 代替 <code>border-width</code>, <code>border-style</code>, <code>border-color</code></li>
+<li>批量修改元素样式：<code>elem.className</code> 和 <code>elem.style.cssText</code> 代替 <code>elem.style.xxx</code></li>
+</ul>
+<h1 id="50-说一说css3的animation">50. 说一说css3的animation</h1>
+<ul>
+<li>css3的<code>animation</code>是css3新增的动画属性，这个css3动画的每一帧是通过<code>@keyframes</code>来声明的，<code>keyframes</code>声明了动画的名称，通过<code>from</code>、<code>to</code>或者是百分比来定义</li>
+<li>每一帧动画元素的状态，通过<code>animation-name</code>来引用这个动画，同时css3动画也可以定义动画运行的时长、动画开始时间、动画播放方向、动画循环次数、动画播放的方式，</li>
+<li>这些相关的动画子属性有：<code>animation-name</code>定义动画名、<code>animation-duration</code>定义动画播放的时长、<code>animation-delay</code>定义动画延迟播放的时间、<code>animation-direction</code>定义 动画的播放方向、<code>animation-iteration-count</code>定义播放次数、<code>animation-fill-mode</code>定义动画播放之后的状态、<code>animation-play-state</code>定义播放状态，如暂停运行等、<code>animation-timing-function</code></li>
+<li>定义播放的方式，如恒速播放、艰涩播放等。</li>
+</ul>
+<h1 id="51-左边宽度固定右边自适应">51. 左边宽度固定，右边自适应</h1>
+<blockquote>
+<p>左侧固定宽度，右侧自适应宽度的两列布局实现</p>
+</blockquote>
+<p>html结构</p>
+<pre><code class="language-html">&lt;div class=&quot;outer&quot;&gt;
+    &lt;div class=&quot;left&quot;&gt;固定宽度&lt;/div&gt;
+    &lt;div class=&quot;right&quot;&gt;自适应宽度&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<blockquote>
+<p>在外层<code>div</code>（类名为<code>outer</code>）的<code>div</code>中，有两个子<code>div</code>，类名分别为<code>left</code>和<code>right</code>，其中<code>left</code>为固定宽度，而<code>right</code>为自适应宽度</p>
+</blockquote>
+<p><strong>方法1：左侧div设置成浮动：float: left，右侧div宽度会自拉升适应</strong></p>
+<pre><code class="language-css">.outer {
+    width: 100%;
+    height: 500px;
+    background-color: yellow;
+}
+.left {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+    float: left;
+}
+.right {
+    height: 200px;
+    background-color: blue;
+}
+</code></pre>
+<p><strong>方法2：对右侧:div进行绝对定位，然后再设置right=0，即可以实现宽度自适应</strong></p>
+<blockquote>
+<p>绝对定位元素的第一个高级特性就是其具有自动伸缩的功能，当我们将 <code>width</code>设置为 <code>auto</code> 的时候（或者不设置，默认为 <code>auto</code> ），绝对定位元素会根据其 <code>left</code> 和 <code>right</code> 自动伸缩其大小</p>
+</blockquote>
+<pre><code class="language-css">.outer {
+    width: 100%;
+    height: 500px;
+    background-color: yellow;
+    position: relative;
+}
+.left {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+}
+.right {
+    height: 200px;
+    background-color: blue;
+    position: absolute;
+    left: 200px;
+    top:0;          
+    right: 0;
+}
+</code></pre>
+<p><strong>方法3：将左侧<code>div</code>进行绝对定位，然后右侧<code>div</code>设置<code>margin-left: 200px</code></strong></p>
+<pre><code class="language-css">.outer {
+    width: 100%;
+    height: 500px;
+    background-color: yellow;
+    position: relative;
+}
+.left {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+    position: absolute;
+}
+.right {
+    height: 200px;
+    background-color: blue;
+    margin-left: 200px;
+}
+</code></pre>
+<p><strong>方法4：使用flex布局</strong></p>
+<pre><code class="language-css">.outer {
+    width: 100%;
+    height: 500px;
+    background-color: yellow;
+    display: flex;
+    flex-direction: row;
+}
+.left {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+}
+.right {
+    height: 200px;
+    background-color: blue;
+    flex: 1;
+}
+</code></pre>
+<h1 id="52-如何实现小于12px的字体效果">52. 如何实现小于12px的字体效果</h1>
+<blockquote>
+<p><code>transform:scale()</code>这个属性只可以缩放可以定义宽高的元素，而行内元素是没有宽高的，我们可以加上一个<code>display:inline-block</code>;</p>
+</blockquote>
+<pre><code class="language-text">transform: scale(0.7);
+</code></pre>
+<p><code>css</code>的属性，可以缩放大小</p>
+<h1 id="53-css-hack原理及常用hack">53. CSS hack原理及常用hack</h1>
+<ul>
+<li>原理：利用不同浏览器对CSS的支持和解析结果不一样编写针对特定浏览器样式。</li>
+<li>常见的hack有
+<ul>
+<li>属性hack</li>
+<li>选择器hack</li>
+<li>IE条件注释</li>
+</ul>
+</li>
+</ul>
+<h1 id="54-css有哪些继承属性">54. CSS有哪些继承属性</h1>
+<ul>
+<li>关于文字排版的属性如：
+<ul>
+<li><code>font</code>
+<ul>
+<li><code>word-break</code></li>
+<li><code>letter-spacing</code></li>
+<li><code>text-align</code></li>
+<li><code>text-rendering</code></li>
+<li><code>word-spacing</code></li>
+<li><code>white-space</code></li>
+<li><code>text-indent</code></li>
+<li><code>text-transform</code></li>
+<li><code>text-shadow</code></li>
+</ul>
+</li>
+<li><code>line-height</code></li>
+<li><code>color</code></li>
+<li><code>visibility</code></li>
+<li><code>cursor</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="55-css3新增伪类有那些">55. CSS3新增伪类有那些</h1>
+<ul>
+<li><code>:root</code> 选择文档的根元素，等同于 html 元素</li>
+<li><code>:empty</code> 选择没有子元素的元素</li>
+<li><code>:target</code> 选取当前活动的目标元素</li>
+<li><code>:not(selector)</code> 选择除 <code>selector</code> 元素意外的元素</li>
+<li><code>:enabled</code> 选择可用的表单元素</li>
+<li><code>:disabled</code> 选择禁用的表单元素</li>
+<li><code>:checked</code> 选择被选中的表单元素</li>
+<li><code>:after</code> 在元素内部最前添加内容</li>
+<li><code>:before</code> 在元素内部最后添加内容</li>
+<li><code>:nth-child(n)</code> 匹配父元素下指定子元素，在所有子元素中排序第n</li>
+<li><code>:nth-last-child(n)</code> 匹配父元素下指定子元素，在所有子元素中排序第n，从后向前数</li>
+<li><code>:nth-child(odd)</code></li>
+<li><code>:nth-child(even)</code></li>
+<li><code>:nth-child(3n+1)</code></li>
+<li><code>:first-child</code></li>
+<li><code>:last-child</code></li>
+<li><code>:only-child</code></li>
+<li><code>:nth-of-type(n)</code> 匹配父元素下指定子元素，在同类子元素中排序第n</li>
+<li><code>:nth-last-of-type(n)</code> 匹配父元素下指定子元素，在同类子元素中排序第n，从后向前数</li>
+<li><code>:nth-of-type(odd)</code></li>
+<li><code>:nth-of-type(even)</code></li>
+<li><code>:nth-of-type(3n+1)</code></li>
+<li><code>:first-of-type</code></li>
+<li><code>:last-of-type</code></li>
+<li><code>:only-of-type</code></li>
+<li><code>::selection</code> 选择被用户选取的元素部分</li>
+<li><code>:first-line</code> 选择元素中的第一行</li>
+<li><code>:first-letter</code> 选择元素中的第一个字符</li>
+</ul>
+<h1 id="56-满屏-品-字布局-如何设计">56. 满屏 品 字布局 如何设计</h1>
+<ul>
+<li>简单的方式：
+<ul>
+<li>上面的<code>div</code>宽<code>100%</code>，</li>
+<li>下面的两个<code>div</code>分别宽<code>50%</code>，</li>
+<li>然后用<code>float</code>或者<code>inline</code>使其不换行即可</li>
+</ul>
+</li>
+</ul>
+<h1 id="57-li与li之间有看不见的空白间隔是什么原因引起的有什么解决办法">57. li与li之间有看不见的空白间隔是什么原因引起的？有什么解决办法</h1>
+<blockquote>
+<p>行框的排列会受到中间空白（回车\空格）等的影响，因为空格也属于字符,这些空白也会被应用样式，占据空间，所以会有间隔，把字符大小设为0，就没有空格了</p>
+</blockquote>
+<p>为父元素中设置<code>font-size: 0</code>，在子元素上重置正确的<code>font-size</code></p>
+<h1 id="58-请列举几种隐藏元素的方法">58. 请列举几种隐藏元素的方法</h1>
+<ul>
+<li><code>visibility: hidden;</code> 这个属性只是简单的隐藏某个元素，但是元素占用的空间任然存在</li>
+<li><code>opacity: 0;</code> <code>CSS3</code>属性，设置<code>0</code>可以使一个元素完全透明</li>
+<li><code>position: absolute;</code> 设置一个很大的 <code>left</code> 负值定位，使元素定位在可见区域之外</li>
+<li><code>display: none;</code> 元素会变得不可见，并且不会再占用文档的空间。</li>
+<li><code>transform: scale(0);</code> 将一个元素设置为缩放无限小，元素将不可见，元素原来所在的位置将被保留</li>
+<li><code>&lt;div hidden=&quot;hidden&quot;&gt;</code> HTML5属性,效果和<code>display:none;</code>相同，但这个属性用于记录一个元素的状态</li>
+<li><code>height: 0;</code> 将元素高度设为 <code>0</code> ，并消除边框</li>
+<li><code>filter: blur(0);</code> CSS3属性，将一个元素的模糊度设置为<code>0</code>，从而使这个元素“消失”在页面中</li>
+</ul>
+<h1 id="59-请写出多种等高布局">59. 请写出多种等高布局</h1>
+<ul>
+<li>在列的父元素上使用这个背景图进行Y轴的铺放，从而实现一种等高列的假像</li>
+<li>模仿表格布局等高列效果：兼容性不好，在ie6-7无法正常运行</li>
+<li>css3 flexbox 布局： .container{display: flex; align-items: stretch;}</li>
+</ul>
+<h1 id="60-浮动元素引起的问题">60. 浮动元素引起的问题</h1>
+<ul>
+<li>父元素的高度无法被撑开，影响与父元素同级的元素</li>
+<li>与浮动元素同级的非浮动元素会跟随其后</li>
+</ul>
+<h1 id="61-抽离样式模块怎么写说出思路">61. 抽离样式模块怎么写，说出思路</h1>
+<ul>
+<li>CSS可以拆分成2部分：公共CSS 和 业务CSS：
+<ul>
+<li>网站的配色，字体，交互提取出为公共CSS。这部分CSS命名不应涉及具体的业务</li>
+<li>对于业务CSS，需要有统一的命名，使用公用的前缀。可以参考面向对象的CSS</li>
+</ul>
+</li>
+</ul>
+<h1 id="62-什么是视差滚动效果如何给每页做不同的动画">62. 什么是视差滚动效果，如何给每页做不同的动画</h1>
+<ul>
+<li>视差滚动是指多层背景以不同的速度移动，形成立体的运动效果，具有非常出色的视觉体验</li>
+<li>一般把网页解剖为：背景层、内容层和悬浮层。当滚动鼠标滚轮时，各图层以不同速度移动，形成视差的</li>
+<li>实现原理
+<ul>
+<li>以 “页面滚动条” 作为 “视差动画进度条”</li>
+<li>以 “滚轮刻度” 当作 “动画帧度” 去播放动画的</li>
+<li>监听 mousewheel 事件，事件被触发即播放动画，实现“翻页”效果</li>
+</ul>
+</li>
+</ul>
+<h1 id="63-a标签上四个伪类的执行顺序是怎么样的">63. a标签上四个伪类的执行顺序是怎么样的</h1>
+<blockquote>
+<pre><code>link &gt; visited &gt; hover &gt; active
+</code></pre>
+</blockquote>
+<ul>
+<li><code>L-V-H-A</code> <code>love hate</code> 用喜欢和讨厌两个词来方便记忆</li>
+</ul>
+<h1 id="64-如何修改chrome记住密码后自动填充表单的黄色背景">64. 如何修改Chrome记住密码后自动填充表单的黄色背景</h1>
+<ul>
+<li>产生原因：由于Chrome默认会给自动填充的input表单加上 <code>input:-webkit-autofill</code> 私有属性造成的</li>
+<li>解决方案1：在form标签上直接关闭了表单的自动填充：<code>autocomplete=&quot;off&quot;</code></li>
+<li>解决方案2：<code>input:-webkit-autofill { background-color: transparent; }</code></li>
+</ul>
+<p><strong>input [type=search] 搜索框右侧小图标如何美化？</strong></p>
+<pre><code class="language-css">input[type=&quot;search&quot;]::-webkit-search-cancel-button{
+  -webkit-appearance: none;
+  height: 15px;
+  width: 15px;
+  border-radius: 8px;
+  background:url(&quot;images/searchicon.png&quot;) no-repeat 0 0;
+  background-size: 15px 15px;
+}
+</code></pre>
+<h1 id="65-网站图片文件如何点击下载">65. 网站图片文件，如何点击下载？</h1>
+<p><code>&lt;a href=&quot;logo.jpg&quot; download&gt;下载&lt;/a&gt;</code>   <code>&lt;a href=&quot;logo.jpg&quot; download=&quot;网站LOGO&quot; &gt;下载&lt;/a&gt;</code></p>
+<h1 id="66-line-height的理解">66. line-height的理解</h1>
+<ul>
+<li><code>line-height</code> 指一行字的高度，包含了字间距，实际上是下一行基线到上一行基线距离</li>
+<li>如果一个标签没有定义 <code>height</code> 属性，那么其最终表现的高度是由 <code>line-height</code> 决定的</li>
+<li>一个容器没有设置高度，那么撑开容器高度的是 <code>line-height</code> 而不是容器内的文字内容</li>
+<li>把 <code>line-height</code> 值设置为 <code>height</code> 一样大小的值可以实现单行文字的垂直居中</li>
+<li><code>line-height</code> 和 <code>height</code> 都能撑开一个高度，<code>height</code> 会触发 <code>haslayout</code>，而 <code>line-height</code> 不会</li>
+</ul>
+<h1 id="67-line-height-三种赋值方式有何区别带单位-纯数字-百分比">67. line-height 三种赋值方式有何区别？（带单位、纯数字、百分比）</h1>
+<ul>
+<li>带单位：<code>px</code> 是固定值，而 <code>em</code> 会参考父元素 ,<code>font-size</code> 值计算自身的行高</li>
+<li>纯数字：会把比例传递给后代。例如，父级行高为 <code>1.5</code>，子元素字体为 <code>18px</code>，则子元素行高为 <code>1.5 * 18 = 27px</code></li>
+<li>百分比：将计算后的值传递给后代</li>
+</ul>
+<h1 id="68-设置元素浮动后该元素的-display-值会如何变化">68. 设置元素浮动后，该元素的 display 值会如何变化</h1>
+<blockquote>
+<p>设置元素浮动后，该元素的 <code>display</code> 值自动变成 <code>block</code></p>
+</blockquote>
+<h1 id="69-让页面里的字体变清晰变细用css怎么做">69. 让页面里的字体变清晰，变细用CSS怎么做？</h1>
+<pre><code class="language-css">  -webkit-font-smoothing: antialiased;
+</code></pre>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://font-ds.github.io/tag/qWaegbQLt/" class="tag">
+                    css
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://font-ds.github.io/post/liu-lan-qi-xiang-guan-wen-ti-hui-zong/">
+                  <h3 class="post-title">
+                    浏览器相关问题汇总
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+  <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+
+
+
+
+
+  </body>
+</html>

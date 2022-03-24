@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://font-ds.github.io</id>
     <title>font-ds</title>
-    <updated>2022-03-23T10:27:25.674Z</updated>
+    <updated>2022-03-24T04:54:40.467Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://font-ds.github.io"/>
     <link rel="self" href="https://font-ds.github.io/atom.xml"/>
@@ -10,6 +10,1399 @@
     <logo>https://font-ds.github.io/images/avatar.png</logo>
     <icon>https://font-ds.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, font-ds</rights>
+    <entry>
+        <title type="html"><![CDATA[CSS 复习汇总]]></title>
+        <id>https://font-ds.github.io/post/css-fu-xi-hui-zong/</id>
+        <link href="https://font-ds.github.io/post/css-fu-xi-hui-zong/">
+        </link>
+        <updated>2022-03-24T04:49:08.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-bfc">1. BFC</h1>
+<h2 id="bfc是什么">BFC是什么</h2>
+<p>文档流三种方式： 1. 普通流     2. 定位流    3. 浮动流</p>
+<p>block formatting context      块级元素格式化上下文 (被隔离的区间：BFC的子元素不会对外边的元素产生影响)</p>
+<p>BFC元素：</p>
+<pre><code>1. body
+2. float：left | right
+3. overflow：hidden | scroll | auto ；   不是visible
+4. display：inline-block | table-cell | table-caption | flex | grid
+5. position：absolute | fixed   非 relative
+</code></pre>
+<p>一个BFC区域，只包含其所有子元素，不包含子元素的子元素。</p>
+<p>BFC有一个特点是：<strong>每一个BFC区域都是相互独立，互不影响的。</strong></p>
+<h2 id="利用bfc解决问题">利用BFC解决问题</h2>
+<h3 id="解决外边距的塌陷问题垂直塌陷"><strong>解决外边距的塌陷问题(垂直塌陷)</strong></h3>
+<p>开发中，前端的布局手段，离不开外边距margin，那么，也会遇到一些问题，例如外边距的垂直塌陷问题。</p>
+<p>通过以上的实例，我们会发现，代码给两个div盒子，都添加了四个方向的margin，讲道理，学过数学的都知道，100+100=200.可是，盒子之间的距离，现在却之后100px。这就是很典型的margin的塌陷，两段margin重叠到了一块，互相影响。那么，如何利用BFC，让这个问题得到解决呢。回忆下，上文说过，BFC，就是一个与世隔绝的独立区域，不会互相影响，那么，我们可以将这两个盒子，放到两个BFC区域中，即可解决这个问题。</p>
+<figure data-type="image" tabindex="1"><img src="http://www.itcast.cn/files/image/202010/20201016160053011.gif" alt="BFC04" loading="lazy"></figure>
+<h3 id="利用bfc解决包含塌陷"><strong>利用BFC解决包含塌陷</strong></h3>
+<p>当父子关系的盒子，给子元素添加margin-top，有可能会把父元素一起带跑。</p>
+<figure data-type="image" tabindex="2"><img src="http://www.itcast.cn/files/image/202010/20201016162038423.jpg" alt="BFC05" loading="lazy"></figure>
+<p>原本，正确的显示方式，应该是粉色盒子与红色盒子的顶部距离为50px，但是由于margin的塌陷问题，导致盒子内部的布局影响到了外部。这个时候，就可以触发BFC，将父盒子变成一个独立的区域，这样在BFC区域内部的任何操作，都不会影响到外部。</p>
+<figure data-type="image" tabindex="3"><img src="http://www.itcast.cn/files/image/202010/20201016162111734.gif" alt="BFC06" loading="lazy"></figure>
+<h3 id="当浮动产生影响的时候可以利用bfc来清除浮动的影响"><strong>当浮动产生影响的时候，可以利用BFC来清除浮动的影响</strong></h3>
+<figure data-type="image" tabindex="4"><img src="http://www.itcast.cn/files/image/202010/20201016162155258.jpg" alt="BFC07" loading="lazy"></figure>
+<p>以上代码表示，一个没有设置高度的父盒子，包含着七个子元素。如果此时，所有的子元素都浮动的话</p>
+<figure data-type="image" tabindex="5"><img src="http://www.itcast.cn/files/image/202010/20201016162222822.gif" alt="BFC08" loading="lazy"></figure>
+<p>当所有的子元素都浮动了，这个时候，父盒子失去了原有的高度，这就是浮动的影响。这个时候，同样也可用BFC的机制，来清除浮动带来的影响。使用BFC，将所有的浮动元素包裹起来。</p>
+<figure data-type="image" tabindex="6"><img src="http://www.itcast.cn/files/image/202010/20201016162302990.gif" alt="BFC09" loading="lazy"></figure>
+<h3 id="bfc可以阻止标准流元素被浮动元素覆盖"><strong>BFC可以阻止标准流元素被浮动元素覆盖</strong></h3>
+<figure data-type="image" tabindex="7"><img src="http://www.itcast.cn/files/image/202010/20201016162336022.jpg" alt="BFC10" loading="lazy"></figure>
+<p>以上情况，红色盒子浮动，蓝色盒子是标准流，默认情况下，浮动元素覆盖了标准流元素。但是，如果将蓝色盒子的BFC触发，那么情况将有所变化。</p>
+<figure data-type="image" tabindex="8"><img src="http://www.itcast.cn/files/image/202010/20201016162411159.gif" alt="BFC10" loading="lazy"></figure>
+<p>当蓝色盒子触发了BFC之后，浮动元素再也不能覆盖它了，而且还能利用这个特性，来实现蓝色盒子宽度根据红色盒子的宽度来做自动适应</p>
+<h1 id="2-ifc">2. IFC</h1>
+<p>FC IFC(Inline Formatting Contexts)直译为&quot;内联格式化上下文&quot;，IFC 的 line box（线框）高度由其包含行内元素中最高的实际高度计算而来（不受到竖直方向的padding/margin影响)</p>
+<p>IFC一般有什么用呢？</p>
+<p>水平居中：当一个块要在环境中水平居中时，设置其为inline-block则会在外层产生IFC，通过text-align则可以使其水平居中。<br>
+垂直居中：创建一个IFC，用其中一个元素撑开父元素的高度，然后设置其vertical-align:middle，其他行内元素则可以在此父元素下垂直居中。</p>
+<h1 id="3-实现边框宽度05px">3. 实现边框宽度0.5px</h1>
+<h2 id="单边框">单边框</h2>
+<pre><code class="language-css">// 方法一 ： border + border-image + linear-gradint
+.border{
+	width:200px;
+	height:200px;
+    background-color:red;
+    margin:0 auto;
+    border-bottom: 1px solid transparent;
+    border-image:linear-gradient(to bottom,transparent 50%,Green 50%) 0 0 100% 0;
+}
+
+
+// 方法二：伪元素 + background-image
+.border{
+    width:200px;
+	height:200px;
+    background-color:red;
+    margin:0 auto;
+    position:relative;
+}
+.border::before{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:1px;
+    border-image:linear-gradient(to bottom,transparent 50%,Green 50%);
+}
+
+
+// 方法三：定位 + 伪元素 + transfrom缩放(scale)
+.border{
+    width:200px;
+    height:200px;
+    background-color:red;
+    margin:0 auto;
+    position:relative;
+}
+.border::after{
+    content:'';
+    position:absolute;
+    left:0;
+    bottom:0px;
+    width:100%;
+    height:1px;
+    background:blue;
+    transform:scaleY(0.5);
+}
+</code></pre>
+<h2 id="多边框">多边框</h2>
+<pre><code class="language-css">// 定位 + 伪元素 + transform缩放(scale)
+.border{
+    width:200px;
+    height:200px;
+    background-color:red;
+    margin:0 auto;
+    position:relative
+}
+.border::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    border:1px solid blue;
+    transform:scale(0.5)
+}
+</code></pre>
+<h1 id="4-实现半圆形">4.  实现半圆形</h1>
+<pre><code class="language-js">// css
+width:100px;
+height:50px;
+border-radius:50px 50px 0 0;
+background-color:red
+</code></pre>
+<h1 id="5-css盒模型">5. CSS盒模型</h1>
+<blockquote>
+<ul>
+<li>有两种， <code>IE</code>盒子模型、<code>W3C</code>盒子模型；</li>
+<li>盒模型： 内容(content)、填充(<code>padding</code>)、边界(<code>margin</code>)、 边框(<code>border</code>)；</li>
+<li>区 别： <code>IE</code>的c<code>ontent</code>部分把 <code>border</code> 和 <code>padding</code>计算了进去;</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>标准盒模型</p>
+<ul>
+<li>元素宽度 = <code>width + padding + border + margin</code></li>
+</ul>
+</li>
+</ul>
+<figure data-type="image" tabindex="9"><img src="https://font-ds.github.io/post-images/1648097529430.png" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>怪异盒模块（IE盒模型）</p>
+<ul>
+<li>元素宽度 = <code>width + margin</code></li>
+</ul>
+</li>
+</ul>
+<figure data-type="image" tabindex="10"><img src="https://font-ds.github.io/post-images/1648097602589.jpeg" alt="" loading="lazy"></figure>
+<ul>
+<li>
+<p>flex弹性伸缩盒模型</p>
+<ul>
+<li>主轴</li>
+<li>交叉轴</li>
+</ul>
+</li>
+<li>
+<p>多列布局盒模型（columns，基本不用）</p>
+</li>
+</ul>
+<p><strong>box-sizing 常用的属性有哪些？分别有什么作用</strong></p>
+<ul>
+<li><code>box-sizing: content-box;</code> 默认的标准(W3C)盒模型元素效果</li>
+<li><code>box-sizing: border-box;</code> 触发怪异(IE)盒模型元素的效果</li>
+<li><code>box-sizing: inherit;</code> 继承父元素 <code>box-sizing</code> 属性的值</li>
+</ul>
+<h1 id="6-line-height和height区别">6. line-height和height区别</h1>
+<ol>
+<li>
+<p>height就是元素的高度值，是一个死值，就是这个盒子的高度</p>
+</li>
+<li>
+<p>line-height是行高，是每一行文字的高，如果文字换行则整个盒子高度会增大（行数*行高）</p>
+</li>
+</ol>
+<h1 id="7-css的选择符">7. CSS的选择符</h1>
+<h2 id="css选择符">css选择符</h2>
+<pre><code>1. 通配（*）
+1. 选择器（#）
+1. 类选择器（.）
+1. 标签选择器（div、p、h1...）
+1. 相邻选择器（+）
+1. 后代选择器（空格）
+1. 子元素选择器（&gt;）
+1. 属性选择器（a[href]）
+</code></pre>
+<h2 id="css属性哪些可以继承">css属性哪些可以继承</h2>
+<p>​		文字系列：font-size、color、line-height、text-align、opacity ......</p>
+<p><strong>不可继承</strong>：border、padding、margin ......</p>
+<h1 id="8-css优先级算法">8. CSS优先级算法</h1>
+<p>优先级比较：!important &gt; 内联样式 &gt; id &gt; class &gt; 标签 &gt; 通配</p>
+<h2 id="css权重计算">css权重计算</h2>
+<ol>
+<li>
+<p>!important —— 最高权值</p>
+<ol start="2">
+<li>内联样式 style —— 权重值：1000</li>
+<li>ID选择器 —— 权重值：100</li>
+<li>Class选择器 —— 权重值：10</li>
+<li>HTML标签选择器&amp;伪元素 —— 权重值：1</li>
+<li>通配符选择器 —— 权重值：0</li>
+</ol>
+</li>
+</ol>
+<h1 id="9-盒子水平垂直居中">9. 盒子水平垂直居中</h1>
+<p>这种需求在我之前的项目中十分常见，随着flex兴起，，后来看blog发现这种方式也十分好</p>
+<pre><code class="language-shell">//1、定位
+body{
+  position:relative
+}
+ // 有固定高度的是用margin
+.box{
+  width:100px;
+  height:100px;
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin-left:-50px;
+  margin-right:-50%;
+}
+ //无固定高度用transform
+.box{
+  translateX:-50%;
+  translateY:-50%;
+}
+
+//2、flex
+body{
+  display:flex;
+  justify-content:center;
+  align-item:center
+}
+
+//table本身控制文本；要求父级有固定宽高
+body{
+  width:500px;
+  height:500px;
+  display:table-ceil;
+  vertical-align:center;
+  text-align:center;ß
+}
+.box{
+  display:inline-block;
+}
+
+
+</code></pre>
+<h4 id=""></h4>
+<h1 id="10-css画三角形">10. CSS画三角形</h1>
+<pre><code class="language-js">// 用border画边框
+// 通过将其他三个边框设置为透明色，实现某个方向的三角形
+div{
+  width: 0;
+  height: 0;
+  border-width: 20px;
+  border-style: solid;
+  border-color: transparent transparent red transparent;
+}
+</code></pre>
+<h1 id="11-display属性">11. display属性</h1>
+<ul>
+<li><code>block</code> 转换成块状元素。</li>
+<li><code>inline</code> 转换成行内元素。</li>
+<li><code>none</code> 设置元素不可见。</li>
+<li><code>inline-block</code> 象行内元素一样显示，但其内容象块类型元素一样显示。</li>
+<li><code>list-item</code> 象块类型元素一样显示，并添加样式列表标记。</li>
+<li><code>table</code> 此元素会作为块级表格来显示</li>
+<li><code>inherit</code> 规定应该从父元素继承 <code>display</code> 属性的值</li>
+</ul>
+<h1 id="12-清除浮动">12. 清除浮动</h1>
+<ul>
+<li>父级<code>div</code>定义<code>height</code></li>
+<li>结尾处加空<code>div</code>标签<code>clear:both</code></li>
+<li>父级<code>div</code>定义伪类<code>:after</code>和<code>zoom</code></li>
+<li>父级<code>div</code>定义<code>overflow:hidden</code></li>
+<li>父级<code>div</code>也浮动，需要定义宽度</li>
+<li>结尾处加<code>br</code>标签<code>clear:both</code></li>
+<li>比较好的是第3种方式，好多网站都这么用</li>
+</ul>
+<h1 id="13-position属性">13. position属性</h1>
+<ol>
+<li>static（默认值） —— 没有定位</li>
+<li>fixed —— 固定定位，相对于浏览器窗口进行定位</li>
+<li>relative —— 相对于自身定位，不脱离文档流</li>
+<li>absolute —— 相对于第一个有relative的父元素定位，脱离文档流</li>
+<li>inherit —— 规定从父元素继承osition属性</li>
+</ol>
+<p><strong>relative和absolute区别</strong></p>
+<ol>
+<li>relative不脱离文档流，absolute脱离文档流</li>
+<li>relative相对于自身定位，absolute相对于一个有relative的父元素定位</li>
+<li>relative如果有left、right、top、bottom 只能有 left、top；  absolute中四个属性都可以存在</li>
+</ol>
+<h1 id="14-圣杯布局">14. 圣杯布局</h1>
+<p>浮动 + 负margin</p>
+<pre><code class="language-html">		&lt;style&gt;
+        html,body{
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .container{
+            height: 100%;
+            padding: 0 200px;
+        }
+
+        .center{
+            float: left;
+            width: 100%;
+            height: 400px;
+            background-color: blue;
+        }
+
+        .left,.right{
+            float: left;
+            width: 200px;
+            height: 200px;
+            background-color: burlywood;
+        }
+
+        .left{
+            margin-left: -100%;
+            position: relative;
+            left: -200px;
+        }
+        .right{
+            margin-right: -200px;
+        }
+   &lt;/style&gt;
+
+	&lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;left&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+<h1 id="15-双飞翼布局">15. 双飞翼布局</h1>
+<p>浮动 + 负margin</p>
+<pre><code class="language-html">    &lt;style&gt;
+        .container{
+            width: 100%;
+        }
+
+        .center{
+            height: 400px;
+            min-width: 400px;
+            margin: 0 200px;
+            background-color: blue;
+        }
+
+        .left,
+        .container,
+        .right{ 
+            float: left;
+        }
+
+        .left,.right{
+            width: 200px;
+            height: 200px;
+            background-color:burlywood;
+        }
+
+        .left{
+            margin-left: -100%;
+        }
+
+        .right{
+            margin-left: -200px;
+        }
+    &lt;/style&gt;
+
+	 &lt;div class=&quot;clearfix&quot;&gt;
+        &lt;div class=&quot;container&quot;&gt;
+            &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;left&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+<h1 id="16-calc实现两边固定中间自适应百分百">16. CALC实现两边固定，中间自适应百分百</h1>
+<pre><code class="language-html">	&lt;style&gt;
+        .container{
+            width:100%;
+            height:100%;
+        }
+        
+        .center,
+        .left,
+        .right{
+            float:left;
+        }
+        
+        .center{
+            /* 兼容到IE9 */
+            width:calc(100%-400px);
+            min-height:400px;
+            background-color:blue;
+        }
+        
+        .left,.right{
+            width:200px;
+            height:200px;
+            background-color:burlywood;
+        }
+        
+	&lt;/style&gt;
+	&lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;left&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+<h1 id="17-flex实现两边固定中间宽度自适应">17. flex实现两边固定，中间宽度自适应</h1>
+<pre><code class="language-html">	&lt;style&gt;
+        .container{
+            width:100%;
+            height:100%;
+            display:flex;
+            justify-content:space-between;
+        }
+        
+        .center{
+            flex:1;
+            min-height:400px;
+            background-color:blue;
+        }
+        
+        .left,.right{
+            flex:0 0 200px;
+            height:200px;
+            background-color:burlywood;
+        }
+        
+	&lt;/style&gt;
+	&lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;center&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;left&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;right&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+</code></pre>
+<h1 id="18-css-reset初始化">18. CSS reset（初始化）</h1>
+<p>reset.css  是一个css文件，用来重置css样式</p>
+<p>浏览器的兼容问题，不同浏览器对有些标签的默认值是不同的，如果没对CSS初始化往往会出现浏览器之间的页面显示差异</p>
+<p>Normalize.css 为了增强跨浏览器渲染的一致性，我们使用了Normalize.css，这是由Nicolas Gallagher 和 Jonathan Neal 维护一个CSS重置样式库</p>
+<h1 id="19-css选择器渲染机制">19. CSS选择器渲染机制</h1>
+<pre><code class="language-css">.box a {
+    ...
+} 
+
+a{
+    ...
+}
+</code></pre>
+<p>第二种渲染性能更高，css选择器渲染机制是<strong>从右向左查询</strong></p>
+<h1 id="20-css-sprite是什么有什么优缺点">20. css sprite是什么,有什么优缺点</h1>
+<ul>
+<li>概念：将多个小图片拼接到一个图片中。通过<code>background-position</code>和元素尺寸调节需要显示的背景图案。</li>
+<li>优点：
+<ul>
+<li>减少<code>HTTP</code>请求数，极大地提高页面加载速度</li>
+<li>增加图片信息重复度，提高压缩比，减少图片大小</li>
+<li>更换风格方便，只需在一张或几张图片上修改颜色或样式即可实现</li>
+</ul>
+</li>
+<li>缺点：
+<ul>
+<li>图片合并麻烦</li>
+<li>维护麻烦，修改一个图片可能需要从新布局整个图片，样式</li>
+</ul>
+</li>
+</ul>
+<h1 id="21-display-none与visibility-hidden的区别">21. <code>display: none;</code>与<code>visibility: hidden;</code>的区别</h1>
+<ul>
+<li>联系：它们都能让元素不可见</li>
+<li>区别：
+<ul>
+<li><code>display:none</code>;会让元素完全从渲染树中消失，渲染的时候不占据任何空间；<code>visibility: hidden</code>;不会让元素从渲染树消失，渲染师元素继续占据空间，只是内容不可见</li>
+<li><code>display: none</code>;是非继承属性，子孙节点消失由于元素从渲染树消失造成，通过修改子孙节点属性无法显示<code>；visibility: hidden;</code>是继承属性，子孙节点消失由于继承了<code>hidden</code>，通过设置<code>visibility: visible;</code>可以让子孙节点显式</li>
+<li>修改常规流中元素的<code>display</code>通常会造成文档重排。修改<code>visibility</code>属性只会造成本元素的重绘。</li>
+<li>读屏器不会读取<code>display: none</code>;元素内容；会读取<code>visibility: hidden;</code>元素内容</li>
+</ul>
+</li>
+</ul>
+<h1 id="22-link与import的区别">22.  <code>link</code>与<code>@import</code>的区别</h1>
+<ol>
+<li><code>link</code>是<code>HTML</code>方式， <code>@import</code>是CSS方式</li>
+<li><code>link</code>最大限度支持并行下载，<code>@import</code>过多嵌套导致串行下载，出现<code>FOUC</code>(文档样式短暂失效)</li>
+<li><code>link</code>可以通过<code>rel=&quot;alternate stylesheet&quot;</code>指定候选样式</li>
+<li>浏览器对<code>link</code>支持早于<code>@import</code>，可以使用<code>@import</code>对老浏览器隐藏样式</li>
+<li><code>@import</code>必须在样式规则之前，可以在css文件中引用其他文件</li>
+<li>总体来说：<code>link</code>优于<code>@import</code></li>
+</ol>
+<h1 id="23-什么是fouc如何避免">23. 什么是FOUC?如何避免</h1>
+<ul>
+<li><code>Flash Of Unstyled Content</code>：用户定义样式表加载之前浏览器使用默认样式显示文档，用户样式加载渲染之后再从新显示文档，造成页面闪烁。</li>
+<li><strong>解决方法</strong>：把样式表放到文档的<code>&lt;head&gt;</code></li>
+</ul>
+<h1 id="24-为什么要初始化css样式">24. 为什么要初始化CSS样式?</h1>
+<ul>
+<li>因为浏览器的兼容问题，不同浏览器对有些标签的默认值是不同的，如果没对<code>CSS</code>初始化往往会出现浏览器之间的页面显示差异。</li>
+<li>当然，初始化样式会对<code>SEO</code>有一定的影响，但鱼和熊掌不可兼得，但力求影响最小的情况下初始化</li>
+</ul>
+<h1 id="25-css3有哪些新特性">25. CSS3有哪些新特性</h1>
+<ul>
+<li>新增选择器 <code>p:nth-child(n){color: rgba(255, 0, 0, 0.75)}</code></li>
+<li>弹性盒模型 <code>display: flex;</code></li>
+<li>多列布局 <code>column-count: 5;</code></li>
+<li>媒体查询 <code>@media (max-width: 480px) {.box: {column-count: 1;}}</code></li>
+<li>个性化字体 <code>@font-face{font-family: BorderWeb; src:url(BORDERW0.eot);}</code></li>
+<li>颜色透明度 <code>color: rgba(255, 0, 0, 0.75);</code></li>
+<li>圆角 <code>border-radius: 5px;</code></li>
+<li>渐变 <code>background:linear-gradient(red, green, blue);</code></li>
+<li>阴影 <code>box-shadow:3px 3px 3px rgba(0, 64, 128, 0.3);</code></li>
+<li>倒影 <code>box-reflect: below 2px;</code></li>
+<li>文字装饰 <code>text-stroke-color: red;</code></li>
+<li>文字溢出 <code>text-overflow:ellipsis;</code></li>
+<li>背景效果 <code>background-size: 100px 100px;</code></li>
+<li>边框效果 <code>border-image:url(bt_blue.png) 0 10;</code></li>
+<li>转换
+<ul>
+<li>旋转 <code>transform: rotate(20deg);</code></li>
+<li>倾斜 <code>transform: skew(150deg, -10deg);</code></li>
+<li>位移 <code>transform: translate(20px, 20px);</code></li>
+<li>缩放 <code>transform: scale(.5);</code></li>
+</ul>
+</li>
+<li>平滑过渡 <code>transition: all .3s ease-in .1s;</code></li>
+<li>动画 <code>@keyframes anim-1 {50% {border-radius: 50%;}} animation: anim-1 1s;</code></li>
+</ul>
+<p><strong>CSS3新增伪类有那些？</strong></p>
+<ul>
+<li><code>p:first-of-type</code> 选择属于其父元素的首个<code>&lt;p&gt;</code>元素的每个<code>&lt;p&gt;</code> 元素。</li>
+<li><code>p:last-of-type</code> 选择属于其父元素的最后 <code>&lt;p&gt;</code> 元素的每个<code>&lt;p&gt;</code> 元素。</li>
+<li><code>p:only-of-type</code> 选择属于其父元素唯一的 <code>&lt;p&gt;</code>元素的每个 <code>&lt;p&gt;</code> 元素。</li>
+<li><code>p:only-child</code> 选择属于其父元素的唯一子元素的每个 <code>&lt;p&gt;</code> 元素。</li>
+<li><code>p:nth-child(2)</code> 选择属于其父元素的第二个子元素的每个 <code>&lt;p&gt;</code> 元素。</li>
+<li><code>:after</code> 在元素之前添加内容,也可以用来做清除浮动。</li>
+<li><code>:before</code> 在元素之后添加内容。</li>
+<li><code>:enabled</code> 已启用的表单元素。</li>
+<li><code>:disabled</code> 已禁用的表单元素。</li>
+<li><code>:checked</code> 单选框或复选框被选中。</li>
+</ul>
+<h1 id="26-displayinline-block-什么时候不会显示间隙">26. display:inline-block 什么时候不会显示间隙？</h1>
+<ul>
+<li>移除空格</li>
+<li>使用<code>margin</code>负值</li>
+<li>为父元素中设置<code>font-size: 0</code>，在子元素上重置正确的<code>font-size</code></li>
+<li><code>letter-spacing</code></li>
+<li>设置父元素，<code>display:table</code> 和 <code>word-spacing</code></li>
+</ul>
+<h1 id="27-pnggifjpg的区别及如何选">27. PNG\GIF\JPG的区别及如何选</h1>
+<ul>
+<li><code>GIF</code>
+<ul>
+<li><code>8</code>位像素，<code>256</code>色</li>
+<li>无损压缩</li>
+<li>支持简单动画</li>
+<li>支持<code>boolean</code>透明</li>
+<li>适合简单动画</li>
+</ul>
+</li>
+<li><code>JPEG</code>
+<ul>
+<li>颜色限于<code>256</code></li>
+<li>有损压缩</li>
+<li>可控制压缩质量</li>
+<li>不支持透明</li>
+<li>适合照片</li>
+</ul>
+</li>
+<li><code>PNG</code>
+<ul>
+<li>有<code>PNG8</code>和<code>truecolor PNG</code></li>
+<li><code>PNG8</code>类似<code>GIF</code>颜色上限为<code>256</code>，文件小，支持<code>alpha</code>透明度，无动画</li>
+<li>适合图标、背景、按钮</li>
+</ul>
+</li>
+</ul>
+<h1 id="28-行内元素floatleft后是否变为块级元素">28. 行内元素float:left后是否变为块级元素？</h1>
+<blockquote>
+<p>行内元素设置成浮动之后变得更加像是<code>inline-block</code>（行内块级元素，设置成这个属性的元素会同时拥有行内和块级的特性，最明显的不同是它的默认宽度不是<code>100%</code>），这时候给行内元素设置<code>padding-top</code>和<code>padding-bottom</code>或者<code>width</code>、<code>height</code>都是有效果的</p>
+</blockquote>
+<h1 id="29-before-和-after中双冒号和单冒号-有什么区别解释一下这2个伪元素的作用">29. ::before 和 :after中双冒号和单冒号 有什么区别？解释一下这2个伪元素的作用</h1>
+<ul>
+<li>单冒号(<code>:</code>)用于<code>CSS3</code>伪类，双冒号(<code>::</code>)用于<code>CSS3</code>伪元素</li>
+<li>用于区分伪类和伪元素</li>
+</ul>
+<h1 id="30-如果需要手动写动画你认为最小时间间隔是多久">30. 如果需要手动写动画，你认为最小时间间隔是多久</h1>
+<ul>
+<li>多数显示器默认频率是<code>60Hz</code>，即<code>1</code>秒刷新<code>60</code>次，所以理论上最小间隔为<code>1/60*1000ms ＝ 16.7ms</code></li>
+</ul>
+<h1 id="31-css合并方法">31. CSS合并方法</h1>
+<ul>
+<li>避免使用<code>@import</code>引入多个<code>css</code>文件，可以使用<code>CSS</code>工具将<code>CSS</code>合并为一个<code>CSS</code>文件，例如使用<code>Sass\Compass</code>等</li>
+</ul>
+<h1 id="32-列出你所知道可以改变页面布局的属性">32. 列出你所知道可以改变页面布局的属性</h1>
+<ul>
+<li><code>position</code>、<code>display</code>、<code>float</code>、<code>width</code>、<code>height</code>、<code>margin</code>、<code>padding</code>、<code>top</code>、<code>left</code>、<code>right</code></li>
+</ul>
+<h1 id="33-css在性能优化方面的实践">33. CSS在性能优化方面的实践</h1>
+<ul>
+<li><code>css</code>压缩与合并、<code>Gzip</code>压缩</li>
+<li><code>css</code>文件放在<code>head</code>里、不要用<code>@import</code></li>
+<li>尽量用缩写、避免用滤镜、合理使用选择器</li>
+</ul>
+<h1 id="34-css3动画简单动画的实现如旋转等">34. CSS3动画（简单动画的实现，如旋转等）</h1>
+<ul>
+<li>依靠<code>CSS3</code>中提出的三个属性：<code>transition</code>、<code>transform</code>、<code>animation</code></li>
+<li><code>transition</code>：定义了元素在变化过程中是怎么样的，包含<code>transition-property</code>、<code>transition-duration</code>、<code>transition-timing-function</code>、<code>transition-delay</code>。</li>
+<li><code>transform</code>：定义元素的变化结果，包含<code>rotate</code>、<code>scale</code>、<code>skew</code>、<code>translate</code>。</li>
+<li><code>animation</code>：动画定义了动作的每一帧（<code>@keyframes</code>）有什么效果，包括<code>animation-name</code>，<code>animation-duration</code>、<code>animation-timing-function</code>、<code>animation-delay</code>、<code>animation-iteration-count</code>、<code>animation-direction</code></li>
+</ul>
+<h1 id="35-base64的原理及优缺点">35. base64的原理及优缺点</h1>
+<ul>
+<li>优点可以加密，减少了<code>HTTTP</code>请求</li>
+<li>缺点是需要消耗<code>CPU</code>进行编解码</li>
+</ul>
+<h1 id="36-stylussassless区别">36. stylus/sass/less区别</h1>
+<ul>
+<li>均具有“变量”、“混合”、“嵌套”、“继承”、“颜色混合”五大基本特性</li>
+<li><code>Scss</code>和<code>LESS</code>语法较为严谨，<code>LESS</code>要求一定要使用大括号“{}”，<code>Scss</code>和<code>Stylus</code>可以通过缩进表示层次与嵌套关系</li>
+<li><code>Scss</code>无全局变量的概念，<code>LESS</code>和<code>Stylus</code>有类似于其它语言的作用域概念</li>
+<li><code>Sass</code>是基于<code>Ruby</code>语言的，而<code>LESS</code>和<code>Stylus</code>可以基于<code>NodeJS</code> <code>NPM</code>下载相应库后进行编译；</li>
+</ul>
+<h1 id="37-postcss的作用">37. postcss的作用</h1>
+<ul>
+<li>可以直观的理解为：它就是一个平台。为什么说它是一个平台呢？因为我们直接用它，感觉不能干什么事情，但是如果让一些插件在它上面跑，那么将会很强大</li>
+<li><code>PostCSS</code> 提供了一个解析器，它能够将 <code>CSS</code> 解析成抽象语法树</li>
+<li>通过在 <code>PostCSS</code> 这个平台上，我们能够开发一些插件，来处理我们的<code>CSS</code>，比如热门的：<code>autoprefixer</code></li>
+<li><code>postcss</code>可以对sass处理过后的<code>css</code>再处理 最常见的就是<code>autoprefixer</code></li>
+</ul>
+<h1 id="38-如何美化checkbox">38. 如何美化CheckBox</h1>
+<ul>
+<li><code>&lt;label&gt;</code> 属性 <code>for</code> 和 <code>id</code></li>
+<li>隐藏原生的 <code>&lt;input&gt;</code></li>
+<li><code>:checked + &lt;label&gt;</code></li>
+</ul>
+<h1 id="39-伪类和伪元素的区别">39. 伪类和伪元素的区别</h1>
+<ul>
+<li>伪类表状态</li>
+<li>伪类 -- 将特殊的效果添加到特定选择器上。它是已有元素上添加类别的，不会产生新的元素</li>
+<li>伪元素是真的有元素</li>
+<li>伪元素 -- 在内容元素的前后插入额外的元素或样式，但是这些元素实际上并不在文档中生成</li>
+<li>前者单冒号，后者双冒号</li>
+</ul>
+<h1 id="40-请用css写一个简单的幻灯片效果页面">40. 请用CSS写一个简单的幻灯片效果页面</h1>
+<blockquote>
+<p>知道是要用<code>CSS3</code>。使用<code>animation</code>动画实现一个简单的幻灯片效果</p>
+</blockquote>
+<pre><code class="language-css">/**css**/
+.ani{
+  width:480px;
+  height:320px;
+  margin:50px auto;
+  overflow: hidden;
+  box-shadow:0 0 5px rgba(0,0,0,1);
+  background-size: cover;
+  background-position: center;
+  animation-name: loops;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+}
+@keyframes loops {
+    0% {
+       background:url(url) no-repeat;           
+    } 
+    25% {
+       background:url(url) no-repeat;
+    }
+    50% {
+       background:url(url) no-repeat;
+    }
+    75% {
+       background:url(url) no-repeat;
+    }
+    100% {
+        background:url(url) no-repeat;
+    }
+}
+</code></pre>
+<h1 id="41-什么是外边距重叠重叠的结果是什么">41. 什么是外边距重叠？重叠的结果是什么？</h1>
+<blockquote>
+<p>外边距重叠就是margin-collapse</p>
+</blockquote>
+<ul>
+<li>在CSS当中，相邻的两个盒子（可能是兄弟关系也可能是祖先关系）的外边距可以结合成一个单独的外边距。这种合并外边距的方式被称为折叠，并且因而所结合成的外边距称为折叠外边距。</li>
+</ul>
+<p><strong>折叠规则</strong></p>
+<ul>
+<li>两个或多个毗邻的普通流中的块元素垂直方向上的<code>margin</code>会折叠</li>
+<li>浮动元素或<code>inline-block</code>元素或绝对定位元素的<code>margin</code>不会和垂直方向上的其他元素的margin折叠</li>
+<li>创建了块级格式化上下文的元素，不会和它的子元素发生margin折叠</li>
+<li>元素自身的<code>margin-bottom</code>和<code>margin-top</code>相邻时也会折</li>
+</ul>
+<p><strong>折叠结果遵循下列计算规则</strong>：</p>
+<ul>
+<li>两个相邻的外边距都是正数时，折叠结果是它们两者之间较大的值。</li>
+<li>两个相邻的外边距都是负数时，折叠结果是两者绝对值的较大值。</li>
+<li>两个外边距一正一负时，折叠结果是两者的相加的和。</li>
+</ul>
+<h1 id="41-rgba和opacity的透明效果有什么不同">41. rgba()和opacity的透明效果有什么不同？</h1>
+<ul>
+<li><code>rgba()</code>和<code>opacity</code>都能实现透明效果，但最大的不同是<code>opacity</code>作用于元素，以及元素内的所有内容的透明度，</li>
+<li>而<code>rgba()</code>只作用于元素自身的颜色或其背景色。（设置<code>rgba</code>透明的元素的子元素不会继承透明效果！）</li>
+</ul>
+<h1 id="42-css中可以让文字在垂直和水平方向上重叠的两个属性是什么">42. css中可以让文字在垂直和水平方向上重叠的两个属性是什么？</h1>
+<ul>
+<li>垂直方向：<code>line-height</code></li>
+<li>水平方向：<code>letter-spacing</code></li>
+</ul>
+<h1 id="43-px和em的区别">43. px和em的区别</h1>
+<ul>
+<li><code>px</code>和<code>em</code>都是长度单位，区别是，<code>px</code>的值是固定的，指定是多少就是多少，计算比较容易。<code>em</code>得值不是固定的，并且<code>em</code>会继承父级元素的字体大小。</li>
+<li>浏览器的默认字体高都是<code>16px</code>。所以未经调整的浏览器都符合: <code>1em=16px</code>。那么<code>12px=0.75em</code>, <code>10px=0.625em</code>。</li>
+</ul>
+<blockquote>
+<ul>
+<li>px 相对于显示器屏幕分辨率，无法用浏览器字体放大功能</li>
+<li>em 值并不是固定的，会继承父级的字体大小： em = 像素值 / 父级font-size</li>
+</ul>
+</blockquote>
+<h1 id="44-sass-less是什么大家为什么要使用他们">44. Sass、LESS是什么？大家为什么要使用他们？</h1>
+<ul>
+<li>他们是<code>CSS</code>预处理器。他是<code>CSS</code>上的一种抽象层。他们是一种特殊的语法/语言编译成<code>CSS</code>。</li>
+<li>例如Less是一种动态样式语言. 将CSS赋予了动态语言的特性，如变量，继承，运算， 函数. <code>LESS</code> 既可以在客户端上运行 (支持<code>IE 6+</code>, <code>Webkit</code>, <code>Firefox</code>)，也可一在服务端运行 (借助 <code>Node.js</code>)</li>
+</ul>
+<p><strong>为什么要使用它们？</strong></p>
+<ul>
+<li>结构清晰，便于扩展。</li>
+<li>可以方便地屏蔽浏览器私有语法差异。这个不用多说，封装对- 浏览器语法差异的重复处理，减少无意义的机械劳动。</li>
+<li>可以轻松实现多重继承。</li>
+<li>完全兼容 CSS 代码，可以方便地应用到老项目中。LESS 只- 是在 CSS 语法上做了扩展，所以老的 CSS 代码也可以与 LESS 代码一同编译</li>
+</ul>
+<h1 id="45-知道css有个content属性吗有什么作用有什么应用">45. 知道css有个content属性吗？有什么作用？有什么应用？</h1>
+<blockquote>
+<p>css的<code>content</code>属性专门应用在 <code>before/after</code>伪元素上，用于来插入生成内容。最常见的应用是利用伪类清除浮动。</p>
+</blockquote>
+<pre><code class="language-css">/**一种常见利用伪类清除浮动的代码**/
+.clearfix:after {
+    content:&quot;.&quot;;       //这里利用到了content属性
+    display:block;
+    height:0;
+    visibility:hidden;
+    clear:both; 
+ }
+.clearfix {
+    *zoom:1;
+}
+</code></pre>
+<h1 id="46-水平居中的方法">46. 水平居中的方法</h1>
+<ul>
+<li>元素为行内元素，设置父元素<code>text-align:center</code></li>
+<li>如果元素宽度固定，可以设置左右<code>margin</code>为<code>auto</code>;</li>
+<li>绝对定位和移动: <code>absolute + transform</code></li>
+<li>使用<code>flex-box</code>布局，指定<code>justify-content</code>属性为center</li>
+<li><code>display</code>设置为<code>tabel-ceil</code></li>
+</ul>
+<h1 id="47-垂直居中的方法">47. 垂直居中的方法</h1>
+<ul>
+<li>
+<p>将显示方式设置为表格，<code>display:table-cell</code>,同时设置<code>vertial-align：middle</code></p>
+</li>
+<li>
+<p>使用<code>flex</code>布局，设置为<code>align-item：center</code></p>
+</li>
+<li>
+<p>绝对定位中设置<code>bottom:0,top:0</code>,并设置<code>margin:auto</code></p>
+</li>
+<li>
+<p>绝对定位中固定高度时设置<code>top:50%，margin-top</code>值为高度一半的负值</p>
+</li>
+<li>
+<p>文本垂直居中设置<code>line-height</code>为<code>height</code>值</p>
+</li>
+<li>
+<p>如果是单行文本, line-height 设置成和 height 值</p>
+</li>
+</ul>
+<pre><code class="language-css">.vertical {
+    height: 100px;
+    line-height: 100px;
+  }
+</code></pre>
+<ul>
+<li>已知高度的块级子元素，采用绝对定位和负边距</li>
+</ul>
+<pre><code class="language-css">.container {
+  position: relative;
+}
+.vertical {
+  height: 300px;  /*子元素高度*/
+  position: absolute;
+  top:50%;  /*父元素高度50%*/
+  margin-top: -150px; /*自身高度一半*/
+}
+</code></pre>
+<ul>
+<li>未知高度的块级父子元素居中，模拟表格布局</li>
+<li>缺点：IE67不兼容，父级 overflow：hidden 失效</li>
+</ul>
+<pre><code class="language-css">.container {
+    display: table;
+  }
+  .content {
+    display: table-cell;
+    vertical-align: middle;
+  }
+</code></pre>
+<ul>
+<li>新增 inline-block 兄弟元素，设置 vertical-align
+<ul>
+<li>缺点：需要增加额外标签，IE67不兼容</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-css">.container {
+  height: 100%;/*定义父级高度，作为参考*/
+}
+.extra .vertical{
+  display: inline-block;  /*行内块显示*/
+  vertical-align: middle; /*垂直居中*/
+}
+.extra {
+  height: 100%; /*设置新增元素高度为100%*/
+}
+</code></pre>
+<ul>
+<li>绝对定位配合 CSS3 位移</li>
+</ul>
+<pre><code class="language-css">.vertical {
+  position: absolute;
+  top:50%;  /*父元素高度50%*/
+  transform:translateY(-50%, -50%);
+}
+</code></pre>
+<ul>
+<li>CSS3弹性盒模型</li>
+</ul>
+<pre><code class="language-css">.container {
+  display:flex;
+  justify-content: center; /*子元素水平居中*/
+  align-items: center; /*子元素垂直居中*/
+}
+</code></pre>
+<h1 id="48-如何使用css实现硬件加速">48. 如何使用CSS实现硬件加速？</h1>
+<blockquote>
+<p>硬件加速是指通过创建独立的复合图层，让GPU来渲染这个图层，从而提高性能，</p>
+</blockquote>
+<ul>
+<li>一般触发硬件加速的<code>CSS</code>属性有<code>transform</code>、<code>opacity</code>、<code>filter</code>，为了避免2D动画在开始和结束的时候的<code>repaint</code>操作，一般使用<code>tranform:translateZ(0）</code></li>
+</ul>
+<h1 id="49-重绘和回流重排是什么如何避免">49. 重绘和回流（重排）是什么，如何避免？</h1>
+<ul>
+<li>重绘：当渲染树中的元素外观（如：颜色）发生改变，不影响布局时，产生重绘</li>
+<li>回流：当渲染树中的元素的布局（如：尺寸、位置、隐藏/状态状态）发生改变时，产生重绘回流</li>
+<li>注意：JS获取Layout属性值（如：<code>offsetLeft</code>、<code>scrollTop</code>、<code>getComputedStyle</code>等）也会引起回流。因为浏览器需要通过回流计算最新值</li>
+<li>回流必将引起重绘，而重绘不一定会引起回流</li>
+</ul>
+<p><strong>如何最小化重绘(repaint)和回流(reflow)</strong>：</p>
+<ul>
+<li>需要要对元素进行复杂的操作时，可以先隐藏(<code>display:&quot;none&quot;</code>)，操作完成后再显示</li>
+<li>需要创建多个<code>DOM</code>节点时，使用<code>DocumentFragment</code>创建完后一次性的加入<code>document</code></li>
+<li>缓存<code>Layout</code>属性值，如：<code>var left = elem.offsetLeft;</code> 这样，多次使用 <code>left</code> 只产生一次回流</li>
+<li>尽量避免用<code>table</code>布局（<code>table</code>元素一旦触发回流就会导致table里所有的其它元素回流）</li>
+<li>避免使用<code>css</code>表达式(<code>expression</code>)，因为每次调用都会重新计算值（包括加载页面）</li>
+<li>尽量使用 <code>css</code> 属性简写，如：用 <code>border</code> 代替 <code>border-width</code>, <code>border-style</code>, <code>border-color</code></li>
+<li>批量修改元素样式：<code>elem.className</code> 和 <code>elem.style.cssText</code> 代替 <code>elem.style.xxx</code></li>
+</ul>
+<h1 id="50-说一说css3的animation">50. 说一说css3的animation</h1>
+<ul>
+<li>css3的<code>animation</code>是css3新增的动画属性，这个css3动画的每一帧是通过<code>@keyframes</code>来声明的，<code>keyframes</code>声明了动画的名称，通过<code>from</code>、<code>to</code>或者是百分比来定义</li>
+<li>每一帧动画元素的状态，通过<code>animation-name</code>来引用这个动画，同时css3动画也可以定义动画运行的时长、动画开始时间、动画播放方向、动画循环次数、动画播放的方式，</li>
+<li>这些相关的动画子属性有：<code>animation-name</code>定义动画名、<code>animation-duration</code>定义动画播放的时长、<code>animation-delay</code>定义动画延迟播放的时间、<code>animation-direction</code>定义 动画的播放方向、<code>animation-iteration-count</code>定义播放次数、<code>animation-fill-mode</code>定义动画播放之后的状态、<code>animation-play-state</code>定义播放状态，如暂停运行等、<code>animation-timing-function</code></li>
+<li>定义播放的方式，如恒速播放、艰涩播放等。</li>
+</ul>
+<h1 id="51-左边宽度固定右边自适应">51. 左边宽度固定，右边自适应</h1>
+<blockquote>
+<p>左侧固定宽度，右侧自适应宽度的两列布局实现</p>
+</blockquote>
+<p>html结构</p>
+<pre><code class="language-html">&lt;div class=&quot;outer&quot;&gt;
+    &lt;div class=&quot;left&quot;&gt;固定宽度&lt;/div&gt;
+    &lt;div class=&quot;right&quot;&gt;自适应宽度&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<blockquote>
+<p>在外层<code>div</code>（类名为<code>outer</code>）的<code>div</code>中，有两个子<code>div</code>，类名分别为<code>left</code>和<code>right</code>，其中<code>left</code>为固定宽度，而<code>right</code>为自适应宽度</p>
+</blockquote>
+<p><strong>方法1：左侧div设置成浮动：float: left，右侧div宽度会自拉升适应</strong></p>
+<pre><code class="language-css">.outer {
+    width: 100%;
+    height: 500px;
+    background-color: yellow;
+}
+.left {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+    float: left;
+}
+.right {
+    height: 200px;
+    background-color: blue;
+}
+</code></pre>
+<p><strong>方法2：对右侧:div进行绝对定位，然后再设置right=0，即可以实现宽度自适应</strong></p>
+<blockquote>
+<p>绝对定位元素的第一个高级特性就是其具有自动伸缩的功能，当我们将 <code>width</code>设置为 <code>auto</code> 的时候（或者不设置，默认为 <code>auto</code> ），绝对定位元素会根据其 <code>left</code> 和 <code>right</code> 自动伸缩其大小</p>
+</blockquote>
+<pre><code class="language-css">.outer {
+    width: 100%;
+    height: 500px;
+    background-color: yellow;
+    position: relative;
+}
+.left {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+}
+.right {
+    height: 200px;
+    background-color: blue;
+    position: absolute;
+    left: 200px;
+    top:0;          
+    right: 0;
+}
+</code></pre>
+<p><strong>方法3：将左侧<code>div</code>进行绝对定位，然后右侧<code>div</code>设置<code>margin-left: 200px</code></strong></p>
+<pre><code class="language-css">.outer {
+    width: 100%;
+    height: 500px;
+    background-color: yellow;
+    position: relative;
+}
+.left {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+    position: absolute;
+}
+.right {
+    height: 200px;
+    background-color: blue;
+    margin-left: 200px;
+}
+</code></pre>
+<p><strong>方法4：使用flex布局</strong></p>
+<pre><code class="language-css">.outer {
+    width: 100%;
+    height: 500px;
+    background-color: yellow;
+    display: flex;
+    flex-direction: row;
+}
+.left {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+}
+.right {
+    height: 200px;
+    background-color: blue;
+    flex: 1;
+}
+</code></pre>
+<h1 id="52-如何实现小于12px的字体效果">52. 如何实现小于12px的字体效果</h1>
+<blockquote>
+<p><code>transform:scale()</code>这个属性只可以缩放可以定义宽高的元素，而行内元素是没有宽高的，我们可以加上一个<code>display:inline-block</code>;</p>
+</blockquote>
+<pre><code class="language-text">transform: scale(0.7);
+</code></pre>
+<p><code>css</code>的属性，可以缩放大小</p>
+<h1 id="53-css-hack原理及常用hack">53. CSS hack原理及常用hack</h1>
+<ul>
+<li>原理：利用不同浏览器对CSS的支持和解析结果不一样编写针对特定浏览器样式。</li>
+<li>常见的hack有
+<ul>
+<li>属性hack</li>
+<li>选择器hack</li>
+<li>IE条件注释</li>
+</ul>
+</li>
+</ul>
+<h1 id="54-css有哪些继承属性">54. CSS有哪些继承属性</h1>
+<ul>
+<li>关于文字排版的属性如：
+<ul>
+<li><code>font</code>
+<ul>
+<li><code>word-break</code></li>
+<li><code>letter-spacing</code></li>
+<li><code>text-align</code></li>
+<li><code>text-rendering</code></li>
+<li><code>word-spacing</code></li>
+<li><code>white-space</code></li>
+<li><code>text-indent</code></li>
+<li><code>text-transform</code></li>
+<li><code>text-shadow</code></li>
+</ul>
+</li>
+<li><code>line-height</code></li>
+<li><code>color</code></li>
+<li><code>visibility</code></li>
+<li><code>cursor</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="55-css3新增伪类有那些">55. CSS3新增伪类有那些</h1>
+<ul>
+<li><code>:root</code> 选择文档的根元素，等同于 html 元素</li>
+<li><code>:empty</code> 选择没有子元素的元素</li>
+<li><code>:target</code> 选取当前活动的目标元素</li>
+<li><code>:not(selector)</code> 选择除 <code>selector</code> 元素意外的元素</li>
+<li><code>:enabled</code> 选择可用的表单元素</li>
+<li><code>:disabled</code> 选择禁用的表单元素</li>
+<li><code>:checked</code> 选择被选中的表单元素</li>
+<li><code>:after</code> 在元素内部最前添加内容</li>
+<li><code>:before</code> 在元素内部最后添加内容</li>
+<li><code>:nth-child(n)</code> 匹配父元素下指定子元素，在所有子元素中排序第n</li>
+<li><code>:nth-last-child(n)</code> 匹配父元素下指定子元素，在所有子元素中排序第n，从后向前数</li>
+<li><code>:nth-child(odd)</code></li>
+<li><code>:nth-child(even)</code></li>
+<li><code>:nth-child(3n+1)</code></li>
+<li><code>:first-child</code></li>
+<li><code>:last-child</code></li>
+<li><code>:only-child</code></li>
+<li><code>:nth-of-type(n)</code> 匹配父元素下指定子元素，在同类子元素中排序第n</li>
+<li><code>:nth-last-of-type(n)</code> 匹配父元素下指定子元素，在同类子元素中排序第n，从后向前数</li>
+<li><code>:nth-of-type(odd)</code></li>
+<li><code>:nth-of-type(even)</code></li>
+<li><code>:nth-of-type(3n+1)</code></li>
+<li><code>:first-of-type</code></li>
+<li><code>:last-of-type</code></li>
+<li><code>:only-of-type</code></li>
+<li><code>::selection</code> 选择被用户选取的元素部分</li>
+<li><code>:first-line</code> 选择元素中的第一行</li>
+<li><code>:first-letter</code> 选择元素中的第一个字符</li>
+</ul>
+<h1 id="56-满屏-品-字布局-如何设计">56. 满屏 品 字布局 如何设计</h1>
+<ul>
+<li>简单的方式：
+<ul>
+<li>上面的<code>div</code>宽<code>100%</code>，</li>
+<li>下面的两个<code>div</code>分别宽<code>50%</code>，</li>
+<li>然后用<code>float</code>或者<code>inline</code>使其不换行即可</li>
+</ul>
+</li>
+</ul>
+<h1 id="57-li与li之间有看不见的空白间隔是什么原因引起的有什么解决办法">57. li与li之间有看不见的空白间隔是什么原因引起的？有什么解决办法</h1>
+<blockquote>
+<p>行框的排列会受到中间空白（回车\空格）等的影响，因为空格也属于字符,这些空白也会被应用样式，占据空间，所以会有间隔，把字符大小设为0，就没有空格了</p>
+</blockquote>
+<p>为父元素中设置<code>font-size: 0</code>，在子元素上重置正确的<code>font-size</code></p>
+<h1 id="58-请列举几种隐藏元素的方法">58. 请列举几种隐藏元素的方法</h1>
+<ul>
+<li><code>visibility: hidden;</code> 这个属性只是简单的隐藏某个元素，但是元素占用的空间任然存在</li>
+<li><code>opacity: 0;</code> <code>CSS3</code>属性，设置<code>0</code>可以使一个元素完全透明</li>
+<li><code>position: absolute;</code> 设置一个很大的 <code>left</code> 负值定位，使元素定位在可见区域之外</li>
+<li><code>display: none;</code> 元素会变得不可见，并且不会再占用文档的空间。</li>
+<li><code>transform: scale(0);</code> 将一个元素设置为缩放无限小，元素将不可见，元素原来所在的位置将被保留</li>
+<li><code>&lt;div hidden=&quot;hidden&quot;&gt;</code> HTML5属性,效果和<code>display:none;</code>相同，但这个属性用于记录一个元素的状态</li>
+<li><code>height: 0;</code> 将元素高度设为 <code>0</code> ，并消除边框</li>
+<li><code>filter: blur(0);</code> CSS3属性，将一个元素的模糊度设置为<code>0</code>，从而使这个元素“消失”在页面中</li>
+</ul>
+<h1 id="59-请写出多种等高布局">59. 请写出多种等高布局</h1>
+<ul>
+<li>在列的父元素上使用这个背景图进行Y轴的铺放，从而实现一种等高列的假像</li>
+<li>模仿表格布局等高列效果：兼容性不好，在ie6-7无法正常运行</li>
+<li>css3 flexbox 布局： .container{display: flex; align-items: stretch;}</li>
+</ul>
+<h1 id="60-浮动元素引起的问题">60. 浮动元素引起的问题</h1>
+<ul>
+<li>父元素的高度无法被撑开，影响与父元素同级的元素</li>
+<li>与浮动元素同级的非浮动元素会跟随其后</li>
+</ul>
+<h1 id="61-抽离样式模块怎么写说出思路">61. 抽离样式模块怎么写，说出思路</h1>
+<ul>
+<li>CSS可以拆分成2部分：公共CSS 和 业务CSS：
+<ul>
+<li>网站的配色，字体，交互提取出为公共CSS。这部分CSS命名不应涉及具体的业务</li>
+<li>对于业务CSS，需要有统一的命名，使用公用的前缀。可以参考面向对象的CSS</li>
+</ul>
+</li>
+</ul>
+<h1 id="62-什么是视差滚动效果如何给每页做不同的动画">62. 什么是视差滚动效果，如何给每页做不同的动画</h1>
+<ul>
+<li>视差滚动是指多层背景以不同的速度移动，形成立体的运动效果，具有非常出色的视觉体验</li>
+<li>一般把网页解剖为：背景层、内容层和悬浮层。当滚动鼠标滚轮时，各图层以不同速度移动，形成视差的</li>
+<li>实现原理
+<ul>
+<li>以 “页面滚动条” 作为 “视差动画进度条”</li>
+<li>以 “滚轮刻度” 当作 “动画帧度” 去播放动画的</li>
+<li>监听 mousewheel 事件，事件被触发即播放动画，实现“翻页”效果</li>
+</ul>
+</li>
+</ul>
+<h1 id="63-a标签上四个伪类的执行顺序是怎么样的">63. a标签上四个伪类的执行顺序是怎么样的</h1>
+<blockquote>
+<pre><code>link &gt; visited &gt; hover &gt; active
+</code></pre>
+</blockquote>
+<ul>
+<li><code>L-V-H-A</code> <code>love hate</code> 用喜欢和讨厌两个词来方便记忆</li>
+</ul>
+<h1 id="64-如何修改chrome记住密码后自动填充表单的黄色背景">64. 如何修改Chrome记住密码后自动填充表单的黄色背景</h1>
+<ul>
+<li>产生原因：由于Chrome默认会给自动填充的input表单加上 <code>input:-webkit-autofill</code> 私有属性造成的</li>
+<li>解决方案1：在form标签上直接关闭了表单的自动填充：<code>autocomplete=&quot;off&quot;</code></li>
+<li>解决方案2：<code>input:-webkit-autofill { background-color: transparent; }</code></li>
+</ul>
+<p><strong>input [type=search] 搜索框右侧小图标如何美化？</strong></p>
+<pre><code class="language-css">input[type=&quot;search&quot;]::-webkit-search-cancel-button{
+  -webkit-appearance: none;
+  height: 15px;
+  width: 15px;
+  border-radius: 8px;
+  background:url(&quot;images/searchicon.png&quot;) no-repeat 0 0;
+  background-size: 15px 15px;
+}
+</code></pre>
+<h1 id="65-网站图片文件如何点击下载">65. 网站图片文件，如何点击下载？</h1>
+<p><code>&lt;a href=&quot;logo.jpg&quot; download&gt;下载&lt;/a&gt;</code>   <code>&lt;a href=&quot;logo.jpg&quot; download=&quot;网站LOGO&quot; &gt;下载&lt;/a&gt;</code></p>
+<h1 id="66-line-height的理解">66. line-height的理解</h1>
+<ul>
+<li><code>line-height</code> 指一行字的高度，包含了字间距，实际上是下一行基线到上一行基线距离</li>
+<li>如果一个标签没有定义 <code>height</code> 属性，那么其最终表现的高度是由 <code>line-height</code> 决定的</li>
+<li>一个容器没有设置高度，那么撑开容器高度的是 <code>line-height</code> 而不是容器内的文字内容</li>
+<li>把 <code>line-height</code> 值设置为 <code>height</code> 一样大小的值可以实现单行文字的垂直居中</li>
+<li><code>line-height</code> 和 <code>height</code> 都能撑开一个高度，<code>height</code> 会触发 <code>haslayout</code>，而 <code>line-height</code> 不会</li>
+</ul>
+<h1 id="67-line-height-三种赋值方式有何区别带单位-纯数字-百分比">67. line-height 三种赋值方式有何区别？（带单位、纯数字、百分比）</h1>
+<ul>
+<li>带单位：<code>px</code> 是固定值，而 <code>em</code> 会参考父元素 ,<code>font-size</code> 值计算自身的行高</li>
+<li>纯数字：会把比例传递给后代。例如，父级行高为 <code>1.5</code>，子元素字体为 <code>18px</code>，则子元素行高为 <code>1.5 * 18 = 27px</code></li>
+<li>百分比：将计算后的值传递给后代</li>
+</ul>
+<h1 id="68-设置元素浮动后该元素的-display-值会如何变化">68. 设置元素浮动后，该元素的 display 值会如何变化</h1>
+<blockquote>
+<p>设置元素浮动后，该元素的 <code>display</code> 值自动变成 <code>block</code></p>
+</blockquote>
+<h1 id="69-让页面里的字体变清晰变细用css怎么做">69. 让页面里的字体变清晰，变细用CSS怎么做？</h1>
+<pre><code class="language-css">  -webkit-font-smoothing: antialiased;
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[浏览器相关问题汇总]]></title>
+        <id>https://font-ds.github.io/post/liu-lan-qi-xiang-guan-wen-ti-hui-zong/</id>
+        <link href="https://font-ds.github.io/post/liu-lan-qi-xiang-guan-wen-ti-hui-zong/">
+        </link>
+        <updated>2022-03-24T04:47:50.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="1-浏览器地址栏输入url到显示页面的步骤">1. 浏览器地址栏输入<code>url</code>到显示页面的步骤</h1>
+<p><strong>基础版本</strong></p>
+<ul>
+<li>浏览器根据请求的<code>URL</code>交给<code>DNS</code>域名解析，找到真实<code>IP</code>，向服务器发起请求；</li>
+<li>服务器交给后台处理完成后返回数据，浏览器接收文件（<code>HTML、JS、CSS</code>、图象等）；</li>
+<li>浏览器对加载到的资源（<code>HTML、JS、CSS</code>等）进行语法解析，建立相应的内部数据结构（如<code>HTML</code>的<code>DOM</code>）；</li>
+<li>载入解析到的资源文件，渲染页面，完成。</li>
+</ul>
+<p><strong>详细版</strong></p>
+<ol>
+<li>
+<p>在浏览器地址栏输入URL</p>
+</li>
+<li>
+<p>浏览器查看</p>
+<p>缓存</p>
+<p>，如果请求资源在缓存中并且新鲜，跳转到转码步骤</p>
+<ol>
+<li>如果资源未缓存，发起新请求</li>
+<li>如果已缓存，检验是否足够新鲜，足够新鲜直接提供给客户端，否则与服务器进行验证。</li>
+<li>检验新鲜通常有两个HTTP头进行控制 <code>Expires</code> 和 <code>Cache-Control</code>
+<ul>
+<li>HTTP1.0提供Expires，值为一个绝对时间表示缓存新鲜日期</li>
+<li>HTTP1.1增加了Cache-Control: max-age=,值为以秒为单位的最大新鲜时间</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>浏览器<strong>解析URL</strong>获取协议，主机，端口，path</p>
+</li>
+<li>
+<p>浏览器<strong>组装一个HTTP（GET）请求报文</strong></p>
+</li>
+<li>
+<p>浏览器</p>
+<p>获取主机ip地址</p>
+<p>，过程如下：</p>
+<ol>
+<li>浏览器缓存</li>
+<li>本机缓存</li>
+<li>hosts文件</li>
+<li>路由器缓存</li>
+<li>ISP DNS缓存</li>
+<li>DNS递归查询（可能存在负载均衡导致每次IP不一样）</li>
+</ol>
+</li>
+<li>
+<p>打开一个socket与目标IP地址，端口建立TCP链接</p>
+<p>，三次握手如下：</p>
+<ol>
+<li>客户端发送一个TCP的<strong>SYN=1，Seq=X</strong>的包到服务器端口</li>
+<li>服务器发回<strong>SYN=1， ACK=X+1， Seq=Y</strong>的响应包</li>
+<li>客户端发送<strong>ACK=Y+1， Seq=Z</strong></li>
+</ol>
+</li>
+<li>
+<p>TCP链接建立后<strong>发送HTTP请求</strong></p>
+</li>
+<li>
+<p>服务器接受请求并解析，将请求转发到服务程序，如虚拟主机使用HTTP Host头部判断请求的服务程序</p>
+</li>
+<li>
+<p>服务器检查<strong>HTTP请求头是否包含缓存验证信息</strong>如果验证缓存新鲜，返回<strong>304</strong>等对应状态码</p>
+</li>
+<li>
+<p>处理程序读取完整请求并准备HTTP响应，可能需要查询数据库等操作</p>
+</li>
+<li>
+<p>服务器将<strong>响应报文通过TCP连接发送回浏览器</strong></p>
+</li>
+<li>
+<p>浏览器接收HTTP响应，然后根据情况选择</p>
+<p>关闭TCP连接或者保留重用，关闭TCP连接的四次握手如下</p>
+<ol>
+<li>主动方发送<strong>Fin=1， Ack=Z， Seq= X</strong>报文</li>
+<li>被动方发送<strong>ACK=X+1， Seq=Z</strong>报文</li>
+<li>被动方发送<strong>Fin=1， ACK=X， Seq=Y</strong>报文</li>
+<li>主动方发送<strong>ACK=Y， Seq=X</strong>报文</li>
+</ol>
+</li>
+<li>
+<p>浏览器检查响应状态吗：是否为1XX，3XX， 4XX， 5XX，这些情况处理与2XX不同</p>
+</li>
+<li>
+<p>如果资源可缓存，<strong>进行缓存</strong></p>
+</li>
+<li>
+<p>对响应进行<strong>解码</strong>（例如gzip压缩）</p>
+</li>
+<li>
+<p>根据资源类型决定如何处理（假设资源为HTML文档）</p>
+</li>
+<li>
+<p><strong>解析HTML文档，构件DOM树，下载资源，构造CSSOM树，执行js脚本</strong>，这些操作没有严格的先后顺序，以下分别解释</p>
+</li>
+<li>
+<p>构建DOM树</p>
+<ol>
+<li><strong>Tokenizing</strong>：根据HTML规范将字符流解析为标记</li>
+<li><strong>Lexing</strong>：词法分析将标记转换为对象并定义属性和规则</li>
+<li><strong>DOM construction</strong>：根据HTML标记关系将对象组成DOM树</li>
+</ol>
+</li>
+<li>
+<p>解析过程中遇到图片、样式表、js文件，<strong>启动下载</strong></p>
+</li>
+<li>
+<p>构建</p>
+<p>CSSOM树</p>
+<ol>
+<li><strong>Tokenizing</strong>：字符流转换为标记流</li>
+<li><strong>Node</strong>：根据标记创建节点</li>
+<li><strong>CSSOM</strong>：节点创建CSSOM树</li>
+</ol>
+</li>
+<li>
+<p><a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction">根据DOM树和CSSOM树构建渲染树 (opens new window)</a></p>
+<ol>
+<li>从DOM树的根节点遍历所有<strong>可见节点</strong>，不可见节点包括：1）<code>script</code>,<code>meta</code>这样本身不可见的标签。2)被css隐藏的节点，如<code>display: none</code></li>
+<li>对每一个可见节点，找到恰当的CSSOM规则并应用</li>
+<li>发布可视节点的内容和计算样式</li>
+</ol>
+</li>
+<li>
+<p>js解析如下</p>
+<ol>
+<li>浏览器创建Document对象并解析HTML，将解析到的元素和文本节点添加到文档中，此时<strong>document.readystate为loading</strong></li>
+<li>HTML解析器遇到<strong>没有async和defer的script时</strong>，将他们添加到文档中，然后执行行内或外部脚本。这些脚本会同步执行，并且在脚本下载和执行时解析器会暂停。这样就可以用document.write()把文本插入到输入流中。<strong>同步脚本经常简单定义函数和注册事件处理程序，他们可以遍历和操作script和他们之前的文档内容</strong></li>
+<li>当解析器遇到设置了<strong>async</strong>属性的script时，开始下载脚本并继续解析文档。脚本会在它<strong>下载完成后尽快执行</strong>，但是<strong>解析器不会停下来等它下载</strong>。异步脚本<strong>禁止使用document.write()</strong>，它们可以访问自己script和之前的文档元素</li>
+<li>当文档完成解析，document.readState变成interactive</li>
+<li>所有<strong>defer</strong>脚本会<strong>按照在文档出现的顺序执行</strong>，延迟脚本<strong>能访问完整文档树</strong>，禁止使用document.write()</li>
+<li>浏览器<strong>在Document对象上触发DOMContentLoaded事件</strong></li>
+<li>此时文档完全解析完成，浏览器可能还在等待如图片等内容加载，等这些<strong>内容完成载入并且所有异步脚本完成载入和执行</strong>，document.readState变为complete，window触发load事件</li>
+</ol>
+</li>
+<li>
+<p><strong>显示页面</strong>（HTML解析过程中会逐步显示页面）</p>
+</li>
+</ol>
+<p><strong>详细简版</strong></p>
+<ol>
+<li>从浏览器接收<code>url</code>到开启网络请求线程（这一部分可以展开浏览器的机制以及进程与线程之间的关系）</li>
+<li>开启网络线程到发出一个完整的<code>HTTP</code>请求（这一部分涉及到dns查询，<code>TCP/IP</code>请求，五层因特网协议栈等知识）</li>
+<li>从服务器接收到请求到对应后台接收到请求（这一部分可能涉及到负载均衡，安全拦截以及后台内部的处理等等）</li>
+<li>后台和前台的<code>HTTP</code>交互（这一部分包括<code>HTTP</code>头部、响应码、报文结构、<code>cookie</code>等知识，可以提下静态资源的<code>cookie</code>优化，以及编码解码，如<code>gzip</code>压缩等）</li>
+<li>单独拎出来的缓存问题，<code>HTTP</code>的缓存（这部分包括http缓存头部，<code>ETag</code>，<code>catch-control</code>等）</li>
+<li>浏览器接收到<code>HTTP</code>数据包后的解析流程（解析<code>html</code>-词法分析然后解析成<code>dom</code>树、解析<code>css</code>生成<code>css</code>规则树、合并成<code>render</code>树，然后<code>layout</code>、<code>painting</code>渲染、复合图层的合成、<code>GPU</code>绘制、外链资源的处理、<code>loaded</code>和<code>DOMContentLoaded</code>等）</li>
+<li><code>CSS</code>的可视化格式模型（元素的渲染规则，如包含块，控制框，<code>BFC</code>，<code>IFC</code>等概念）</li>
+<li><code>JS</code>引擎解析过程（<code>JS</code>的解释阶段，预处理阶段，执行阶段生成执行上下文，<code>VO</code>，作用域链、回收机制等等）</li>
+<li>其它（可以拓展不同的知识模块，如跨域，web安全，<code>hybrid</code>模式等等内容）</li>
+</ol>
+<h1 id="2-浏览器内核的理解">2. 浏览器内核的理解</h1>
+<ul>
+<li>主要分成两部分：渲染引擎(<code>layout engineer</code>或<code>Rendering Engine</code>)和<code>JS</code>引擎</li>
+<li>渲染引擎：负责取得网页的内容（<code>HTML</code>、<code>XML</code>、图像等等）、整理讯息（例如加入<code>CSS</code>等），以及计算网页的显示方式，然后会输出至显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。所有网页浏览器、电子邮件客户端以及其它需要编辑、显示网络内容的应用程序都需要内核</li>
+<li><code>JS</code>引擎则：解析和执行<code>javascript</code>来实现网页的动态效果</li>
+<li>最开始渲染引擎和<code>JS</code>引擎并没有区分的很明确，后来JS引擎越来越独立，内核就倾向于只指渲染引擎</li>
+</ul>
+<h1 id="3-常见的浏览器内核">3. 常见的浏览器内核</h1>
+<ul>
+<li><code>Trident</code>内核：<code>IE,MaxThon,TT,The World,360</code>,搜狗浏览器等。[又称MSHTML]</li>
+<li><code>Gecko</code>内核：<code>Netscape6</code>及以上版本，<code>FF,MozillaSuite/SeaMonkey</code>等</li>
+<li><code>Presto</code>内核：<code>Opera7</code>及以上。 [<code>Opera</code>内核原为：Presto，现为：<code>Blink</code>;]</li>
+<li><code>Webkit</code>内核：<code>Safari,Chrome</code>等。 [ <code>Chrome</code>的<code>Blink</code>（<code>WebKit</code>的分支）]</li>
+</ul>
+<h1 id="4-浏览器是怎么对html5的离线储存资源进行管理和加载的">4. 浏览器是怎么对<code>HTML5</code>的离线储存资源进行管理和加载的</h1>
+<ul>
+<li>在线的情况下，浏览器发现<code>html</code>头部有<code>manifest</code>属性，它会请求<code>manifest</code>文件，如果是第一次访问<code>app</code>，那么浏览器就会根据manifest文件的内容下载相应的资源并且进行离线存储。如果已经访问过<code>app</code>并且资源已经离线存储了，那么浏览器就会使用离线的资源加载页面，然后浏览器会对比新的<code>manifest</code>文件与旧的<code>manifest</code>文件，如果文件没有发生改变，就不做任何操作，如果文件改变了，那么就会重新下载文件中的资源并进行离线存储。</li>
+<li>离线的情况下，浏览器就直接使用离线存储的资源。</li>
+</ul>
+<h1 id="5-你做的页面在哪些流览器测试过这些浏览器的内核分别是什么">5. 你做的页面在哪些流览器测试过？这些浏览器的内核分别是什么?</h1>
+<ul>
+<li><code>IE</code>: <code>trident</code>内核</li>
+<li><code>Firefox</code>：<code>gecko</code>内核</li>
+<li><code>Safari</code>:<code>webkit</code>内核</li>
+<li><code>Opera</code>:以前是<code>presto</code>内核，<code>Opera</code>现已改用Google - <code>Chrome</code>的<code>Blink</code>内核</li>
+<li><code>Chrome:Blink</code>(基于<code>webkit</code>，Google与Opera Software共同开发)</li>
+</ul>
+<h1 id="6-你能描述一下渐进增强和优雅降级之间的不同吗">6. 你能描述一下渐进增强和优雅降级之间的不同吗</h1>
+<ul>
+<li>渐进增强：针对低版本浏览器进行构建页面，保证最基本的功能，然后再针对高级浏览器进行效果、交互等改进和追加功能达到更好的用户体验。</li>
+<li>优雅降级：一开始就构建完整的功能，然后再针对低版本浏览器进行兼容。</li>
+</ul>
+<h1 id="7-为什么利用多个域名来存储网站资源会更有效">7. 为什么利用多个域名来存储网站资源会更有效？</h1>
+<ul>
+<li><code>CDN</code>缓存更方便</li>
+<li>突破浏览器并发限制</li>
+<li>节约<code>cookie</code>带宽</li>
+<li>节约主域名的连接数，优化页面响应速度</li>
+<li>防止不必要的安全问题</li>
+</ul>
+<h1 id="8-为什么有同源限制">8. 为什么有同源限制</h1>
+<ul>
+<li>同源策略指的是：协议，域名，端口相同，同源策略是一种安全协议</li>
+<li>举例说明：比如一个黑客程序，他利用<code>Iframe</code>把真正的银行登录页面嵌到他的页面上，当你使用真实的用户名，密码登录时，他的页面就可以通过<code>Javascript</code>读取到你的表单中<code>input</code>中的内容，这样用户名，密码就轻松到手了。</li>
+<li>是为了WEB端的安全考虑</li>
+</ul>
+<h1 id="9-浏览器缓存浏览器缓存分为强缓存和协商缓存-当客户端请求某个资源时获取缓存的流程如下">9. 浏览器缓存浏览器缓存分为强缓存和协商缓存。当客户端请求某个资源时，获取缓存的流程如下</h1>
+<ul>
+<li>先根据这个资源的一些 <code>http header</code> 判断它是否命中强缓存，如果命中，则直接从本地获取缓存资源，不会发请求到服务器；</li>
+<li>当强缓存没有命中时，客户端会发送请求到服务器，服务器通过另一些<code>request header</code>验证这个资源是否命中协商缓存，称为<code>http</code>再验证，如果命中，服务器将请求返回，但不返回资源，而是告诉客户端直接从缓存中获取，客户端收到返回后就会从缓存中获取资源；</li>
+<li>强缓存和协商缓存共同之处在于，如果命中缓存，服务器都不会返回资源； 区别是，强缓存不对发送请求到服务器，但协商缓存会。</li>
+<li>当协商缓存也没命中时，服务器就会将资源发送回客户端。</li>
+<li>当 <code>ctrl+f5</code> 强制刷新网页时，直接从服务器加载，跳过强缓存和协商缓存；</li>
+<li>当 <code>f5</code>刷新网页时，跳过强缓存，但是会检查协商缓存；</li>
+</ul>
+<p><strong>强缓存</strong></p>
+<ul>
+<li>
+<p>对于强缓存，浏览器在第一次请求的时候，会直接下载资源，然后缓存在本地，第二次请求的时候，直接使用缓存。</p>
+</li>
+<li>
+<p><code>Expires</code>（该字段是 <code>http1.0</code> 时的规范，值为一个绝对时间的 <code>GMT</code> 格式的时间字符串，代表缓存资源的过期时间）</p>
+</li>
+<li>
+<p><code>Cache-Control:max-age</code>（该字段是 <code>http1.1</code>的规范，强缓存利用其 <code>max-age</code> 值来判断缓存资源的最大生命周期，它的值单位为秒）</p>
+</li>
+</ul>
+<p><strong>协商缓存</strong></p>
+<ul>
+<li>
+<p>对于协商缓存，第一次请求缓存且保存缓存标识与时间，重复请求向服务器发送缓存标识和最后缓存时间，服务端进行校验，如果失效则使用缓存</p>
+</li>
+<li>
+<p><code>Last-Modified</code>（值为资源最后更新时间，随服务器response返回）</p>
+</li>
+<li>
+<p><code>If-Modified-Since</code>（通过比较两个时间来判断资源在两次请求期间是否有过修改，如果没有修改，则命中协商缓存）</p>
+</li>
+<li>
+<p><code>ETag</code>（表示资源内容的唯一标识，随服务器<code>response</code>返回）</p>
+</li>
+<li>
+<p><code>If-None-Match</code>（服务器通过比较请求头部的<code>If-None-Match</code>与当前资源的<code>ETag</code>是否一致来判断资源是否在两次请求之间有过修改，如果没有修改，则命中协商缓存）</p>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[JavaScript 复习题汇总]]></title>
         <id>https://font-ds.github.io/post/javascript-fu-xi-ti-hui-zong/</id>
@@ -916,6 +2309,934 @@ let isType = function(obj){
 <li>声明创建一个值的只读引用 (即指针)</li>
 <li>基本数据当值发生改变时，那么其对应的指针也将发生改变，故造成 <code>const</code>声明基本数据类型时，再将其值改变时，将会造成报错</li>
 <li>但是如果是复合类型时，如果只改变复合类型的其中某个<code>Value</code>项时， 将还是正常使用</li>
+</ul>
+<h1 id="51-让一个数组乱序">51. 让一个数组乱序</h1>
+<pre><code class="language-js">let arr = [1,2,3,4,5,6,7,8,9,10]
+arr.sort(function(){
+    return Math.random() - 0.5
+})
+console.log(arr)
+</code></pre>
+<h1 id="52-如何显示几万条数据并不卡住页面">52. 如何显示几万条数据并不卡住页面</h1>
+<blockquote>
+<p>这道题考察了如何在不卡住页面的情况下渲染数据，也就是说不能一次性将几万条数据都渲染出来，而应该一次渲染部分 <code>DOM</code> ，那么就可以通过 <code>requestAnimationFrame</code> 来每 <code>16ms</code> 刷新一次</p>
+</blockquote>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+  &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;ul&gt;控件&lt;/ul&gt;
+  &lt;script&gt;
+    setTimeout(() =&gt; {
+      // 插入十万条数据
+      const total = 100000
+      // 一次插入 20 条，如果觉得性能不好就减少
+      const once = 20
+      // 渲染数据总共需要几次
+      const loopCount = total / once
+      let countOfRender = 0
+      let ul = document.querySelector(&quot;ul&quot;);
+      function add() {
+        // 优化性能，插入不会造成回流
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i &lt; once; i++) {
+          const li = document.createElement(&quot;li&quot;);
+          li.innerText = Math.floor(Math.random() * total);
+          fragment.appendChild(li);
+        }
+        ul.appendChild(fragment);
+        countOfRender += 1;
+        loop();
+      }
+      function loop() {
+        if (countOfRender &lt; loopCount) {
+          window.requestAnimationFrame(add);
+        }
+      }
+      loop();
+    }, 0);
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h1 id="53-获取到页面中所有的checkbox怎么做">53. 获取到页面中所有的checkbox怎么做</h1>
+<pre><code class="language-js">let domList = document.getElementsByTagName('input')
+let checkBoxList = []
+let len = domList.length
+while (len--){
+    if(domList[len].type == 'checkbox'){
+        checkBoxList.push(domList[len])
+    }
+}
+</code></pre>
+<h1 id="54-添加-移除-移动-复制-创建和查找节点">54. 添加、移除、移动、复制、创建和查找节点</h1>
+<p><strong>创建新节点</strong></p>
+<pre><code class="language-js">createDocumentFragment()    //创建一个DOM片段
+createElement()   //创建一个具体的元素
+createTextNode()   //创建一个文本节点
+</code></pre>
+<p><strong>添加、移除、替换、插入</strong></p>
+<pre><code class="language-js">appendChild()      //添加
+removeChild()      //移除
+replaceChild()      //替换
+insertBefore()      //插入
+</code></pre>
+<p><strong>查找</strong></p>
+<pre><code class="language-js">getElementsByTagName()    //通过标签名称
+
+getElementsByName()     //通过元素的Name属性的值
+
+getElementById()        //通过元素Id，唯一性
+
+querySelector()
+</code></pre>
+<h1 id="55-正则表达式">55. 正则表达式</h1>
+<blockquote>
+<p>正则表达式构造函数<code>var reg=new RegExp(“xxx”)</code>与正则表达字面量<code>var reg=//</code>有什么不同？匹配邮箱的正则表达式？</p>
+</blockquote>
+<ul>
+<li>当使用<code>RegExp()</code>构造函数的时候，不仅需要转义引号（即<code>\</code>”表示”），并且还需要双反斜杠（即<code>\\</code>表示一个<code>\</code>）。使用正则表达字面量的效率更高</li>
+</ul>
+<p>邮箱的正则匹配：</p>
+<pre><code class="language-js">var regMail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+</code></pre>
+<p>[RegExp详细---廖雪峰](<a href="https://www.liaoxuefeng.com/wiki/1022910821149312/1023021582119488">RegExp - 廖雪峰的官方网站 (liaoxuefeng.com)</a>)</p>
+<p>[RegExp详细---MDN](<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions">正则表达式 - JavaScript | MDN (mozilla.org)</a>)</p>
+<h1 id="56-javascript中callee和caller的作用">56. Javascript中callee和caller的作用？</h1>
+<ul>
+<li><code>caller</code>是返回一个对函数的引用，该函数调用了当前函数；</li>
+<li><code>callee</code>是返回正在被执行的<code>function</code>函数，也就是所指定的<code>function</code>对象的正文</li>
+</ul>
+<blockquote>
+<p>那么问题来了？如果一对兔子每月生一对兔子；一对新生兔，从第二个月起就开始生兔子；假定每对兔子都是一雌一雄，试问一对兔子，第n个月能繁殖成多少对兔子？（使用<code>callee</code>完成）</p>
+</blockquote>
+<pre><code class="language-js">var result=[];
+  function fn(n){  //典型的斐波那契数列
+     if(n==1){
+          return 1;
+     }else if(n==2){
+             return 1;
+     }else{
+          if(result[n]){
+                  return result[n];
+         }else{
+                 //argument.callee()表示fn()
+                 result[n]=arguments.callee(n-1)+arguments.callee(n-2);
+                 return result[n];
+         }
+    }
+ }
+</code></pre>
+<p><strong>caller</strong></p>
+<blockquote>
+<p><code>caller</code>返回一个函数的引用，这个函数调用了当前的函数。</p>
+</blockquote>
+<p><strong>使用这个属性要注意</strong></p>
+<ul>
+<li>这个属性只有当函数在执行时才有用</li>
+<li>如果在<code>javascript</code>程序中，函数是由顶层调用的，则返回<code>null</code></li>
+</ul>
+<blockquote>
+<p><code>functionName.caller: functionName</code>是当前正在执行的函数。</p>
+</blockquote>
+<pre><code class="language-js">function a() {
+  console.log(a.caller)
+}
+</code></pre>
+<p><strong>callee</strong></p>
+<blockquote>
+<p><code>callee</code>放回正在执行的函数本身的引用，它是<code>arguments</code>的一个属性</p>
+</blockquote>
+<blockquote>
+<p>使用callee时要注意:</p>
+</blockquote>
+<ul>
+<li>这个属性只有在函数执行时才有效</li>
+<li>它有一个<code>length</code>属性，可以用来获得形参的个数，因此可以用来比较形参和实参个数是否一致，即比较<code>arguments.length</code>是否等于<code>arguments.callee.length</code></li>
+<li>它可以用来递归匿名函数。</li>
+</ul>
+<pre><code class="language-js">function a() {
+  console.log(arguments.callee)
+}
+</code></pre>
+<h1 id="57-windowonload和documentready">57. window.onload和$(document).ready</h1>
+<blockquote>
+<p>原生<code>JS</code>的<code>window.onload</code>与<code>Jquery</code>的<code>$(document).ready(function(){})</code>有什么不同？如何用原生JS实现Jq的<code>ready</code>方法？</p>
+</blockquote>
+<ul>
+<li><code>window.onload()</code>方法是必须等到页面内包括图片的所有元素加载完毕后才能执行。</li>
+<li><code>$(document).ready()</code>是<code>DOM</code>结构绘制完毕后就执行，不必等到加载完毕</li>
+</ul>
+<pre><code class="language-js">function ready(fn){
+      if(document.addEventListener) {        //标准浏览器
+          document.addEventListener('DOMContentLoaded', function() {
+              //注销事件, 避免反复触发
+              document.removeEventListener('DOMContentLoaded',arguments.callee, false);
+              fn();            //执行函数
+          }, false);
+      }else if(document.attachEvent) {        //IE
+          document.attachEvent('onreadystatechange', function() {
+             if(document.readyState == 'complete') {
+                 document.detachEvent('onreadystatechange', arguments.callee);
+                 fn();        //函数执行
+             }
+         });
+     }
+ };
+</code></pre>
+<h1 id="58-addeventlistener和attachevent的区别">58. addEventListener()和attachEvent()的区别</h1>
+<ul>
+<li><code>addEventListener()</code>是符合W3C规范的标准方法; <code>attachEvent()</code>是IE低版本的非标准方法</li>
+<li><code>addEventListener()</code>支持事件冒泡和事件捕获; - 而<code>attachEvent()</code>只支持事件冒泡</li>
+<li><code>addEventListener()</code>的第一个参数中,事件类型不需要添加<code>on</code>; <code>attachEvent()</code>需要添加<code>'on'</code></li>
+<li>如果为同一个元素绑定多个事件, <code>addEventListener()</code>会按照事件绑定的顺序依次执行, <code>attachEvent()</code>会按照事件绑定的顺序倒序执行</li>
+</ul>
+<h1 id="59-数组去重">59. 数组去重</h1>
+<p><strong>方法一、利用ES6 Set去重（ES6中最常用）</strong></p>
+<pre><code class="language-js">function unique (arr) {
+  return Array.from(new Set(arr))
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+ //[1, &quot;true&quot;, true, 15, false, undefined, null, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {}, {}]
+</code></pre>
+<p><strong>方法二、利用for嵌套for，然后splice去重（ES5中最常用）</strong></p>
+<pre><code class="language-js">function unique(arr){            
+        for(var i=0; i&lt;arr.length; i++){
+            for(var j=i+1; j&lt;arr.length; j++){
+                if(arr[i]==arr[j]){         //第一个等同于第二个，splice方法删除第二个
+                    arr.splice(j,1);
+                    j--;
+                }
+            }
+        }
+	return arr;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+    //[1, &quot;true&quot;, 15, false, undefined, NaN, NaN, &quot;NaN&quot;, &quot;a&quot;, {…}, {…}]     //NaN和{}没有去重，两个null直接消失了
+</code></pre>
+<ul>
+<li>双层循环，外层循环元素，内层循环时比较值。值相同时，则删去这个值。</li>
+<li>想快速学习更多常用的<code>ES6</code>语法</li>
+</ul>
+<p><strong>方法三、利用indexOf去重</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    var array = [];
+    for (var i = 0; i &lt; arr.length; i++) {
+        if (array .indexOf(arr[i]) === -1) {
+            array .push(arr[i])
+        }
+    }
+    return array;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+   // [1, &quot;true&quot;, true, 15, false, undefined, null, NaN, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, {…}]  //NaN、{}没有去重
+</code></pre>
+<blockquote>
+<p>新建一个空的结果数组，<code>for</code> 循环原数组，判断结果数组是否存在当前元素，如果有相同的值则跳过，不相同则<code>push</code>进数组</p>
+</blockquote>
+<p><strong>方法四、利用sort()</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return;
+    }
+    arr = arr.sort()
+    var arrry= [arr[0]];
+    for (var i = 1; i &lt; arr.length; i++) {
+        if (arr[i] !== arr[i-1]) {
+            arrry.push(arr[i]);
+        }
+    }
+    return arrry;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+// [0, 1, 15, &quot;NaN&quot;, NaN, NaN, {…}, {…}, &quot;a&quot;, false, null, true, &quot;true&quot;, undefined]      //NaN、{}没有去重
+</code></pre>
+<blockquote>
+<p>利用<code>sort()</code>排序方法，然后根据排序后的结果进行遍历及相邻元素比对</p>
+</blockquote>
+<p><strong>方法五、利用对象的属性不能相同的特点进行去重</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    var arrry= [];
+     var  obj = {};
+    for (var i = 0; i &lt; arr.length; i++) {
+        if (!obj[arr[i]]) {
+            arrry.push(arr[i])
+            obj[arr[i]] = 1
+        } else {
+            obj[arr[i]]++
+        }
+    }
+    return arrry;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+//[1, &quot;true&quot;, 15, false, undefined, null, NaN, 0, &quot;a&quot;, {…}]    //两个true直接去掉了，NaN和{}去重
+</code></pre>
+<p><strong>方法六、利用includes</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    var array =[];
+    for(var i = 0; i &lt; arr.length; i++) {
+            if( !array.includes( arr[i]) ) {//includes 检测数组是否有某个值
+                    array.push(arr[i]);
+              }
+    }
+    return array
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+    //[1, &quot;true&quot;, true, 15, false, undefined, null, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, {…}]     //{}没有去重
+</code></pre>
+<p><strong>方法七、利用hasOwnProperty</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    var obj = {};
+    return arr.filter(function(item, index, arr){
+        return obj.hasOwnProperty(typeof item + item) ? false : (obj[typeof item + item] = true)
+    })
+}
+    var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+        console.log(unique(arr))
+//[1, &quot;true&quot;, true, 15, false, undefined, null, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}]   //所有的都去重了
+</code></pre>
+<blockquote>
+<p>利用<code>hasOwnProperty</code> 判断是否存在对象属性</p>
+</blockquote>
+<p><strong>方法八、利用filter</strong></p>
+<pre><code class="language-js">function unique(arr) {
+  return arr.filter(function(item, index, arr) {
+    //当前元素，在原始数组中的第一个索引==当前索引值，否则返回当前元素
+    return arr.indexOf(item, 0) === index;
+  });
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+//[1, &quot;true&quot;, true, 15, false, undefined, null, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, {…}]
+</code></pre>
+<p><strong>方法九、利用递归去重</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    var array= arr;
+    var len = array.length;
+
+	array.sort(function(a,b){   //排序后更加方便去重
+		return a - b;
+	})
+
+	function loop(index){
+        if(index &gt;= 1){
+            if(array[index] === array[index-1]){
+            array.splice(index,1);
+            }
+            loop(index - 1);    //递归loop，然后数组去重
+        }
+	}
+	loop(len-1);
+	return array;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+//[1, &quot;a&quot;, &quot;true&quot;, true, 15, false, 1, {…}, null, NaN, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, undefined]
+</code></pre>
+<p><strong>方法十、利用Map数据结构去重</strong></p>
+<pre><code class="language-js">function arrayNonRepeatfy(arr) {
+	let map = new Map();
+		let array = new Array();  // 数组用于返回结果
+		for (let i = 0; i &lt; arr.length; i++) {
+			if(map .has(arr[i])) {  // 如果有该key值
+			map .set(arr[i], true);
+		} else {
+			map .set(arr[i], false);   // 如果没有该key值
+			array .push(arr[i]);
+		}
+	}
+	return array ;
+}
+ var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+    console.log(unique(arr))
+//[1, &quot;a&quot;, &quot;true&quot;, true, 15, false, 1, {…}, null, NaN, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, undefined]
+</code></pre>
+<blockquote>
+<p>创建一个空<code>Map</code>数据结构，遍历需要去重的数组，把数组的每一个元素作为<code>key</code>存到<code>Map</code>中。由于<code>Map</code>中不会出现相同的<code>key</code>值，所以最终得到的就是去重后的结果</p>
+</blockquote>
+<p><strong>方法十一、利用reduce+includes</strong></p>
+<pre><code class="language-js">function unique(arr){
+    return arr.reduce((prev,cur) =&gt; prev.includes(cur) ? prev : [...prev,cur],[]);
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr));
+// [1, &quot;true&quot;, true, 15, false, undefined, null, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, {…}]
+</code></pre>
+<p><strong>方法十二、[...new Set(arr)]</strong></p>
+<pre><code class="language-js">[...new Set(arr)]
+//代码就是这么少----（其实，严格来说并不算是一种，相对于第一种方法来说只是简化了代码）
+</code></pre>
+<h1 id="60-设计题想实现一个对页面某个节点的拖曳如何做使用原生js">60. （设计题）想实现一个对页面某个节点的拖曳？如何做？（使用原生JS）</h1>
+<ul>
+<li>给需要拖拽的节点绑定<code>mousedown</code>, <code>mousemove</code>, <code>mouseup</code>事件</li>
+<li><code>mousedown</code>事件触发后，开始拖拽</li>
+<li><code>mousemove</code>时，需要通过<code>event.clientX</code>和<code>clientY</code>获取拖拽位置，并实时更新位置</li>
+<li><code>mouseup</code>时，拖拽结束</li>
+<li>需要注意浏览器边界的情况</li>
+</ul>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=Edge&quot;&gt;
+        &lt;meta name=&quot;keywords&quot; content=&quot;拖拽&quot;&gt;
+        &lt;meta name=&quot;description&quot; content=&quot;拖拽&quot;&gt;
+        &lt;title&gt;实现拖拽&lt;/title&gt;
+        &lt;style type=&quot;text/css&quot;&gt;
+            *{
+                margin: 0px;
+                padding: 0px;
+            }
+            #drag{
+                width: 100px;
+                height: 100px;
+                background: red;
+                position: absolute;
+            }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;drag&quot;&gt;&lt;/div&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            var Drags = function (element, callback) {
+                callback = callback || function () {};
+                var params = {
+                    top: 0,
+                    left: 0,
+                    currentX: 0,
+                    currentY: 0,
+                    flag: false
+                };
+                function getCss(element, key) {
+                    return element.currentStyle ? element.currentStyle[key] : document.defaultView.getComputedStyle(element,null)[key];
+                    // ie用currentStyle
+                }
+                var lefts = getCss(element, &quot;left&quot;),
+                    tops = getCss(element, &quot;top&quot;);
+                params.left = lefts !== &quot;auto&quot; ? lefts : 0;
+                params.top = tops !== &quot;auto&quot; ? tops : 0;
+                element.onmousedown = function (event) {
+                    params.flag = true;
+                    event = event || window.event; // ie用后面
+                    params.currentX = event.clientX;
+                    params.currentY = event.clientY;
+                };
+                document.onmousemove = function (event) {
+                    event = event || window.event;
+                    if (params.flag) {
+                        // 现在位置
+                        var nowX = event.clientX,
+                            nowY = event.clientY,
+                        // 需要移动的距离  
+                            disX = nowX - params.currentX,
+                            disY = nowY - params.currentY;
+                        element.style.left = parseInt(params.left) + disX + &quot;px&quot;;
+                        element.style.top = parseInt(params.top) + disY + &quot;px&quot;;
+                    }
+                };
+                document.onmouseup = function () {
+                    params.flag = false;
+                    var lefts = getCss(element, &quot;left&quot;),
+                        tops = getCss(element, &quot;top&quot;);
+                    params.left = lefts !== &quot;auto&quot; ? lefts : 0;
+                    params.top = tops !== &quot;auto&quot; ? tops : 0;
+                }
+            }(document.getElementById('drag'));
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h1 id="61-javascript-全局函数和全局变量">61. JavaScript 全局函数和全局变量</h1>
+<p><strong>全局变量</strong></p>
+<ul>
+<li><code>Infinity</code> 代表正的无穷大的数值。</li>
+<li><code>NaN</code> 指示某个值是不是数字值。</li>
+<li><code>undefined</code> 指示未定义的值。</li>
+</ul>
+<p><strong>全局函数</strong></p>
+<ul>
+<li><code>decodeURI()</code> 解码某个编码的 <code>URI</code>。</li>
+<li><code>decodeURIComponent()</code> 解码一个编码的 <code>URI</code> 组件。</li>
+<li><code>encodeURI()</code> 把字符串编码为 URI。</li>
+<li><code>encodeURIComponent()</code> 把字符串编码为 <code>URI</code> 组件。</li>
+<li><code>escape()</code> 对字符串进行编码。</li>
+<li><code>eval()</code> 计算 <code>JavaScript</code> 字符串，并把它作为脚本代码来执行。</li>
+<li><code>isFinite()</code> 检查某个值是否为有穷大的数。</li>
+<li><code>isNaN()</code> 检查某个值是否是数字。</li>
+<li><code>Number()</code> 把对象的值转换为数字。</li>
+<li><code>parseFloat()</code> 解析一个字符串并返回一个浮点数。</li>
+<li><code>parseInt()</code> 解析一个字符串并返回一个整数。</li>
+<li><code>String()</code> 把对象的值转换为字符串。</li>
+<li><code>unescape()</code> 对由<code>escape()</code> 编码的字符串进行解码</li>
+</ul>
+<h1 id="62-使用js实现一个持续的动画效果">62. 使用js实现一个持续的动画效果</h1>
+<p><strong>定时器思路</strong></p>
+<pre><code class="language-js">var e = document.getElementById('e')
+var flag = true;
+var left = 0;
+setInterval(() =&gt; {
+    left == 0 ? flag = true : left == 100 ? flag = false : ''
+    flag ? e.style.left = ` ${left++}px` : e.style.left = ` ${left--}px`
+}, 1000 / 60)
+</code></pre>
+<p><strong>requestAnimationFrame</strong></p>
+<pre><code class="language-js">//兼容性处理
+window.requestAnimFrame = (function(){
+    return window.requestAnimationFrame       ||
+           window.webkitRequestAnimationFrame ||
+           window.mozRequestAnimationFrame    ||
+           function(callback){
+                window.setTimeout(callback, 1000 / 60);
+           };
+})();
+
+var e = document.getElementById(&quot;e&quot;);
+var flag = true;
+var left = 0;
+
+function render() {
+    left == 0 ? flag = true : left == 100 ? flag = false : '';
+    flag ? e.style.left = ` ${left++}px` :
+        e.style.left = ` ${left--}px`;
+}
+
+(function animloop() {
+    render();
+    requestAnimFrame(animloop);
+})();
+</code></pre>
+<p><strong>使用css实现一个持续的动画效果</strong></p>
+<pre><code class="language-css">animation:mymove 5s infinite;
+
+@keyframes mymove {
+    from {top:0px;}
+    to {top:200px;}
+}
+</code></pre>
+<ul>
+<li><code>animation-name</code> 规定需要绑定到选择器的 <code>keyframe</code>名称。</li>
+<li><code>animation-duration</code> 规定完成动画所花费的时间，以秒或毫秒计。</li>
+<li><code>animation-timing-function</code> 规定动画的速度曲线。</li>
+<li><code>animation-delay</code> 规定在动画开始之前的延迟。</li>
+<li><code>animation-iteration-count</code> 规定动画应该播放的次数。</li>
+<li><code>animation-direction</code> 规定是否应该轮流反向播放动画</li>
+</ul>
+<h1 id="63-封装一个函数参数是定时器的时间then执行回调函数">63. 封装一个函数，参数是定时器的时间，.then执行回调函数</h1>
+<pre><code class="language-js">function sleep (time) {
+    return new Promise((resolve) =&gt; setTimeout(resolve, time));
+}
+</code></pre>
+<h1 id="64-怎么判断两个对象相等">64. 怎么判断两个对象相等？</h1>
+<pre><code class="language-js">obj={
+    a:1,
+    b:2
+}
+obj2={
+    a:1,
+    b:2
+}
+obj3={
+    a:1,
+    b:'2'
+}
+</code></pre>
+<blockquote>
+<p>可以转换为字符串来判断</p>
+</blockquote>
+<pre><code class="language-js">JSON.stringify(obj)==JSON.stringify(obj2);//true
+JSON.stringify(obj)==JSON.stringify(obj3);//false
+</code></pre>
+<h1 id="65-防抖节流">65. 防抖/节流</h1>
+<p><strong>防抖</strong></p>
+<blockquote>
+<p>在滚动事件中需要做个复杂计算或者实现一个按钮的防二次点击操作。可以通过函数防抖动来实现</p>
+</blockquote>
+<pre><code class="language-js">// 使用 underscore 的源码来解释防抖动
+
+/**
+ * underscore 防抖函数，返回函数连续调用时，空闲时间必须大于或等于 wait，func 才会执行
+ *
+ * @param  {function} func        回调函数
+ * @param  {number}   wait        表示时间窗口的间隔
+ * @param  {boolean}  immediate   设置为ture时，是否立即调用函数
+ * @return {function}             返回客户调用函数
+ */
+_.debounce = function(func, wait, immediate) {
+    var timeout, args, context, timestamp, result;
+
+    var later = function() {
+      // 现在和上一次时间戳比较
+      var last = _.now() - timestamp;
+      // 如果当前间隔时间少于设定时间且大于0就重新设置定时器
+      if (last &lt; wait &amp;&amp; last &gt;= 0) {
+        timeout = setTimeout(later, wait - last);
+      } else {
+        // 否则的话就是时间到了执行回调函数
+        timeout = null;
+        if (!immediate) {
+          result = func.apply(context, args);
+          if (!timeout) context = args = null;
+        }
+      }
+    };
+
+    return function() {
+      context = this;
+      args = arguments;
+      // 获得时间戳
+      timestamp = _.now();
+      // 如果定时器不存在且立即执行函数
+      var callNow = immediate &amp;&amp; !timeout;
+      // 如果定时器不存在就创建一个
+      if (!timeout) timeout = setTimeout(later, wait);
+      if (callNow) {
+        // 如果需要立即执行函数的话 通过 apply 执行
+        result = func.apply(context, args);
+        context = args = null;
+      }
+
+      return result;
+    };
+  };
+</code></pre>
+<blockquote>
+<p>整体函数实现</p>
+</blockquote>
+<p>对于按钮防点击来说的实现</p>
+<ul>
+<li>开始一个定时器，只要我定时器还在，不管你怎么点击都不会执行回调函数。一旦定时器结束并设置为 null，就可以再次点击了</li>
+<li>对于延时执行函数来说的实现：每次调用防抖动函数都会判断本次调用和之前的时间间隔，如果小于需要的时间间隔，就会重新创建一个定时器，并且定时器的延时为设定时间减去之前的时间间隔。一旦时间到了，就会执行相应的回调函数</li>
+</ul>
+<p><strong>节流</strong></p>
+<blockquote>
+<p>防抖动和节流本质是不一样的。防抖动是将多次执行变为最后一次执行，节流是将多次执行变成每隔一段时间执行</p>
+</blockquote>
+<pre><code class="language-javascript">/**
+ * underscore 节流函数，返回函数连续调用时，func 执行频率限定为 次 / wait
+ *
+ * @param  {function}   func      回调函数
+ * @param  {number}     wait      表示时间窗口的间隔
+ * @param  {object}     options   如果想忽略开始函数的的调用，传入{leading: false}。
+ *                                如果想忽略结尾函数的调用，传入{trailing: false}
+ *                                两者不能共存，否则函数不能执行
+ * @return {function}             返回客户调用函数   
+ */
+_.throttle = function(func, wait, options) {
+    var context, args, result;
+    var timeout = null;
+    // 之前的时间戳
+    var previous = 0;
+    // 如果 options 没传则设为空对象
+    if (!options) options = {};
+    // 定时器回调函数
+    var later = function() {
+      // 如果设置了 leading，就将 previous 设为 0
+      // 用于下面函数的第一个 if 判断
+      previous = options.leading === false ? 0 : _.now();
+      // 置空一是为了防止内存泄漏，二是为了下面的定时器判断
+      timeout = null;
+      result = func.apply(context, args);
+      if (!timeout) context = args = null;
+    };
+    return function() {
+      // 获得当前时间戳
+      var now = _.now();
+      // 首次进入前者肯定为 true
+	  // 如果需要第一次不执行函数
+	  // 就将上次时间戳设为当前的
+      // 这样在接下来计算 remaining 的值时会大于0
+      if (!previous &amp;&amp; options.leading === false) previous = now;
+      // 计算剩余时间
+      var remaining = wait - (now - previous);
+      context = this;
+      args = arguments;
+      // 如果当前调用已经大于上次调用时间 + wait
+      // 或者用户手动调了时间
+ 	  // 如果设置了 trailing，只会进入这个条件
+	  // 如果没有设置 leading，那么第一次会进入这个条件
+	  // 还有一点，你可能会觉得开启了定时器那么应该不会进入这个 if 条件了
+	  // 其实还是会进入的，因为定时器的延时
+	  // 并不是准确的时间，很可能你设置了2秒
+	  // 但是他需要2.2秒才触发，这时候就会进入这个条件
+      if (remaining &lt;= 0 || remaining &gt; wait) {
+        // 如果存在定时器就清理掉否则会调用二次回调
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+        previous = now;
+        result = func.apply(context, args);
+        if (!timeout) context = args = null;
+      } else if (!timeout &amp;&amp; options.trailing !== false) {
+        // 判断是否设置了定时器和 trailing
+	    // 没有的话就开启一个定时器
+        // 并且不能不能同时设置 leading 和 trailing
+        timeout = setTimeout(later, remaining);
+      }
+      return result;
+    };
+  };
+</code></pre>
+<h1 id="66-谈谈变量提升">66. 谈谈变量提升？</h1>
+<blockquote>
+<p>当执行 JS 代码时，会生成执行环境，只要代码不是写在函数中的，就是在全局执行环境中，函数中的代码会产生函数执行环境，只此两种执行环境</p>
+</blockquote>
+<ul>
+<li>接下来让我们看一个老生常谈的例子，<code>var</code></li>
+</ul>
+<pre><code class="language-js">b() // call b
+console.log(a) // undefined
+
+var a = 'Hello world'
+
+function b() {
+    console.log('call b')
+}
+</code></pre>
+<blockquote>
+<p>变量提升</p>
+<p>这是因为函数和变量提升的原因。通常提升的解释是说将声明的代码移动到了顶部，这其实没有什么错误，便于大家理解。但是更准确的解释应该是：在生成执行环境时，会有两个阶段。第一个阶段是创建的阶段，JS 解释器会找出需要提升的变量和函数，并且给他们提前在内存中开辟好空间，函数的话会将整个函数存入内存中，变量只声明并且赋值为 <code>undefined</code>，所以在第二个阶段，也就是代码执行阶段，我们可以直接提前使用</p>
+</blockquote>
+<p>在提升的过程中，相同的函数会覆盖上一个函数，并且函数优先于变量提升</p>
+<pre><code class="language-js">b() // call b second
+
+function b() {
+    console.log('call b fist')
+}
+function b() {
+    console.log('call b second')
+}
+var b = 'Hello world'
+</code></pre>
+<blockquote>
+<p>复制代码<code>var</code> 会产生很多错误，所以在 <code>ES6</code>中引入了 <code>let</code>。<code>let</code> 不能在声明前使用，但是这并不是常说的 <code>let</code> 不会提升，<code>let</code> 提升了，在第一阶段内存也已经为他开辟好了空间，但是因为这个声明的特性导致了并不能在声明前使用</p>
+</blockquote>
+<h1 id="67-什么是单线程和异步的关系">67. 什么是单线程，和异步的关系</h1>
+<ul>
+<li>单线程 - 只有一个线程，只能做一件事</li>
+<li>原因 - 避免 <code>DOM</code> 渲染的冲突
+<ul>
+<li>浏览器需要渲染 <code>DOM</code></li>
+<li><code>JS</code> 可以修改 <code>DOM</code> 结构</li>
+<li><code>JS</code> 执行的时候，浏览器 <code>DOM</code> 渲染会暂停</li>
+<li>两段 JS 也不能同时执行（都修改 <code>DOM</code> 就冲突了）</li>
+<li><code>webworker</code> 支持多线程，但是不能访问 <code>DOM</code></li>
+</ul>
+</li>
+<li>解决方案 - 异步</li>
+</ul>
+<h1 id="68-实现storage使得该对象为单例并对localstorage进行封装设置值setitemkeyvalue和getitemkey">68. 实现Storage，使得该对象为单例，并对<code>localStorage</code>进行封装设置值setItem(key,value)和getItem(key)</h1>
+<pre><code class="language-js">var instance = null;
+class Storage {
+  static getInstance() {
+    if (!instance) {
+      instance = new Storage();
+    }
+    return instance;
+  }
+  setItem = (key, value) =&gt; localStorage.setItem(key, value),
+  getItem = key =&gt; localStorage.getItem(key)
+}
+</code></pre>
+<h1 id="69-说说event-loop">69. 说说<code>event loop</code></h1>
+<blockquote>
+<p>首先，<code>js</code>是单线程的，主要的任务是处理用户的交互，而用户的交互无非就是响应<code>DOM</code>的增删改，使用事件队列的形式，一次事件循环只处理一个事件响应，使得脚本执行相对连续，所以有了事件队列，用来储存待执行的事件，那么事件队列的事件从哪里被<code>push</code>进来的呢。那就是另外一个线程叫事件触发线程做的事情了，他的作用主要是在定时触发器线程、异步<code>HTTP</code>请求线程满足特定条件下的回调函数<code>push</code>到事件队列中，等待<code>js</code>引擎空闲的时候去执行，当然js引擎执行过程中有优先级之分，首先js引擎在一次事件循环中，会先执行js线程的主任务，然后会去查找是否有微任务<code>microtask（promise）</code>，如果有那就优先执行微任务，如果没有，在去查找宏任务<code>macrotask（setTimeout、setInterval）</code>进行执行</p>
+</blockquote>
+<blockquote>
+<p>众所周知 <code>JS</code> 是门非阻塞单线程语言，因为在最初 <code>JS</code> 就是为了和浏览器交互而诞生的。如果 <code>JS</code> 是门多线程的语言话，我们在多个线程中处理 <code>DOM</code> 就可能会发生问题（一个线程中新加节点，另一个线程中删除节点）</p>
+</blockquote>
+<ul>
+<li><code>JS</code> 在执行的过程中会产生执行环境，这些执行环境会被顺序的加入到执行栈中。如果遇到异步的代码，会被挂起并加入到 <code>Task</code>（有多种 <code>task</code>） 队列中。一旦执行栈为空，<code>Event</code> <code>Loop</code> 就会从 <code>Task</code> 队列中拿出需要执行的代码并放入执行栈中执行，所以本质上来说 <code>JS</code> 中的异步还是同步行为</li>
+</ul>
+<figure data-type="image" tabindex="2"><img src="https://poetries1.gitee.io/img-repo/2020/09/101.png" alt="img" loading="lazy"></figure>
+<pre><code class="language-js">console.log('script start');
+
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
+
+console.log('script end');
+</code></pre>
+<blockquote>
+<p>不同的任务源会被分配到不同的 <code>Task</code> 队列中，任务源可以分为 微任务（<code>microtask</code>） 和 宏任务（<code>macrotask</code>）。在 <code>ES6</code> 规范中，<code>microtask</code> 称为 <code>jobs</code>，<code>macrotask</code> 称为 <code>task</code></p>
+</blockquote>
+<pre><code class="language-javascript">console.log('script start');
+
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
+
+new Promise((resolve) =&gt; {
+    console.log('Promise')
+    resolve()
+}).then(function() {
+  console.log('promise1');
+}).then(function() {
+  console.log('promise2');
+});
+
+console.log('script end');
+// script start =&gt; Promise =&gt; script end =&gt; promise1 =&gt; promise2 =&gt; setTimeout
+</code></pre>
+<blockquote>
+<p>以上代码虽然 <code>setTimeout</code> 写在 <code>Promise</code> 之前，但是因为 <code>Promise</code> 属于微任务而 <code>setTimeout</code> 属于宏任务</p>
+</blockquote>
+<p><strong>微任务</strong></p>
+<ul>
+<li><code>process.nextTick</code></li>
+<li><code>promise</code></li>
+<li><code>Object.observe</code></li>
+<li><code>MutationObserver</code></li>
+</ul>
+<p><strong>宏任务</strong></p>
+<ul>
+<li><code>script</code></li>
+<li><code>setTimeout</code></li>
+<li><code>setInterval</code></li>
+<li><code>setImmediate</code></li>
+<li><code>I/O</code></li>
+<li><code>UI rendering</code></li>
+</ul>
+<blockquote>
+<p>宏任务中包括了 <code>script</code> ，浏览器会先执行一个宏任务，接下来有异步代码的话就先执行微任务</p>
+</blockquote>
+<p><strong>所以正确的一次 Event loop 顺序是这样的</strong></p>
+<ul>
+<li>执行同步代码，这属于宏任务</li>
+<li>执行栈为空，查询是否有微任务需要执行</li>
+<li>执行所有微任务</li>
+<li>必要的话渲染 UI</li>
+<li>然后开始下一轮 <code>Event loop</code>，执行宏任务中的异步代码</li>
+</ul>
+<blockquote>
+<p>通过上述的 <code>Event loop</code> 顺序可知，如果宏任务中的异步代码有大量的计算并且需要操作 <code>DOM</code> 的话，为了更快的响应界面响应，我们可以把操作 <code>DOM</code> 放入微任务中</p>
+</blockquote>
+<h1 id="70-说说事件流">70. 说说事件流</h1>
+<p><strong>事件流分为两种，捕获事件流和冒泡事件流</strong></p>
+<ul>
+<li>捕获事件流从根节点开始执行，一直往子节点查找执行，直到查找执行到目标节点</li>
+<li>冒泡事件流从目标节点开始执行，一直往父节点冒泡查找执行，直到查到到根节点</li>
+</ul>
+<blockquote>
+<p>事件流分为三个阶段，一个是捕获节点，一个是处于目标节点阶段，一个是冒泡阶段</p>
+</blockquote>
+<h1 id="71-javascript-对象生命周期的理解">71. JavaScript 对象生命周期的理解</h1>
+<ul>
+<li>当创建一个对象时，<code>JavaScript</code> 会自动为该对象分配适当的内存</li>
+<li>垃圾回收器定期扫描对象，并计算引用了该对象的其他对象的数量</li>
+<li>如果被引用数量为 <code>0</code>，或惟一引用是循环的，那么该对象的内存即可回收</li>
+</ul>
+<h1 id="72-现在要你完成一个dialog组件说说你设计的思路它应该有什么功能">72.  现在要你完成一个Dialog组件，说说你设计的思路？它应该有什么功能？</h1>
+<ul>
+<li>该组件需要提供<code>hook</code>指定渲染位置，默认渲染在body下面。</li>
+<li>然后改组件可以指定外层样式，如宽度等</li>
+<li>组件外层还需要一层<code>mask</code>来遮住底层内容，点击<code>mask</code>可以执行传进来的<code>onCancel</code>函数关闭<code>Dialog</code>。</li>
+<li>另外组件是可控的，需要外层传入<code>visible</code>表示是否可见。</li>
+<li>然后<code>Dialog</code>可能需要自定义头head和底部<code>footer</code>，默认有头部和底部，底部有一个确认按钮和取消按钮，确认按钮会执行外部传进来的<code>onOk</code>事件，然后取消按钮会执行外部传进来的<code>onCancel</code>事件。</li>
+<li>当组件的<code>visible</code>为<code>true</code>时候，设置<code>body</code>的<code>overflow</code>为<code>hidden</code>，隐藏<code>body</code>的滚动条，反之显示滚动条。</li>
+<li>组件高度可能大于页面高度，组件内部需要滚动条。</li>
+<li>只有组件的<code>visible</code>有变化且为<code>ture</code>时候，才重渲染组件内的所有内容</li>
+</ul>
+<h1 id="73-ajax-axios-fetch区别">73. ajax、axios、fetch区别</h1>
+<ul>
+<li>
+<p>ajax (16. Ajax原理)</p>
+</li>
+<li>
+<p><strong>axios</strong></p>
+<pre><code class="language-js">axios({
+    method: 'post',
+    url: '/user/12345',
+    data: {
+        firstName: 'Fred',
+        lastName: 'Flintstone'
+    }
+})
+.then(function (response) {
+    console.log(response);
+})
+.catch(function (error) {
+    console.log(error);
+});
+</code></pre>
+<p>优缺点：</p>
+<ul>
+<li>从浏览器中创建 <code>XMLHttpRequest</code></li>
+<li>从 <code>node.js</code> 发出 <code>http</code> 请求</li>
+<li>支持 <code>Promise API</code></li>
+<li>拦截请求和响应</li>
+<li>转换请求和响应数据</li>
+<li>取消请求</li>
+<li>自动转换<code>JSON</code>数据</li>
+<li>客户端支持防止<code>CSRF/XSRF</code></li>
+</ul>
+<p><strong>fetch</strong></p>
+<pre><code class="language-js">try {
+  let response = await fetch(url);
+  let data = response.json();
+  console.log(data);
+} catch(e) {
+  console.log(&quot;Oops, error&quot;, e);
+
+}
+</code></pre>
+<p>优缺点：</p>
+<ul>
+<li><code>fetcht</code>只对网络请求报错，对<code>400</code>，<code>500</code>都当做成功的请求，需要封装去处理</li>
+<li><code>fetch</code>默认不会带<code>cookie</code>，需要添加配置项</li>
+<li><code>fetch</code>不支持<code>abort</code>，不支持超时控制，使用<code>setTimeout</code>及<code>Promise.reject</code>的实现的超时控制并不能阻止请求过程继续在后台运行，造成了量的浪费</li>
+<li><code>fetch</code>没有办法原生监测请求的进度，而XHR可以</li>
+</ul>
+</li>
+</ul>
+<h1 id="74-javascript的组成">74. JavaScript的组成</h1>
+<ul>
+<li><code>JavaScript</code> 由以下三部分组成：
+<ul>
+<li><code>ECMAScript（核心）：</code>JavaScript` 语言基础</li>
+<li><code>DOM</code>（文档对象模型）：规定了访问<code>HTML</code>和<code>XML</code>的接口</li>
+<li><code>BOM</code>（浏览器对象模型）：提供了浏览器窗口之间进行交互的对象和方法</li>
+</ul>
+</li>
+</ul>
+<h1 id="75-检测浏览器版本版本有哪些方式">75. 检测浏览器版本版本有哪些方式？</h1>
+<ul>
+<li>根据 <code>navigator.userAgent</code> <code>UA.toLowerCase().indexOf('chrome')</code></li>
+<li>根据 <code>window</code> 对象的成员 <code>'ActiveXObject' in window</code></li>
+</ul>
+<h1 id="76-说几条写javascript的基本规范">76. 说几条写JavaScript的基本规范</h1>
+<ul>
+<li>代码缩进，建议使用“四个空格”缩进</li>
+<li>代码段使用花括号<code>{}</code>包裹</li>
+<li>语句结束使用分号;</li>
+<li>变量和函数在使用前进行声明</li>
+<li>以大写字母开头命名构造函数，全大写命名常量</li>
+<li>规范定义<code>JSON</code>对象，补全双引号</li>
+<li>用<code>{}</code>和<code>[]</code>声明对象和数组</li>
 </ul>
 ]]></content>
     </entry>

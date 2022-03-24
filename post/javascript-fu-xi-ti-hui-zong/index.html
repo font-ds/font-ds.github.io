@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1648031239994">
+<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1648097676198">
 <link rel="stylesheet" href="https://font-ds.github.io/styles/main.css">
 
 
@@ -34,7 +34,7 @@ js几种类型的值
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://font-ds.github.io">
-        <img src="https://font-ds.github.io/images/avatar.png?v=1648031239994" class="site-logo">
+        <img src="https://font-ds.github.io/images/avatar.png?v=1648097676198" class="site-logo">
         <h1 class="site-title">font-ds</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -997,6 +997,934 @@ let isType = function(obj){
 <li>声明创建一个值的只读引用 (即指针)</li>
 <li>基本数据当值发生改变时，那么其对应的指针也将发生改变，故造成 <code>const</code>声明基本数据类型时，再将其值改变时，将会造成报错</li>
 <li>但是如果是复合类型时，如果只改变复合类型的其中某个<code>Value</code>项时， 将还是正常使用</li>
+</ul>
+<h1 id="51-让一个数组乱序">51. 让一个数组乱序</h1>
+<pre><code class="language-js">let arr = [1,2,3,4,5,6,7,8,9,10]
+arr.sort(function(){
+    return Math.random() - 0.5
+})
+console.log(arr)
+</code></pre>
+<h1 id="52-如何显示几万条数据并不卡住页面">52. 如何显示几万条数据并不卡住页面</h1>
+<blockquote>
+<p>这道题考察了如何在不卡住页面的情况下渲染数据，也就是说不能一次性将几万条数据都渲染出来，而应该一次渲染部分 <code>DOM</code> ，那么就可以通过 <code>requestAnimationFrame</code> 来每 <code>16ms</code> 刷新一次</p>
+</blockquote>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+  &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;ul&gt;控件&lt;/ul&gt;
+  &lt;script&gt;
+    setTimeout(() =&gt; {
+      // 插入十万条数据
+      const total = 100000
+      // 一次插入 20 条，如果觉得性能不好就减少
+      const once = 20
+      // 渲染数据总共需要几次
+      const loopCount = total / once
+      let countOfRender = 0
+      let ul = document.querySelector(&quot;ul&quot;);
+      function add() {
+        // 优化性能，插入不会造成回流
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i &lt; once; i++) {
+          const li = document.createElement(&quot;li&quot;);
+          li.innerText = Math.floor(Math.random() * total);
+          fragment.appendChild(li);
+        }
+        ul.appendChild(fragment);
+        countOfRender += 1;
+        loop();
+      }
+      function loop() {
+        if (countOfRender &lt; loopCount) {
+          window.requestAnimationFrame(add);
+        }
+      }
+      loop();
+    }, 0);
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h1 id="53-获取到页面中所有的checkbox怎么做">53. 获取到页面中所有的checkbox怎么做</h1>
+<pre><code class="language-js">let domList = document.getElementsByTagName('input')
+let checkBoxList = []
+let len = domList.length
+while (len--){
+    if(domList[len].type == 'checkbox'){
+        checkBoxList.push(domList[len])
+    }
+}
+</code></pre>
+<h1 id="54-添加-移除-移动-复制-创建和查找节点">54. 添加、移除、移动、复制、创建和查找节点</h1>
+<p><strong>创建新节点</strong></p>
+<pre><code class="language-js">createDocumentFragment()    //创建一个DOM片段
+createElement()   //创建一个具体的元素
+createTextNode()   //创建一个文本节点
+</code></pre>
+<p><strong>添加、移除、替换、插入</strong></p>
+<pre><code class="language-js">appendChild()      //添加
+removeChild()      //移除
+replaceChild()      //替换
+insertBefore()      //插入
+</code></pre>
+<p><strong>查找</strong></p>
+<pre><code class="language-js">getElementsByTagName()    //通过标签名称
+
+getElementsByName()     //通过元素的Name属性的值
+
+getElementById()        //通过元素Id，唯一性
+
+querySelector()
+</code></pre>
+<h1 id="55-正则表达式">55. 正则表达式</h1>
+<blockquote>
+<p>正则表达式构造函数<code>var reg=new RegExp(“xxx”)</code>与正则表达字面量<code>var reg=//</code>有什么不同？匹配邮箱的正则表达式？</p>
+</blockquote>
+<ul>
+<li>当使用<code>RegExp()</code>构造函数的时候，不仅需要转义引号（即<code>\</code>”表示”），并且还需要双反斜杠（即<code>\\</code>表示一个<code>\</code>）。使用正则表达字面量的效率更高</li>
+</ul>
+<p>邮箱的正则匹配：</p>
+<pre><code class="language-js">var regMail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+</code></pre>
+<p>[RegExp详细---廖雪峰](<a href="https://www.liaoxuefeng.com/wiki/1022910821149312/1023021582119488">RegExp - 廖雪峰的官方网站 (liaoxuefeng.com)</a>)</p>
+<p>[RegExp详细---MDN](<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Regular_Expressions">正则表达式 - JavaScript | MDN (mozilla.org)</a>)</p>
+<h1 id="56-javascript中callee和caller的作用">56. Javascript中callee和caller的作用？</h1>
+<ul>
+<li><code>caller</code>是返回一个对函数的引用，该函数调用了当前函数；</li>
+<li><code>callee</code>是返回正在被执行的<code>function</code>函数，也就是所指定的<code>function</code>对象的正文</li>
+</ul>
+<blockquote>
+<p>那么问题来了？如果一对兔子每月生一对兔子；一对新生兔，从第二个月起就开始生兔子；假定每对兔子都是一雌一雄，试问一对兔子，第n个月能繁殖成多少对兔子？（使用<code>callee</code>完成）</p>
+</blockquote>
+<pre><code class="language-js">var result=[];
+  function fn(n){  //典型的斐波那契数列
+     if(n==1){
+          return 1;
+     }else if(n==2){
+             return 1;
+     }else{
+          if(result[n]){
+                  return result[n];
+         }else{
+                 //argument.callee()表示fn()
+                 result[n]=arguments.callee(n-1)+arguments.callee(n-2);
+                 return result[n];
+         }
+    }
+ }
+</code></pre>
+<p><strong>caller</strong></p>
+<blockquote>
+<p><code>caller</code>返回一个函数的引用，这个函数调用了当前的函数。</p>
+</blockquote>
+<p><strong>使用这个属性要注意</strong></p>
+<ul>
+<li>这个属性只有当函数在执行时才有用</li>
+<li>如果在<code>javascript</code>程序中，函数是由顶层调用的，则返回<code>null</code></li>
+</ul>
+<blockquote>
+<p><code>functionName.caller: functionName</code>是当前正在执行的函数。</p>
+</blockquote>
+<pre><code class="language-js">function a() {
+  console.log(a.caller)
+}
+</code></pre>
+<p><strong>callee</strong></p>
+<blockquote>
+<p><code>callee</code>放回正在执行的函数本身的引用，它是<code>arguments</code>的一个属性</p>
+</blockquote>
+<blockquote>
+<p>使用callee时要注意:</p>
+</blockquote>
+<ul>
+<li>这个属性只有在函数执行时才有效</li>
+<li>它有一个<code>length</code>属性，可以用来获得形参的个数，因此可以用来比较形参和实参个数是否一致，即比较<code>arguments.length</code>是否等于<code>arguments.callee.length</code></li>
+<li>它可以用来递归匿名函数。</li>
+</ul>
+<pre><code class="language-js">function a() {
+  console.log(arguments.callee)
+}
+</code></pre>
+<h1 id="57-windowonload和documentready">57. window.onload和$(document).ready</h1>
+<blockquote>
+<p>原生<code>JS</code>的<code>window.onload</code>与<code>Jquery</code>的<code>$(document).ready(function(){})</code>有什么不同？如何用原生JS实现Jq的<code>ready</code>方法？</p>
+</blockquote>
+<ul>
+<li><code>window.onload()</code>方法是必须等到页面内包括图片的所有元素加载完毕后才能执行。</li>
+<li><code>$(document).ready()</code>是<code>DOM</code>结构绘制完毕后就执行，不必等到加载完毕</li>
+</ul>
+<pre><code class="language-js">function ready(fn){
+      if(document.addEventListener) {        //标准浏览器
+          document.addEventListener('DOMContentLoaded', function() {
+              //注销事件, 避免反复触发
+              document.removeEventListener('DOMContentLoaded',arguments.callee, false);
+              fn();            //执行函数
+          }, false);
+      }else if(document.attachEvent) {        //IE
+          document.attachEvent('onreadystatechange', function() {
+             if(document.readyState == 'complete') {
+                 document.detachEvent('onreadystatechange', arguments.callee);
+                 fn();        //函数执行
+             }
+         });
+     }
+ };
+</code></pre>
+<h1 id="58-addeventlistener和attachevent的区别">58. addEventListener()和attachEvent()的区别</h1>
+<ul>
+<li><code>addEventListener()</code>是符合W3C规范的标准方法; <code>attachEvent()</code>是IE低版本的非标准方法</li>
+<li><code>addEventListener()</code>支持事件冒泡和事件捕获; - 而<code>attachEvent()</code>只支持事件冒泡</li>
+<li><code>addEventListener()</code>的第一个参数中,事件类型不需要添加<code>on</code>; <code>attachEvent()</code>需要添加<code>'on'</code></li>
+<li>如果为同一个元素绑定多个事件, <code>addEventListener()</code>会按照事件绑定的顺序依次执行, <code>attachEvent()</code>会按照事件绑定的顺序倒序执行</li>
+</ul>
+<h1 id="59-数组去重">59. 数组去重</h1>
+<p><strong>方法一、利用ES6 Set去重（ES6中最常用）</strong></p>
+<pre><code class="language-js">function unique (arr) {
+  return Array.from(new Set(arr))
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+ //[1, &quot;true&quot;, true, 15, false, undefined, null, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {}, {}]
+</code></pre>
+<p><strong>方法二、利用for嵌套for，然后splice去重（ES5中最常用）</strong></p>
+<pre><code class="language-js">function unique(arr){            
+        for(var i=0; i&lt;arr.length; i++){
+            for(var j=i+1; j&lt;arr.length; j++){
+                if(arr[i]==arr[j]){         //第一个等同于第二个，splice方法删除第二个
+                    arr.splice(j,1);
+                    j--;
+                }
+            }
+        }
+	return arr;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+    //[1, &quot;true&quot;, 15, false, undefined, NaN, NaN, &quot;NaN&quot;, &quot;a&quot;, {…}, {…}]     //NaN和{}没有去重，两个null直接消失了
+</code></pre>
+<ul>
+<li>双层循环，外层循环元素，内层循环时比较值。值相同时，则删去这个值。</li>
+<li>想快速学习更多常用的<code>ES6</code>语法</li>
+</ul>
+<p><strong>方法三、利用indexOf去重</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    var array = [];
+    for (var i = 0; i &lt; arr.length; i++) {
+        if (array .indexOf(arr[i]) === -1) {
+            array .push(arr[i])
+        }
+    }
+    return array;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+   // [1, &quot;true&quot;, true, 15, false, undefined, null, NaN, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, {…}]  //NaN、{}没有去重
+</code></pre>
+<blockquote>
+<p>新建一个空的结果数组，<code>for</code> 循环原数组，判断结果数组是否存在当前元素，如果有相同的值则跳过，不相同则<code>push</code>进数组</p>
+</blockquote>
+<p><strong>方法四、利用sort()</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return;
+    }
+    arr = arr.sort()
+    var arrry= [arr[0]];
+    for (var i = 1; i &lt; arr.length; i++) {
+        if (arr[i] !== arr[i-1]) {
+            arrry.push(arr[i]);
+        }
+    }
+    return arrry;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+// [0, 1, 15, &quot;NaN&quot;, NaN, NaN, {…}, {…}, &quot;a&quot;, false, null, true, &quot;true&quot;, undefined]      //NaN、{}没有去重
+</code></pre>
+<blockquote>
+<p>利用<code>sort()</code>排序方法，然后根据排序后的结果进行遍历及相邻元素比对</p>
+</blockquote>
+<p><strong>方法五、利用对象的属性不能相同的特点进行去重</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    var arrry= [];
+     var  obj = {};
+    for (var i = 0; i &lt; arr.length; i++) {
+        if (!obj[arr[i]]) {
+            arrry.push(arr[i])
+            obj[arr[i]] = 1
+        } else {
+            obj[arr[i]]++
+        }
+    }
+    return arrry;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+//[1, &quot;true&quot;, 15, false, undefined, null, NaN, 0, &quot;a&quot;, {…}]    //两个true直接去掉了，NaN和{}去重
+</code></pre>
+<p><strong>方法六、利用includes</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    var array =[];
+    for(var i = 0; i &lt; arr.length; i++) {
+            if( !array.includes( arr[i]) ) {//includes 检测数组是否有某个值
+                    array.push(arr[i]);
+              }
+    }
+    return array
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+    //[1, &quot;true&quot;, true, 15, false, undefined, null, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, {…}]     //{}没有去重
+</code></pre>
+<p><strong>方法七、利用hasOwnProperty</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    var obj = {};
+    return arr.filter(function(item, index, arr){
+        return obj.hasOwnProperty(typeof item + item) ? false : (obj[typeof item + item] = true)
+    })
+}
+    var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+        console.log(unique(arr))
+//[1, &quot;true&quot;, true, 15, false, undefined, null, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}]   //所有的都去重了
+</code></pre>
+<blockquote>
+<p>利用<code>hasOwnProperty</code> 判断是否存在对象属性</p>
+</blockquote>
+<p><strong>方法八、利用filter</strong></p>
+<pre><code class="language-js">function unique(arr) {
+  return arr.filter(function(item, index, arr) {
+    //当前元素，在原始数组中的第一个索引==当前索引值，否则返回当前元素
+    return arr.indexOf(item, 0) === index;
+  });
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+//[1, &quot;true&quot;, true, 15, false, undefined, null, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, {…}]
+</code></pre>
+<p><strong>方法九、利用递归去重</strong></p>
+<pre><code class="language-js">function unique(arr) {
+    var array= arr;
+    var len = array.length;
+
+	array.sort(function(a,b){   //排序后更加方便去重
+		return a - b;
+	})
+
+	function loop(index){
+        if(index &gt;= 1){
+            if(array[index] === array[index-1]){
+            array.splice(index,1);
+            }
+            loop(index - 1);    //递归loop，然后数组去重
+        }
+	}
+	loop(len-1);
+	return array;
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr))
+//[1, &quot;a&quot;, &quot;true&quot;, true, 15, false, 1, {…}, null, NaN, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, undefined]
+</code></pre>
+<p><strong>方法十、利用Map数据结构去重</strong></p>
+<pre><code class="language-js">function arrayNonRepeatfy(arr) {
+	let map = new Map();
+		let array = new Array();  // 数组用于返回结果
+		for (let i = 0; i &lt; arr.length; i++) {
+			if(map .has(arr[i])) {  // 如果有该key值
+			map .set(arr[i], true);
+		} else {
+			map .set(arr[i], false);   // 如果没有该key值
+			array .push(arr[i]);
+		}
+	}
+	return array ;
+}
+ var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+    console.log(unique(arr))
+//[1, &quot;a&quot;, &quot;true&quot;, true, 15, false, 1, {…}, null, NaN, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, undefined]
+</code></pre>
+<blockquote>
+<p>创建一个空<code>Map</code>数据结构，遍历需要去重的数组，把数组的每一个元素作为<code>key</code>存到<code>Map</code>中。由于<code>Map</code>中不会出现相同的<code>key</code>值，所以最终得到的就是去重后的结果</p>
+</blockquote>
+<p><strong>方法十一、利用reduce+includes</strong></p>
+<pre><code class="language-js">function unique(arr){
+    return arr.reduce((prev,cur) =&gt; prev.includes(cur) ? prev : [...prev,cur],[]);
+}
+var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
+console.log(unique(arr));
+// [1, &quot;true&quot;, true, 15, false, undefined, null, NaN, &quot;NaN&quot;, 0, &quot;a&quot;, {…}, {…}]
+</code></pre>
+<p><strong>方法十二、[...new Set(arr)]</strong></p>
+<pre><code class="language-js">[...new Set(arr)]
+//代码就是这么少----（其实，严格来说并不算是一种，相对于第一种方法来说只是简化了代码）
+</code></pre>
+<h1 id="60-设计题想实现一个对页面某个节点的拖曳如何做使用原生js">60. （设计题）想实现一个对页面某个节点的拖曳？如何做？（使用原生JS）</h1>
+<ul>
+<li>给需要拖拽的节点绑定<code>mousedown</code>, <code>mousemove</code>, <code>mouseup</code>事件</li>
+<li><code>mousedown</code>事件触发后，开始拖拽</li>
+<li><code>mousemove</code>时，需要通过<code>event.clientX</code>和<code>clientY</code>获取拖拽位置，并实时更新位置</li>
+<li><code>mouseup</code>时，拖拽结束</li>
+<li>需要注意浏览器边界的情况</li>
+</ul>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=Edge&quot;&gt;
+        &lt;meta name=&quot;keywords&quot; content=&quot;拖拽&quot;&gt;
+        &lt;meta name=&quot;description&quot; content=&quot;拖拽&quot;&gt;
+        &lt;title&gt;实现拖拽&lt;/title&gt;
+        &lt;style type=&quot;text/css&quot;&gt;
+            *{
+                margin: 0px;
+                padding: 0px;
+            }
+            #drag{
+                width: 100px;
+                height: 100px;
+                background: red;
+                position: absolute;
+            }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;drag&quot;&gt;&lt;/div&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            var Drags = function (element, callback) {
+                callback = callback || function () {};
+                var params = {
+                    top: 0,
+                    left: 0,
+                    currentX: 0,
+                    currentY: 0,
+                    flag: false
+                };
+                function getCss(element, key) {
+                    return element.currentStyle ? element.currentStyle[key] : document.defaultView.getComputedStyle(element,null)[key];
+                    // ie用currentStyle
+                }
+                var lefts = getCss(element, &quot;left&quot;),
+                    tops = getCss(element, &quot;top&quot;);
+                params.left = lefts !== &quot;auto&quot; ? lefts : 0;
+                params.top = tops !== &quot;auto&quot; ? tops : 0;
+                element.onmousedown = function (event) {
+                    params.flag = true;
+                    event = event || window.event; // ie用后面
+                    params.currentX = event.clientX;
+                    params.currentY = event.clientY;
+                };
+                document.onmousemove = function (event) {
+                    event = event || window.event;
+                    if (params.flag) {
+                        // 现在位置
+                        var nowX = event.clientX,
+                            nowY = event.clientY,
+                        // 需要移动的距离  
+                            disX = nowX - params.currentX,
+                            disY = nowY - params.currentY;
+                        element.style.left = parseInt(params.left) + disX + &quot;px&quot;;
+                        element.style.top = parseInt(params.top) + disY + &quot;px&quot;;
+                    }
+                };
+                document.onmouseup = function () {
+                    params.flag = false;
+                    var lefts = getCss(element, &quot;left&quot;),
+                        tops = getCss(element, &quot;top&quot;);
+                    params.left = lefts !== &quot;auto&quot; ? lefts : 0;
+                    params.top = tops !== &quot;auto&quot; ? tops : 0;
+                }
+            }(document.getElementById('drag'));
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h1 id="61-javascript-全局函数和全局变量">61. JavaScript 全局函数和全局变量</h1>
+<p><strong>全局变量</strong></p>
+<ul>
+<li><code>Infinity</code> 代表正的无穷大的数值。</li>
+<li><code>NaN</code> 指示某个值是不是数字值。</li>
+<li><code>undefined</code> 指示未定义的值。</li>
+</ul>
+<p><strong>全局函数</strong></p>
+<ul>
+<li><code>decodeURI()</code> 解码某个编码的 <code>URI</code>。</li>
+<li><code>decodeURIComponent()</code> 解码一个编码的 <code>URI</code> 组件。</li>
+<li><code>encodeURI()</code> 把字符串编码为 URI。</li>
+<li><code>encodeURIComponent()</code> 把字符串编码为 <code>URI</code> 组件。</li>
+<li><code>escape()</code> 对字符串进行编码。</li>
+<li><code>eval()</code> 计算 <code>JavaScript</code> 字符串，并把它作为脚本代码来执行。</li>
+<li><code>isFinite()</code> 检查某个值是否为有穷大的数。</li>
+<li><code>isNaN()</code> 检查某个值是否是数字。</li>
+<li><code>Number()</code> 把对象的值转换为数字。</li>
+<li><code>parseFloat()</code> 解析一个字符串并返回一个浮点数。</li>
+<li><code>parseInt()</code> 解析一个字符串并返回一个整数。</li>
+<li><code>String()</code> 把对象的值转换为字符串。</li>
+<li><code>unescape()</code> 对由<code>escape()</code> 编码的字符串进行解码</li>
+</ul>
+<h1 id="62-使用js实现一个持续的动画效果">62. 使用js实现一个持续的动画效果</h1>
+<p><strong>定时器思路</strong></p>
+<pre><code class="language-js">var e = document.getElementById('e')
+var flag = true;
+var left = 0;
+setInterval(() =&gt; {
+    left == 0 ? flag = true : left == 100 ? flag = false : ''
+    flag ? e.style.left = ` ${left++}px` : e.style.left = ` ${left--}px`
+}, 1000 / 60)
+</code></pre>
+<p><strong>requestAnimationFrame</strong></p>
+<pre><code class="language-js">//兼容性处理
+window.requestAnimFrame = (function(){
+    return window.requestAnimationFrame       ||
+           window.webkitRequestAnimationFrame ||
+           window.mozRequestAnimationFrame    ||
+           function(callback){
+                window.setTimeout(callback, 1000 / 60);
+           };
+})();
+
+var e = document.getElementById(&quot;e&quot;);
+var flag = true;
+var left = 0;
+
+function render() {
+    left == 0 ? flag = true : left == 100 ? flag = false : '';
+    flag ? e.style.left = ` ${left++}px` :
+        e.style.left = ` ${left--}px`;
+}
+
+(function animloop() {
+    render();
+    requestAnimFrame(animloop);
+})();
+</code></pre>
+<p><strong>使用css实现一个持续的动画效果</strong></p>
+<pre><code class="language-css">animation:mymove 5s infinite;
+
+@keyframes mymove {
+    from {top:0px;}
+    to {top:200px;}
+}
+</code></pre>
+<ul>
+<li><code>animation-name</code> 规定需要绑定到选择器的 <code>keyframe</code>名称。</li>
+<li><code>animation-duration</code> 规定完成动画所花费的时间，以秒或毫秒计。</li>
+<li><code>animation-timing-function</code> 规定动画的速度曲线。</li>
+<li><code>animation-delay</code> 规定在动画开始之前的延迟。</li>
+<li><code>animation-iteration-count</code> 规定动画应该播放的次数。</li>
+<li><code>animation-direction</code> 规定是否应该轮流反向播放动画</li>
+</ul>
+<h1 id="63-封装一个函数参数是定时器的时间then执行回调函数">63. 封装一个函数，参数是定时器的时间，.then执行回调函数</h1>
+<pre><code class="language-js">function sleep (time) {
+    return new Promise((resolve) =&gt; setTimeout(resolve, time));
+}
+</code></pre>
+<h1 id="64-怎么判断两个对象相等">64. 怎么判断两个对象相等？</h1>
+<pre><code class="language-js">obj={
+    a:1,
+    b:2
+}
+obj2={
+    a:1,
+    b:2
+}
+obj3={
+    a:1,
+    b:'2'
+}
+</code></pre>
+<blockquote>
+<p>可以转换为字符串来判断</p>
+</blockquote>
+<pre><code class="language-js">JSON.stringify(obj)==JSON.stringify(obj2);//true
+JSON.stringify(obj)==JSON.stringify(obj3);//false
+</code></pre>
+<h1 id="65-防抖节流">65. 防抖/节流</h1>
+<p><strong>防抖</strong></p>
+<blockquote>
+<p>在滚动事件中需要做个复杂计算或者实现一个按钮的防二次点击操作。可以通过函数防抖动来实现</p>
+</blockquote>
+<pre><code class="language-js">// 使用 underscore 的源码来解释防抖动
+
+/**
+ * underscore 防抖函数，返回函数连续调用时，空闲时间必须大于或等于 wait，func 才会执行
+ *
+ * @param  {function} func        回调函数
+ * @param  {number}   wait        表示时间窗口的间隔
+ * @param  {boolean}  immediate   设置为ture时，是否立即调用函数
+ * @return {function}             返回客户调用函数
+ */
+_.debounce = function(func, wait, immediate) {
+    var timeout, args, context, timestamp, result;
+
+    var later = function() {
+      // 现在和上一次时间戳比较
+      var last = _.now() - timestamp;
+      // 如果当前间隔时间少于设定时间且大于0就重新设置定时器
+      if (last &lt; wait &amp;&amp; last &gt;= 0) {
+        timeout = setTimeout(later, wait - last);
+      } else {
+        // 否则的话就是时间到了执行回调函数
+        timeout = null;
+        if (!immediate) {
+          result = func.apply(context, args);
+          if (!timeout) context = args = null;
+        }
+      }
+    };
+
+    return function() {
+      context = this;
+      args = arguments;
+      // 获得时间戳
+      timestamp = _.now();
+      // 如果定时器不存在且立即执行函数
+      var callNow = immediate &amp;&amp; !timeout;
+      // 如果定时器不存在就创建一个
+      if (!timeout) timeout = setTimeout(later, wait);
+      if (callNow) {
+        // 如果需要立即执行函数的话 通过 apply 执行
+        result = func.apply(context, args);
+        context = args = null;
+      }
+
+      return result;
+    };
+  };
+</code></pre>
+<blockquote>
+<p>整体函数实现</p>
+</blockquote>
+<p>对于按钮防点击来说的实现</p>
+<ul>
+<li>开始一个定时器，只要我定时器还在，不管你怎么点击都不会执行回调函数。一旦定时器结束并设置为 null，就可以再次点击了</li>
+<li>对于延时执行函数来说的实现：每次调用防抖动函数都会判断本次调用和之前的时间间隔，如果小于需要的时间间隔，就会重新创建一个定时器，并且定时器的延时为设定时间减去之前的时间间隔。一旦时间到了，就会执行相应的回调函数</li>
+</ul>
+<p><strong>节流</strong></p>
+<blockquote>
+<p>防抖动和节流本质是不一样的。防抖动是将多次执行变为最后一次执行，节流是将多次执行变成每隔一段时间执行</p>
+</blockquote>
+<pre><code class="language-javascript">/**
+ * underscore 节流函数，返回函数连续调用时，func 执行频率限定为 次 / wait
+ *
+ * @param  {function}   func      回调函数
+ * @param  {number}     wait      表示时间窗口的间隔
+ * @param  {object}     options   如果想忽略开始函数的的调用，传入{leading: false}。
+ *                                如果想忽略结尾函数的调用，传入{trailing: false}
+ *                                两者不能共存，否则函数不能执行
+ * @return {function}             返回客户调用函数   
+ */
+_.throttle = function(func, wait, options) {
+    var context, args, result;
+    var timeout = null;
+    // 之前的时间戳
+    var previous = 0;
+    // 如果 options 没传则设为空对象
+    if (!options) options = {};
+    // 定时器回调函数
+    var later = function() {
+      // 如果设置了 leading，就将 previous 设为 0
+      // 用于下面函数的第一个 if 判断
+      previous = options.leading === false ? 0 : _.now();
+      // 置空一是为了防止内存泄漏，二是为了下面的定时器判断
+      timeout = null;
+      result = func.apply(context, args);
+      if (!timeout) context = args = null;
+    };
+    return function() {
+      // 获得当前时间戳
+      var now = _.now();
+      // 首次进入前者肯定为 true
+	  // 如果需要第一次不执行函数
+	  // 就将上次时间戳设为当前的
+      // 这样在接下来计算 remaining 的值时会大于0
+      if (!previous &amp;&amp; options.leading === false) previous = now;
+      // 计算剩余时间
+      var remaining = wait - (now - previous);
+      context = this;
+      args = arguments;
+      // 如果当前调用已经大于上次调用时间 + wait
+      // 或者用户手动调了时间
+ 	  // 如果设置了 trailing，只会进入这个条件
+	  // 如果没有设置 leading，那么第一次会进入这个条件
+	  // 还有一点，你可能会觉得开启了定时器那么应该不会进入这个 if 条件了
+	  // 其实还是会进入的，因为定时器的延时
+	  // 并不是准确的时间，很可能你设置了2秒
+	  // 但是他需要2.2秒才触发，这时候就会进入这个条件
+      if (remaining &lt;= 0 || remaining &gt; wait) {
+        // 如果存在定时器就清理掉否则会调用二次回调
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+        previous = now;
+        result = func.apply(context, args);
+        if (!timeout) context = args = null;
+      } else if (!timeout &amp;&amp; options.trailing !== false) {
+        // 判断是否设置了定时器和 trailing
+	    // 没有的话就开启一个定时器
+        // 并且不能不能同时设置 leading 和 trailing
+        timeout = setTimeout(later, remaining);
+      }
+      return result;
+    };
+  };
+</code></pre>
+<h1 id="66-谈谈变量提升">66. 谈谈变量提升？</h1>
+<blockquote>
+<p>当执行 JS 代码时，会生成执行环境，只要代码不是写在函数中的，就是在全局执行环境中，函数中的代码会产生函数执行环境，只此两种执行环境</p>
+</blockquote>
+<ul>
+<li>接下来让我们看一个老生常谈的例子，<code>var</code></li>
+</ul>
+<pre><code class="language-js">b() // call b
+console.log(a) // undefined
+
+var a = 'Hello world'
+
+function b() {
+    console.log('call b')
+}
+</code></pre>
+<blockquote>
+<p>变量提升</p>
+<p>这是因为函数和变量提升的原因。通常提升的解释是说将声明的代码移动到了顶部，这其实没有什么错误，便于大家理解。但是更准确的解释应该是：在生成执行环境时，会有两个阶段。第一个阶段是创建的阶段，JS 解释器会找出需要提升的变量和函数，并且给他们提前在内存中开辟好空间，函数的话会将整个函数存入内存中，变量只声明并且赋值为 <code>undefined</code>，所以在第二个阶段，也就是代码执行阶段，我们可以直接提前使用</p>
+</blockquote>
+<p>在提升的过程中，相同的函数会覆盖上一个函数，并且函数优先于变量提升</p>
+<pre><code class="language-js">b() // call b second
+
+function b() {
+    console.log('call b fist')
+}
+function b() {
+    console.log('call b second')
+}
+var b = 'Hello world'
+</code></pre>
+<blockquote>
+<p>复制代码<code>var</code> 会产生很多错误，所以在 <code>ES6</code>中引入了 <code>let</code>。<code>let</code> 不能在声明前使用，但是这并不是常说的 <code>let</code> 不会提升，<code>let</code> 提升了，在第一阶段内存也已经为他开辟好了空间，但是因为这个声明的特性导致了并不能在声明前使用</p>
+</blockquote>
+<h1 id="67-什么是单线程和异步的关系">67. 什么是单线程，和异步的关系</h1>
+<ul>
+<li>单线程 - 只有一个线程，只能做一件事</li>
+<li>原因 - 避免 <code>DOM</code> 渲染的冲突
+<ul>
+<li>浏览器需要渲染 <code>DOM</code></li>
+<li><code>JS</code> 可以修改 <code>DOM</code> 结构</li>
+<li><code>JS</code> 执行的时候，浏览器 <code>DOM</code> 渲染会暂停</li>
+<li>两段 JS 也不能同时执行（都修改 <code>DOM</code> 就冲突了）</li>
+<li><code>webworker</code> 支持多线程，但是不能访问 <code>DOM</code></li>
+</ul>
+</li>
+<li>解决方案 - 异步</li>
+</ul>
+<h1 id="68-实现storage使得该对象为单例并对localstorage进行封装设置值setitemkeyvalue和getitemkey">68. 实现Storage，使得该对象为单例，并对<code>localStorage</code>进行封装设置值setItem(key,value)和getItem(key)</h1>
+<pre><code class="language-js">var instance = null;
+class Storage {
+  static getInstance() {
+    if (!instance) {
+      instance = new Storage();
+    }
+    return instance;
+  }
+  setItem = (key, value) =&gt; localStorage.setItem(key, value),
+  getItem = key =&gt; localStorage.getItem(key)
+}
+</code></pre>
+<h1 id="69-说说event-loop">69. 说说<code>event loop</code></h1>
+<blockquote>
+<p>首先，<code>js</code>是单线程的，主要的任务是处理用户的交互，而用户的交互无非就是响应<code>DOM</code>的增删改，使用事件队列的形式，一次事件循环只处理一个事件响应，使得脚本执行相对连续，所以有了事件队列，用来储存待执行的事件，那么事件队列的事件从哪里被<code>push</code>进来的呢。那就是另外一个线程叫事件触发线程做的事情了，他的作用主要是在定时触发器线程、异步<code>HTTP</code>请求线程满足特定条件下的回调函数<code>push</code>到事件队列中，等待<code>js</code>引擎空闲的时候去执行，当然js引擎执行过程中有优先级之分，首先js引擎在一次事件循环中，会先执行js线程的主任务，然后会去查找是否有微任务<code>microtask（promise）</code>，如果有那就优先执行微任务，如果没有，在去查找宏任务<code>macrotask（setTimeout、setInterval）</code>进行执行</p>
+</blockquote>
+<blockquote>
+<p>众所周知 <code>JS</code> 是门非阻塞单线程语言，因为在最初 <code>JS</code> 就是为了和浏览器交互而诞生的。如果 <code>JS</code> 是门多线程的语言话，我们在多个线程中处理 <code>DOM</code> 就可能会发生问题（一个线程中新加节点，另一个线程中删除节点）</p>
+</blockquote>
+<ul>
+<li><code>JS</code> 在执行的过程中会产生执行环境，这些执行环境会被顺序的加入到执行栈中。如果遇到异步的代码，会被挂起并加入到 <code>Task</code>（有多种 <code>task</code>） 队列中。一旦执行栈为空，<code>Event</code> <code>Loop</code> 就会从 <code>Task</code> 队列中拿出需要执行的代码并放入执行栈中执行，所以本质上来说 <code>JS</code> 中的异步还是同步行为</li>
+</ul>
+<figure data-type="image" tabindex="2"><img src="https://poetries1.gitee.io/img-repo/2020/09/101.png" alt="img" loading="lazy"></figure>
+<pre><code class="language-js">console.log('script start');
+
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
+
+console.log('script end');
+</code></pre>
+<blockquote>
+<p>不同的任务源会被分配到不同的 <code>Task</code> 队列中，任务源可以分为 微任务（<code>microtask</code>） 和 宏任务（<code>macrotask</code>）。在 <code>ES6</code> 规范中，<code>microtask</code> 称为 <code>jobs</code>，<code>macrotask</code> 称为 <code>task</code></p>
+</blockquote>
+<pre><code class="language-javascript">console.log('script start');
+
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
+
+new Promise((resolve) =&gt; {
+    console.log('Promise')
+    resolve()
+}).then(function() {
+  console.log('promise1');
+}).then(function() {
+  console.log('promise2');
+});
+
+console.log('script end');
+// script start =&gt; Promise =&gt; script end =&gt; promise1 =&gt; promise2 =&gt; setTimeout
+</code></pre>
+<blockquote>
+<p>以上代码虽然 <code>setTimeout</code> 写在 <code>Promise</code> 之前，但是因为 <code>Promise</code> 属于微任务而 <code>setTimeout</code> 属于宏任务</p>
+</blockquote>
+<p><strong>微任务</strong></p>
+<ul>
+<li><code>process.nextTick</code></li>
+<li><code>promise</code></li>
+<li><code>Object.observe</code></li>
+<li><code>MutationObserver</code></li>
+</ul>
+<p><strong>宏任务</strong></p>
+<ul>
+<li><code>script</code></li>
+<li><code>setTimeout</code></li>
+<li><code>setInterval</code></li>
+<li><code>setImmediate</code></li>
+<li><code>I/O</code></li>
+<li><code>UI rendering</code></li>
+</ul>
+<blockquote>
+<p>宏任务中包括了 <code>script</code> ，浏览器会先执行一个宏任务，接下来有异步代码的话就先执行微任务</p>
+</blockquote>
+<p><strong>所以正确的一次 Event loop 顺序是这样的</strong></p>
+<ul>
+<li>执行同步代码，这属于宏任务</li>
+<li>执行栈为空，查询是否有微任务需要执行</li>
+<li>执行所有微任务</li>
+<li>必要的话渲染 UI</li>
+<li>然后开始下一轮 <code>Event loop</code>，执行宏任务中的异步代码</li>
+</ul>
+<blockquote>
+<p>通过上述的 <code>Event loop</code> 顺序可知，如果宏任务中的异步代码有大量的计算并且需要操作 <code>DOM</code> 的话，为了更快的响应界面响应，我们可以把操作 <code>DOM</code> 放入微任务中</p>
+</blockquote>
+<h1 id="70-说说事件流">70. 说说事件流</h1>
+<p><strong>事件流分为两种，捕获事件流和冒泡事件流</strong></p>
+<ul>
+<li>捕获事件流从根节点开始执行，一直往子节点查找执行，直到查找执行到目标节点</li>
+<li>冒泡事件流从目标节点开始执行，一直往父节点冒泡查找执行，直到查到到根节点</li>
+</ul>
+<blockquote>
+<p>事件流分为三个阶段，一个是捕获节点，一个是处于目标节点阶段，一个是冒泡阶段</p>
+</blockquote>
+<h1 id="71-javascript-对象生命周期的理解">71. JavaScript 对象生命周期的理解</h1>
+<ul>
+<li>当创建一个对象时，<code>JavaScript</code> 会自动为该对象分配适当的内存</li>
+<li>垃圾回收器定期扫描对象，并计算引用了该对象的其他对象的数量</li>
+<li>如果被引用数量为 <code>0</code>，或惟一引用是循环的，那么该对象的内存即可回收</li>
+</ul>
+<h1 id="72-现在要你完成一个dialog组件说说你设计的思路它应该有什么功能">72.  现在要你完成一个Dialog组件，说说你设计的思路？它应该有什么功能？</h1>
+<ul>
+<li>该组件需要提供<code>hook</code>指定渲染位置，默认渲染在body下面。</li>
+<li>然后改组件可以指定外层样式，如宽度等</li>
+<li>组件外层还需要一层<code>mask</code>来遮住底层内容，点击<code>mask</code>可以执行传进来的<code>onCancel</code>函数关闭<code>Dialog</code>。</li>
+<li>另外组件是可控的，需要外层传入<code>visible</code>表示是否可见。</li>
+<li>然后<code>Dialog</code>可能需要自定义头head和底部<code>footer</code>，默认有头部和底部，底部有一个确认按钮和取消按钮，确认按钮会执行外部传进来的<code>onOk</code>事件，然后取消按钮会执行外部传进来的<code>onCancel</code>事件。</li>
+<li>当组件的<code>visible</code>为<code>true</code>时候，设置<code>body</code>的<code>overflow</code>为<code>hidden</code>，隐藏<code>body</code>的滚动条，反之显示滚动条。</li>
+<li>组件高度可能大于页面高度，组件内部需要滚动条。</li>
+<li>只有组件的<code>visible</code>有变化且为<code>ture</code>时候，才重渲染组件内的所有内容</li>
+</ul>
+<h1 id="73-ajax-axios-fetch区别">73. ajax、axios、fetch区别</h1>
+<ul>
+<li>
+<p>ajax (16. Ajax原理)</p>
+</li>
+<li>
+<p><strong>axios</strong></p>
+<pre><code class="language-js">axios({
+    method: 'post',
+    url: '/user/12345',
+    data: {
+        firstName: 'Fred',
+        lastName: 'Flintstone'
+    }
+})
+.then(function (response) {
+    console.log(response);
+})
+.catch(function (error) {
+    console.log(error);
+});
+</code></pre>
+<p>优缺点：</p>
+<ul>
+<li>从浏览器中创建 <code>XMLHttpRequest</code></li>
+<li>从 <code>node.js</code> 发出 <code>http</code> 请求</li>
+<li>支持 <code>Promise API</code></li>
+<li>拦截请求和响应</li>
+<li>转换请求和响应数据</li>
+<li>取消请求</li>
+<li>自动转换<code>JSON</code>数据</li>
+<li>客户端支持防止<code>CSRF/XSRF</code></li>
+</ul>
+<p><strong>fetch</strong></p>
+<pre><code class="language-js">try {
+  let response = await fetch(url);
+  let data = response.json();
+  console.log(data);
+} catch(e) {
+  console.log(&quot;Oops, error&quot;, e);
+
+}
+</code></pre>
+<p>优缺点：</p>
+<ul>
+<li><code>fetcht</code>只对网络请求报错，对<code>400</code>，<code>500</code>都当做成功的请求，需要封装去处理</li>
+<li><code>fetch</code>默认不会带<code>cookie</code>，需要添加配置项</li>
+<li><code>fetch</code>不支持<code>abort</code>，不支持超时控制，使用<code>setTimeout</code>及<code>Promise.reject</code>的实现的超时控制并不能阻止请求过程继续在后台运行，造成了量的浪费</li>
+<li><code>fetch</code>没有办法原生监测请求的进度，而XHR可以</li>
+</ul>
+</li>
+</ul>
+<h1 id="74-javascript的组成">74. JavaScript的组成</h1>
+<ul>
+<li><code>JavaScript</code> 由以下三部分组成：
+<ul>
+<li><code>ECMAScript（核心）：</code>JavaScript` 语言基础</li>
+<li><code>DOM</code>（文档对象模型）：规定了访问<code>HTML</code>和<code>XML</code>的接口</li>
+<li><code>BOM</code>（浏览器对象模型）：提供了浏览器窗口之间进行交互的对象和方法</li>
+</ul>
+</li>
+</ul>
+<h1 id="75-检测浏览器版本版本有哪些方式">75. 检测浏览器版本版本有哪些方式？</h1>
+<ul>
+<li>根据 <code>navigator.userAgent</code> <code>UA.toLowerCase().indexOf('chrome')</code></li>
+<li>根据 <code>window</code> 对象的成员 <code>'ActiveXObject' in window</code></li>
+</ul>
+<h1 id="76-说几条写javascript的基本规范">76. 说几条写JavaScript的基本规范</h1>
+<ul>
+<li>代码缩进，建议使用“四个空格”缩进</li>
+<li>代码段使用花括号<code>{}</code>包裹</li>
+<li>语句结束使用分号;</li>
+<li>变量和函数在使用前进行声明</li>
+<li>以大写字母开头命名构造函数，全大写命名常量</li>
+<li>规范定义<code>JSON</code>对象，补全双引号</li>
+<li>用<code>{}</code>和<code>[]</code>声明对象和数组</li>
 </ul>
 
             </div>
