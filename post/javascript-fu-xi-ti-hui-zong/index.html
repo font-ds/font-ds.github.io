@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1648099086182">
+<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1648381545289">
 <link rel="stylesheet" href="https://font-ds.github.io/styles/main.css">
 
 
@@ -34,7 +34,7 @@ js几种类型的值
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://font-ds.github.io">
-        <img src="https://font-ds.github.io/images/avatar.png?v=1648099086182" class="site-logo">
+        <img src="https://font-ds.github.io/images/avatar.png?v=1648381545289" class="site-logo">
         <h1 class="site-title">font-ds</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -1378,7 +1378,7 @@ console.log(unique(arr));
 <pre><code class="language-js">[...new Set(arr)]
 //代码就是这么少----（其实，严格来说并不算是一种，相对于第一种方法来说只是简化了代码）
 </code></pre>
-<h1 id="60-设计题想实现一个对页面某个节点的拖曳如何做使用原生js">60. （设计题）想实现一个对页面某个节点的拖曳？如何做？（使用原生JS）</h1>
+<h1 id="60-设计题想实现一个对页面某个节点的拖拽如何做使用原生js">60. （设计题）想实现一个对页面某个节点的拖拽？如何做？（使用原生JS）</h1>
 <ul>
 <li>给需要拖拽的节点绑定<code>mousedown</code>, <code>mousemove</code>, <code>mouseup</code>事件</li>
 <li><code>mousedown</code>事件触发后，开始拖拽</li>
@@ -1925,6 +1925,263 @@ console.log('script end');
 <li>以大写字母开头命名构造函数，全大写命名常量</li>
 <li>规范定义<code>JSON</code>对象，补全双引号</li>
 <li>用<code>{}</code>和<code>[]</code>声明对象和数组</li>
+</ul>
+<h1 id="77-script-的位置是否会影响首屏显示时间">77. script 的位置是否会影响首屏显示时间</h1>
+<ul>
+<li>在解析 <code>HTML</code> 生成 <code>DOM</code> 过程中，<code>js</code> 文件的下载是并行的，不需要 <code>DOM</code> 处理到 <code>script</code> 节点。因此，<code>script</code>的位置不影响首屏显示的开始时间。</li>
+<li>浏览器解析 <code>HTML</code> 是自上而下的线性过程，<code>script</code>作为 <code>HTML</code> 的一部分同样遵循这个原则</li>
+<li>因此，<code>script</code> 会延迟 <code>DomContentLoad</code>，只显示其上部分首屏内容，从而影响首屏显示的完成时间</li>
+</ul>
+<h1 id="78-介绍-dom-的发展">78. 介绍 DOM 的发展</h1>
+<ul>
+<li><code>DOM</code>：文档对象模型（<code>Document Object Model</code>），定义了访问HTML和XML文档的标准，与编程语言及平台无关</li>
+<li><code>DOM0</code>：提供了查询和操作Web文档的内容API。未形成标准，实现混乱。如：<code>document.forms['login']</code></li>
+<li><code>DOM1</code>：W3C提出标准化的DOM，简化了对文档中任意部分的访问和操作。如：<code>JavaScript中的Document</code>对象</li>
+<li><code>DOM2</code>：原来DOM基础上扩充了鼠标事件等细分模块，增加了对CSS的支持。如：<code>getComputedStyle(elem, pseudo)</code></li>
+<li><code>DOM3</code>：增加了XPath模块和加载与保存（<code>Load and Save</code>）模块。如：<code>XPathEvaluator</code></li>
+</ul>
+<p><strong>介绍DOM0，DOM2，DOM3事件处理方式区别</strong></p>
+<ul>
+<li>DOM0级事件处理方式：
+<ul>
+<li><code>btn.onclick = func;</code></li>
+<li><code>btn.onclick = null;</code></li>
+</ul>
+</li>
+<li>DOM2级事件处理方式：
+<ul>
+<li><code>btn.addEventListener('click', func, false);</code></li>
+<li><code>btn.removeEventListener('click', func, false);</code></li>
+<li><code>btn.attachEvent(&quot;onclick&quot;, func);</code></li>
+<li><code>btn.detachEvent(&quot;onclick&quot;, func);</code></li>
+</ul>
+</li>
+<li>DOM3级事件处理方式：
+<ul>
+<li><code>eventUtil.addListener(input, &quot;textInput&quot;, func);</code></li>
+<li><code>eventUtil</code> 是自定义对象，<code>textInput</code> 是DOM3级事件</li>
+</ul>
+</li>
+</ul>
+<p><strong>事件的三个阶段</strong></p>
+<ul>
+<li>捕获、目标、冒泡</li>
+</ul>
+<h1 id="79-介绍事件捕获和冒泡执行顺序和事件的执行次数">79. 介绍事件“捕获”和“冒泡”执行顺序和事件的执行次数</h1>
+<ul>
+<li>按照W3C标准的事件：首是进入捕获阶段，直到达到目标元素，再进入冒泡阶段</li>
+<li>事件执行次数（DOM2-addEventListener）：元素上绑定事件的个数
+<ul>
+<li>注意1：前提是事件被确实触发</li>
+<li>注意2：事件绑定几次就算几个事件，即使类型和功能完全一样也不会“覆盖”</li>
+</ul>
+</li>
+<li>事件执行顺序：判断的关键是否目标元素
+<ul>
+<li>非目标元素：根据W3C的标准执行：捕获-&gt;目标元素-&gt;冒泡（不依据事件绑定顺序）</li>
+<li>目标元素：依据事件绑定顺序：先绑定的事件先执行（不依据捕获冒泡标准）</li>
+<li>最终顺序：父元素捕获-&gt;目标元素事件1-&gt;目标元素事件2-&gt;子元素捕获-&gt;子元素冒泡-&gt;父元素冒泡</li>
+<li>注意：子元素事件执行前提 事件确实“落”到子元素布局区域上，而不是简单的具有嵌套关系</li>
+</ul>
+</li>
+</ul>
+<p><strong>在一个DOM上同时绑定两个点击事件：一个用捕获，一个用冒泡。事件会执行几次，先执行冒泡还是捕获？</strong></p>
+<ul>
+<li>该DOM上的事件如果被触发，会执行两次（执行次数等于绑定次数）</li>
+<li>如果该DOM是目标元素，则按事件绑定顺序执行，不区分冒泡/捕获</li>
+<li>如果该DOM是处于事件流中的非目标元素，则先执行捕获，后执行冒泡</li>
+</ul>
+<p><strong>事件的代理/委托</strong></p>
+<ul>
+<li>事件委托是指将事件绑定目标元素的到父元素上，利用冒泡机制触发该事件
+<ul>
+<li>优点：
+<ul>
+<li>可以减少事件注册，节省大量内存占用</li>
+<li>可以将事件应用于动态添加的子元素上</li>
+</ul>
+</li>
+<li>缺点： 使用不当会造成事件在不应该触发时触发</li>
+<li>示例：</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-text">ulEl.addEventListener('click', function(e){
+    var target = event.target || event.srcElement;
+    if(!!target &amp;&amp; target.nodeName.toUpperCase() === &quot;LI&quot;){
+        console.log(target.innerHTML);
+    }
+}, false);
+</code></pre>
+<p><strong>W3C事件的 target 与 currentTarget 的区别？</strong></p>
+<ul>
+<li><code>target</code> 只会出现在事件流的目标阶段</li>
+<li><code>currentTarget</code> 可能出现在事件流的任何阶段</li>
+<li>当事件流处在目标阶段时，二者的指向相同</li>
+<li>当事件流处于捕获或冒泡阶段时：<code>currentTarget</code> 指向当前事件活动的对象(一般为父级)</li>
+</ul>
+<p><strong>如何派发事件(dispatchEvent)？（如何进行事件广播？）</strong></p>
+<ul>
+<li>W3C: 使用 <code>dispatchEvent</code> 方法</li>
+<li>IE: 使用 <code>fireEvent</code> 方法</li>
+</ul>
+<pre><code class="language-js">var fireEvent = function(element, event){
+    if (document.createEventObject){
+        var mockEvent = document.createEventObject();
+        return element.fireEvent('on' + event, mockEvent)
+    }else{
+        var mockEvent = document.createEvent('HTMLEvents');
+        mockEvent.initEvent(event, true, true);
+        return !element.dispatchEvent(mockEvent);
+    }
+}
+</code></pre>
+<h1 id="80-区分什么是客户区坐标-页面坐标-屏幕坐标">80. 区分什么是“客户区坐标”、“页面坐标”、“屏幕坐标”</h1>
+<ul>
+<li>客户区坐标：鼠标指针在可视区中的水平坐标(<code>clientX</code>)和垂直坐标(<code>clientY</code>)</li>
+<li>页面坐标：鼠标指针在页面布局中的水平坐标(<code>pageX</code>)和垂直坐标(<code>pageY</code>)</li>
+<li>屏幕坐标：设备物理屏幕的水平坐标(<code>screenX</code>)和垂直坐标(<code>screenY</code>)</li>
+</ul>
+<p><strong>如何获得一个DOM元素的绝对位置？</strong></p>
+<ul>
+<li><code>elem.offsetLef</code>t：返回元素相对于其定位父级左侧的距离</li>
+<li><code>elem.offsetTop</code>：返回元素相对于其定位父级顶部的距离</li>
+<li><code>elem.getBoundingClientRect()</code>：返回一个<code>DOMRect</code>对象，包含一组描述边框的只读属性，单位像素</li>
+</ul>
+<h1 id="81-javascript垃圾回收方法">81. Javascript垃圾回收方法</h1>
+<ul>
+<li>标记清除（mark and sweep）</li>
+</ul>
+<blockquote>
+<ul>
+<li>这是JavaScript最常见的垃圾回收方式，当变量进入执行环境的时候，比如函数中声明一个变量，垃圾回收器将其标记为“进入环境”，当变量离开环境的时候（函数执行结束）将其标记为“离开环境”</li>
+<li>垃圾回收器会在运行的时候给存储在内存中的所有变量加上标记，然后去掉环境中的变量以及被环境中变量所引用的变量（闭包），在这些完成之后仍存在标记的就是要删除的变量了</li>
+</ul>
+</blockquote>
+<p><strong>引用计数(reference counting)</strong></p>
+<blockquote>
+<p>在低版本IE中经常会出现内存泄露，很多时候就是因为其采用引用计数方式进行垃圾回收。引用计数的策略是跟踪记录每个值被使用的次数，当声明了一个 变量并将一个引用类型赋值给该变量的时候这个值的引用次数就加1，如果该变量的值变成了另外一个，则这个值得引用次数减1，当这个值的引用次数变为0的时 候，说明没有变量在使用，这个值没法被访问了，因此可以将其占用的空间回收，这样垃圾回收器会在运行的时候清理掉引用次数为0的值占用的空间</p>
+</blockquote>
+<h1 id="82-请解释一下-javascript-的同源策略">82. 请解释一下 JavaScript 的同源策略</h1>
+<ul>
+<li>概念:同源策略是客户端脚本（尤其是Javascript）的重要的安全度量标准。它最早出自Netscape Navigator2.0，其目的是防止某个文档或脚本从多个不同源装载。这里的同源策略指的是：协议，域名，端口相同，同源策略是一种安全协议</li>
+<li>指一段脚本只能读取来自同一来源的窗口和文档的属性</li>
+</ul>
+<p><strong>为什么要有同源限制？</strong></p>
+<ul>
+<li>我们举例说明：比如一个黑客程序，他利用Iframe把真正的银行登录页面嵌到他的页面上，当你使用真实的用户名，密码登录时，他的页面就可以通过Javascript读取到你的表单中input中的内容，这样用户名，密码就轻松到手了。</li>
+<li>缺点
+<ul>
+<li>现在网站的JS都会进行压缩，一些文件用了严格模式，而另一些没有。这时这些本来是严格模式的文件，被 merge后，这个串就到了文件的中间，不仅没有指示严格模式，反而在压缩后浪费了字节</li>
+</ul>
+</li>
+</ul>
+<h1 id="83-如何删除一个cookie">83. 如何删除一个cookie</h1>
+<ul>
+<li>将时间设为当前时间往前一点</li>
+</ul>
+<pre><code class="language-js">var date = new Date();
+
+date.setDate(date.getDate() - 1);//真正的删除
+</code></pre>
+<blockquote>
+<p><code>setDate()</code>方法用于设置一个月的某一天</p>
+</blockquote>
+<ul>
+<li><code>expires</code>的设置</li>
+</ul>
+<pre><code class="language-js">document.cookie = 'user='+ encodeURIComponent('name')  + ';expires = ' + new Date(0)
+</code></pre>
+<h1 id="84-页面编码和被请求的资源编码如果不一致如何处理">84. 页面编码和被请求的资源编码如果不一致如何处理</h1>
+<ul>
+<li>后端响应头设置 <code>charset</code></li>
+<li>前端页面<code>&lt;meta&gt;</code>设置 <code>charset</code></li>
+</ul>
+<h1 id="85-把script放在body之前和之后有什么区别浏览器会如何解析它们">85. 把<code>&lt;script&gt;</code>放在<code>&lt;/body&gt;</code>之前和之后有什么区别？浏览器会如何解析它们？</h1>
+<ul>
+<li>按照HTML标准，在<code>&lt;/body&gt;</code>结束后出现<code>&lt;script&gt;</code>或任何元素的开始标签，都是解析错误</li>
+<li>虽然不符合HTML标准，但浏览器会自动容错，使实际效果与写在<code>&lt;/body&gt;</code>之前没有区别</li>
+<li>浏览器的容错机制会忽略<code>&lt;script&gt;</code>之前的<code>&lt;/body&gt;</code>，视作<code>&lt;script&gt;</code>仍在 body 体内。省略<code>&lt;/body&gt;</code>和<code>&lt;/html&gt;</code>闭合标签符合HTML标准，服务器可以利用这一标准尽可能少输出内容</li>
+</ul>
+<h1 id="86-javascript-中调用函数有哪几种方式">86. JavaScript 中，调用函数有哪几种方式</h1>
+<ul>
+<li>方法调用模式 <code>Foo.foo(arg1, arg2);</code></li>
+<li>函数调用模式 <code>foo(arg1, arg2);</code></li>
+<li>构造器调用模式 <code>(new Foo())(arg1, arg2);</code></li>
+<li><code>call/applay</code>调用模式 <code>Foo.foo.call(that, arg1, arg2);</code></li>
+<li><code>bind</code>调用模式 <code>Foo.foo.bind(that)(arg1, arg2)();</code></li>
+</ul>
+<h1 id="87-简单实现-functionbind-函数">87. 简单实现 Function.bind 函数</h1>
+<pre><code class="language-js">  if (!Function.prototype.bind) {
+    Function.prototype.bind = function(that) {
+      var func = this, args = arguments;
+      return function() {
+        return func.apply(that, Array.prototype.slice.call(args, 1));
+      }
+    }
+  }
+  // 只支持 bind 阶段的默认参数：
+  func.bind(that, arg1, arg2)();
+
+  // 不支持以下调用阶段传入的参数：
+  func.bind(that)(arg1, arg2);
+</code></pre>
+<h1 id="88-列举一下javascript数组和对象有哪些原生方法">88. 列举一下JavaScript数组和对象有哪些原生方法？</h1>
+<ul>
+<li><code>arr.concat(arr1, arr2, arrn);</code></li>
+<li><code>arr.join(&quot;,&quot;);</code></li>
+<li><code>arr.sort(func);</code></li>
+<li><code>arr.pop();</code></li>
+<li><code>arr.push(e1, e2, en);</code></li>
+<li><code>arr.shift();</code></li>
+<li><code>unshift(e1, e2, en);</code></li>
+<li><code>arr.reverse();</code></li>
+<li><code>arr.slice(start, end);</code></li>
+<li><code>arr.splice(index, count, e1, e2, en);</code></li>
+<li><code>arr.indexOf(el);</code></li>
+<li><code>arr.includes(el);</code> // ES6</li>
+</ul>
+<p><strong>对象：</strong></p>
+<ul>
+<li><code>object.hasOwnProperty(prop);</code></li>
+<li><code>object.propertyIsEnumerable(prop);</code></li>
+<li><code>object.valueOf();</code></li>
+<li><code>object.toString();</code></li>
+<li><code>object.toLocaleString();</code></li>
+<li><code>Class.prototype.isPropertyOf(object);</code></li>
+</ul>
+<h1 id="89-arrayslice-与-arraysplice-的区别">89. Array.slice() 与 Array.splice() 的区别？</h1>
+<p><strong><code>slice</code></strong></p>
+<blockquote>
+<p>“读取”数组指定的元素，不会对原数组进行修改</p>
+</blockquote>
+<ul>
+<li>语法：<code>arr.slice(start, end)</code></li>
+<li><code>start</code> 指定选取开始位置（含）</li>
+<li><code>end</code> 指定选取结束位置（不含）</li>
+</ul>
+<p><strong><code>splice</code></strong></p>
+<ul>
+<li>“操作”数组指定的元素，会修改原数组，返回被删除的元素</li>
+<li>语法：<code>arr.splice(index, count, [insert Elements])</code></li>
+<li><code>index</code> 是操作的起始位置</li>
+<li><code>count = 0</code> 插入元素，<code>count &gt; 0</code> 删除元素</li>
+<li><code>[insert Elements]</code> 向数组新插入的元素</li>
+</ul>
+<h1 id="90-web应用从服务器主动推送data到客户端有那些方式">90. WEB应用从服务器主动推送Data到客户端有那些方式</h1>
+<ul>
+<li>
+<p><code>AJAX</code> 轮询</p>
+</li>
+<li>
+<p><code>html5</code> 服务器推送事件 <code>(new EventSource(SERVER_URL)).addEventListener(&quot;message&quot;, func);</code></p>
+</li>
+<li>
+<p>html5 Websocket</p>
+</li>
+<li>
+<p><code>(new WebSocket(SERVER_URL)).addEventListener(&quot;message&quot;, func);</code></p>
+</li>
 </ul>
 
             </div>
