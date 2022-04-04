@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://font-ds.github.io</id>
     <title>font-ds</title>
-    <updated>2022-04-03T12:48:34.203Z</updated>
+    <updated>2022-04-04T13:11:48.057Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://font-ds.github.io"/>
     <link rel="self" href="https://font-ds.github.io/atom.xml"/>
@@ -270,33 +270,34 @@ FALLBACK:
 <p>block formatting context      块级元素格式化上下文 (被隔离的区间：BFC的子元素不会对外边的元素产生影响)</p>
 <p>BFC元素：</p>
 <pre><code>1. body
-2. float：left | right
-3. overflow：hidden | scroll | auto ；   不是visible
-4. display：inline-block | table-cell | table-caption | flex | grid
-5. position：absolute | fixed   非 relative
+1. float：left | right
+1. overflow：hidden | scroll | auto ；   不是visible
+1. display：inline-block | table-cell | table-caption | flex | grid
+1. position：absolute | fixed   非 relative
 </code></pre>
 <p>一个BFC区域，只包含其所有子元素，不包含子元素的子元素。</p>
 <p>BFC有一个特点是：<strong>每一个BFC区域都是相互独立，互不影响的。</strong></p>
 <h2 id="利用bfc解决问题">利用BFC解决问题</h2>
 <h3 id="解决外边距的塌陷问题垂直塌陷"><strong>解决外边距的塌陷问题(垂直塌陷)</strong></h3>
 <p>开发中，前端的布局手段，离不开外边距margin，那么，也会遇到一些问题，例如外边距的垂直塌陷问题。</p>
+<figure data-type="image" tabindex="1"><img src="http://www.itcast.cn/files/image/202010/20201016160023317.jpg" alt="BFC03" loading="lazy"></figure>
 <p>通过以上的实例，我们会发现，代码给两个div盒子，都添加了四个方向的margin，讲道理，学过数学的都知道，100+100=200.可是，盒子之间的距离，现在却之后100px。这就是很典型的margin的塌陷，两段margin重叠到了一块，互相影响。那么，如何利用BFC，让这个问题得到解决呢。回忆下，上文说过，BFC，就是一个与世隔绝的独立区域，不会互相影响，那么，我们可以将这两个盒子，放到两个BFC区域中，即可解决这个问题。</p>
-<figure data-type="image" tabindex="1"><img src="http://www.itcast.cn/files/image/202010/20201016160053011.gif" alt="BFC04" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="http://www.itcast.cn/files/image/202010/20201016160053011.gif" alt="BFC04" loading="lazy"></figure>
 <h3 id="利用bfc解决包含塌陷"><strong>利用BFC解决包含塌陷</strong></h3>
 <p>当父子关系的盒子，给子元素添加margin-top，有可能会把父元素一起带跑。</p>
-<figure data-type="image" tabindex="2"><img src="http://www.itcast.cn/files/image/202010/20201016162038423.jpg" alt="BFC05" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="http://www.itcast.cn/files/image/202010/20201016162038423.jpg" alt="BFC05" loading="lazy"></figure>
 <p>原本，正确的显示方式，应该是粉色盒子与红色盒子的顶部距离为50px，但是由于margin的塌陷问题，导致盒子内部的布局影响到了外部。这个时候，就可以触发BFC，将父盒子变成一个独立的区域，这样在BFC区域内部的任何操作，都不会影响到外部。</p>
-<figure data-type="image" tabindex="3"><img src="http://www.itcast.cn/files/image/202010/20201016162111734.gif" alt="BFC06" loading="lazy"></figure>
+<figure data-type="image" tabindex="4"><img src="http://www.itcast.cn/files/image/202010/20201016162111734.gif" alt="BFC06" loading="lazy"></figure>
 <h3 id="当浮动产生影响的时候可以利用bfc来清除浮动的影响"><strong>当浮动产生影响的时候，可以利用BFC来清除浮动的影响</strong></h3>
-<figure data-type="image" tabindex="4"><img src="http://www.itcast.cn/files/image/202010/20201016162155258.jpg" alt="BFC07" loading="lazy"></figure>
+<figure data-type="image" tabindex="5"><img src="http://www.itcast.cn/files/image/202010/20201016162155258.jpg" alt="BFC07" loading="lazy"></figure>
 <p>以上代码表示，一个没有设置高度的父盒子，包含着七个子元素。如果此时，所有的子元素都浮动的话</p>
-<figure data-type="image" tabindex="5"><img src="http://www.itcast.cn/files/image/202010/20201016162222822.gif" alt="BFC08" loading="lazy"></figure>
+<figure data-type="image" tabindex="6"><img src="http://www.itcast.cn/files/image/202010/20201016162222822.gif" alt="BFC08" loading="lazy"></figure>
 <p>当所有的子元素都浮动了，这个时候，父盒子失去了原有的高度，这就是浮动的影响。这个时候，同样也可用BFC的机制，来清除浮动带来的影响。使用BFC，将所有的浮动元素包裹起来。</p>
-<figure data-type="image" tabindex="6"><img src="http://www.itcast.cn/files/image/202010/20201016162302990.gif" alt="BFC09" loading="lazy"></figure>
+<figure data-type="image" tabindex="7"><img src="http://www.itcast.cn/files/image/202010/20201016162302990.gif" alt="BFC09" loading="lazy"></figure>
 <h3 id="bfc可以阻止标准流元素被浮动元素覆盖"><strong>BFC可以阻止标准流元素被浮动元素覆盖</strong></h3>
-<figure data-type="image" tabindex="7"><img src="http://www.itcast.cn/files/image/202010/20201016162336022.jpg" alt="BFC10" loading="lazy"></figure>
+<figure data-type="image" tabindex="8"><img src="http://www.itcast.cn/files/image/202010/20201016162336022.jpg" alt="BFC10" loading="lazy"></figure>
 <p>以上情况，红色盒子浮动，蓝色盒子是标准流，默认情况下，浮动元素覆盖了标准流元素。但是，如果将蓝色盒子的BFC触发，那么情况将有所变化。</p>
-<figure data-type="image" tabindex="8"><img src="http://www.itcast.cn/files/image/202010/20201016162411159.gif" alt="BFC10" loading="lazy"></figure>
+<figure data-type="image" tabindex="9"><img src="http://www.itcast.cn/files/image/202010/20201016162411159.gif" alt="BFC10" loading="lazy"></figure>
 <p>当蓝色盒子触发了BFC之后，浮动元素再也不能覆盖它了，而且还能利用这个特性，来实现蓝色盒子宽度根据红色盒子的宽度来做自动适应</p>
 <h1 id="2-ifc">2. IFC</h1>
 <p>FC IFC(Inline Formatting Contexts)直译为&quot;内联格式化上下文&quot;，IFC 的 line box（线框）高度由其包含行内元素中最高的实际高度计算而来（不受到竖直方向的padding/margin影响)</p>
@@ -395,19 +396,15 @@ background-color:red
 <ul>
 <li>元素宽度 = <code>width + padding + border + margin</code></li>
 </ul>
+<figure data-type="image" tabindex="10"><img src="C:%5CUsers%5CHUAWEI%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220314161003029.png" alt="image-20220314161003029" loading="lazy"></figure>
 </li>
-</ul>
-<figure data-type="image" tabindex="9"><img src="https://font-ds.github.io/post-images/1648097529430.png" alt="" loading="lazy"></figure>
-<ul>
 <li>
 <p>怪异盒模块（IE盒模型）</p>
 <ul>
 <li>元素宽度 = <code>width + margin</code></li>
 </ul>
+<figure data-type="image" tabindex="11"><img src="C:%5CUsers%5CHUAWEI%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220314161022052.png" alt="image-20220314161022052" loading="lazy"></figure>
 </li>
-</ul>
-<figure data-type="image" tabindex="10"><img src="https://font-ds.github.io/post-images/1648097602589.jpeg" alt="" loading="lazy"></figure>
-<ul>
 <li>
 <p>flex弹性伸缩盒模型</p>
 <ul>
@@ -425,7 +422,7 @@ background-color:red
 <li><code>box-sizing: border-box;</code> 触发怪异(IE)盒模型元素的效果</li>
 <li><code>box-sizing: inherit;</code> 继承父元素 <code>box-sizing</code> 属性的值</li>
 </ul>
-<h1 id="6-line-height和height区别">6. line-height和height区别</h1>
+<h1 id="6-line-height-和-height-区别">6. line-height 和 height 区别</h1>
 <ol>
 <li>
 <p>height就是元素的高度值，是一个死值，就是这个盒子的高度</p>
@@ -437,34 +434,43 @@ background-color:red
 <h1 id="7-css的选择符">7. CSS的选择符</h1>
 <h2 id="css选择符">css选择符</h2>
 <pre><code>1. 通配（*）
-1. 选择器（#）
-1. 类选择器（.）
-1. 标签选择器（div、p、h1...）
-1. 相邻选择器（+）
-1. 后代选择器（空格）
-1. 子元素选择器（&gt;）
-1. 属性选择器（a[href]）
+2. 选择器（#）
+3. 类选择器（.）
+4. 标签选择器（div、p、h1...）
+5. 相邻选择器（+）
+6. 后代选择器（空格）
+7. 子元素选择器（&gt;）
+8. 属性选择器（a[href]）
 </code></pre>
 <h2 id="css属性哪些可以继承">css属性哪些可以继承</h2>
 <p>​		文字系列：font-size、color、line-height、text-align、opacity ......</p>
 <p><strong>不可继承</strong>：border、padding、margin ......</p>
+<p>[CSS有哪些继承元素](# 54. CSS有哪些继承属性)</p>
 <h1 id="8-css优先级算法">8. CSS优先级算法</h1>
 <p>优先级比较：!important &gt; 内联样式 &gt; id &gt; class &gt; 标签 &gt; 通配</p>
 <h2 id="css权重计算">css权重计算</h2>
 <ol>
 <li>
 <p>!important —— 最高权值</p>
-<ol start="2">
-<li>内联样式 style —— 权重值：1000</li>
-<li>ID选择器 —— 权重值：100</li>
-<li>Class选择器 —— 权重值：10</li>
-<li>HTML标签选择器&amp;伪元素 —— 权重值：1</li>
-<li>通配符选择器 —— 权重值：0</li>
-</ol>
+</li>
+<li>
+<p>内联样式 style —— 权重值：1000</p>
+</li>
+<li>
+<p>ID选择器 —— 权重值：100</p>
+</li>
+<li>
+<p>Class选择器 —— 权重值：10</p>
+</li>
+<li>
+<p>HTML标签选择器&amp;伪元素 —— 权重值：1</p>
+</li>
+<li>
+<p>通配符选择器 —— 权重值：0</p>
 </li>
 </ol>
 <h1 id="9-盒子水平垂直居中">9. 盒子水平垂直居中</h1>
-<p>这种需求在我之前的项目中十分常见，随着flex兴起，，后来看blog发现这种方式也十分好</p>
+<p>这种需求在我之前的项目中十分常见，随着flex兴起，后来看blog发现这种方式也十分好</p>
 <pre><code class="language-shell">//1、定位
 body{
   position:relative
@@ -498,7 +504,7 @@ body{
   height:500px;
   display:table-ceil;
   vertical-align:center;
-  text-align:center;ß
+  text-align:center;
 }
 .box{
   display:inline-block;
@@ -506,7 +512,6 @@ body{
 
 
 </code></pre>
-<h4 id=""></h4>
 <h1 id="10-css画三角形">10. CSS画三角形</h1>
 <pre><code class="language-js">// 用border画边框
 // 通过将其他三个边框设置为透明色，实现某个方向的三角形
@@ -523,10 +528,10 @@ div{
 <li><code>block</code> 转换成块状元素。</li>
 <li><code>inline</code> 转换成行内元素。</li>
 <li><code>none</code> 设置元素不可见。</li>
-<li><code>inline-block</code> 象行内元素一样显示，但其内容象块类型元素一样显示。</li>
+<li><code>inherit</code> 规定应该从父元素继承 <code>display</code> 属性的值</li>
+<li><code>inline-block</code> 像行内元素一样显示，但其内容象块类型元素一样显示。</li>
 <li><code>list-item</code> 象块类型元素一样显示，并添加样式列表标记。</li>
 <li><code>table</code> 此元素会作为块级表格来显示</li>
-<li><code>inherit</code> 规定应该从父元素继承 <code>display</code> 属性的值</li>
 </ul>
 <h1 id="12-清除浮动">12. 清除浮动</h1>
 <ul>
@@ -806,7 +811,7 @@ a{
 <li>移除空格</li>
 <li>使用<code>margin</code>负值</li>
 <li>为父元素中设置<code>font-size: 0</code>，在子元素上重置正确的<code>font-size</code></li>
-<li><code>letter-spacing</code></li>
+<li><code>letter-spacing</code>     属性增加或减少字符间的空白</li>
 <li>设置父元素，<code>display:table</code> 和 <code>word-spacing</code></li>
 </ul>
 <h1 id="27-pnggifjpg的区别及如何选">27. PNG\GIF\JPG的区别及如何选</h1>
@@ -846,6 +851,7 @@ a{
 <li>单冒号(<code>:</code>)用于<code>CSS3</code>伪类，双冒号(<code>::</code>)用于<code>CSS3</code>伪元素</li>
 <li>用于区分伪类和伪元素</li>
 </ul>
+<p>[伪类与伪元素区别](# 39. 伪类和伪元素的区别)</p>
 <h1 id="30-如果需要手动写动画你认为最小时间间隔是多久">30. 如果需要手动写动画，你认为最小时间间隔是多久</h1>
 <ul>
 <li>多数显示器默认频率是<code>60Hz</code>，即<code>1</code>秒刷新<code>60</code>次，所以理论上最小间隔为<code>1/60*1000ms ＝ 16.7ms</code></li>
@@ -872,9 +878,32 @@ a{
 <li><code>animation</code>：动画定义了动作的每一帧（<code>@keyframes</code>）有什么效果，包括<code>animation-name</code>，<code>animation-duration</code>、<code>animation-timing-function</code>、<code>animation-delay</code>、<code>animation-iteration-count</code>、<code>animation-direction</code></li>
 </ul>
 <h1 id="35-base64的原理及优缺点">35. base64的原理及优缺点</h1>
+<p>Base64是一种基于64个可打印字符来表示二进制数据的编码方式，是从二进制数据到字符的过程。<br>
+原则上，计算机中所有内容都是二进制形式存储的，所以所有内容（包括文本、影音、图片等）都可以用base64来表示。</p>
 <ul>
-<li>优点可以加密，减少了<code>HTTTP</code>请求</li>
-<li>缺点是需要消耗<code>CPU</code>进行编解码</li>
+<li>原理
+<ul>
+<li>Base64编码之所以称为Base64，是因为其使用64个字符来对任意数据进行编码</li>
+</ul>
+</li>
+<li>优缺点
+<ul>
+<li>优点
+<ul>
+<li>可以加密，减少了<code>HTTTP</code>请求</li>
+<li>base64编码的字符串，更适合不同平台、不同语言的传输</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>需要消耗<code>CPU</code>进行编解码</li>
+<li>base64格式的文本内容较多，转换后的大小会增加</li>
+<li>网页加载图片虽然不用访问服务器了，但因为base64格式的内容太多，所以加载网页的速度会降低，可能会影响用户的体验</li>
+<li>base64无法缓存，要缓存只能缓存包含base64的文件</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h1 id="36-stylussassless区别">36. stylus/sass/less区别</h1>
 <ul>
@@ -903,6 +932,53 @@ a{
 <li>伪元素是真的有元素</li>
 <li>伪元素 -- 在内容元素的前后插入额外的元素或样式，但是这些元素实际上并不在文档中生成</li>
 <li>前者单冒号，后者双冒号</li>
+</ul>
+<p><strong>伪元素</strong></p>
+<ul>
+<li><code>:before</code> 和 <code>:after</code> 用法
+<ul>
+<li>在真正页面元素内部之前和之后添加新内容，伪元素 <code>:before</code> 和 <code>:after</code> 添加的内容默认是 <code>inline</code> 元素；设置 <code>:before</code> 和 <code>:after</code> 时必须设置其 <code>content</code> 属性，否则伪元素就不起作用。</li>
+<li><code>content</code> 属性的值应该有哪些
+<ul>
+<li>字符串，字符串作为伪元素的内容添加到主元素中 （字符串中若有html字符串，添加到主元素后不会进行html转义，也不会转化为真正的html内容显示，而是会原样输出）</li>
+<li><code>attr (attr_name)</code>，伪元素的内容跟主元素的某个属性值进行关联，以及内容为主元素的某指定属性的值</li>
+<li><code>url()/uri()</code>，引用外部资源</li>
+<li><code>counter()</code>，调用计时器，可以不使用列表元素实现序号问题</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>:before</code> 和 <code>:after</code> 特点
+<ul>
+<li>伪元素不属于文档，所以 js 无法操作它</li>
+<li>伪元素属于主元素的一部分，因此点击伪元素触发的是主元素的 <code>click</code> 事件</li>
+<li>说块级元素才能有<code>:before</code>, <code>:after</code>，其实是不妥的，大部分行级元素也可以设置伪元素，但是像img可替换元素，因为其外观和尺寸有外部资源决定，那么如果外部资源正确加载，就会替换掉其内部内容，这时伪元素也会被替换掉，但是当外部资源加载失败时，设置的伪元素是可以起作用的。</li>
+</ul>
+</li>
+<li>优点
+<ul>
+<li>减少 <code>DOM</code>节点数</li>
+<li>让 <code>CSS</code> 帮助解决部分js问题，让问题变得简单</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>不利于 <code>SEO</code></li>
+<li>无法审查元素，不利于调试</li>
+</ul>
+</li>
+<li>常用使用场景 [伪元素详解](<a href="https://www.cnblogs.com/wonyun/p/5807191.html">css伪元素:before和:after用法详解 - wonyun - 博客园 (cnblogs.com)</a>)
+<ul>
+<li>清除浮动</li>
+<li>利用 <code>attr()</code> 来实现某些动态功能</li>
+<li>与 <code>counter()</code> 结合实现序号问题，而不用使用列表元素</li>
+<li>特效使用</li>
+</ul>
+</li>
+</ul>
+<p><strong>伪类</strong></p>
+<ul>
+<li><code>CSS</code> 伪类是添加到选择器的关键字，指定要选择的元素的特殊状态。</li>
 </ul>
 <h1 id="40-请用css写一个简单的幻灯片效果页面">40. 请用CSS写一个简单的幻灯片效果页面</h1>
 <blockquote>
