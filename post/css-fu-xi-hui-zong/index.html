@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1649077902474">
+<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1649080553635">
 <link rel="stylesheet" href="https://font-ds.github.io/styles/main.css">
 
 
@@ -31,7 +31,7 @@ block formatting context      块级元素格式化上下文 (被隔离的区间
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://font-ds.github.io">
-        <img src="https://font-ds.github.io/images/avatar.png?v=1649077902474" class="site-logo">
+        <img src="https://font-ds.github.io/images/avatar.png?v=1649080553635" class="site-logo">
         <h1 class="site-title">font-ds</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -770,7 +770,7 @@ a{
 <li>在真正页面元素内部之前和之后添加新内容，伪元素 <code>:before</code> 和 <code>:after</code> 添加的内容默认是 <code>inline</code> 元素；设置 <code>:before</code> 和 <code>:after</code> 时必须设置其 <code>content</code> 属性，否则伪元素就不起作用。</li>
 <li><code>content</code> 属性的值应该有哪些
 <ul>
-<li>字符串，字符串作为伪元素的内容添加到主元素中 （字符串中若有html字符串，添加到主元素后不会进行html转义，也不会转化为真正的html内容显示，而是会原样输出）</li>
+<li>字符串，字符串作为伪元素的内容添加到主元素中 （字符串中若有html字符串，添加到主元素后不会进行 <code>html</code> 转义，也不会转化为真正的 <code>html</code> 内容显示，而是会原样输出）</li>
 <li><code>attr (attr_name)</code>，伪元素的内容跟主元素的某个属性值进行关联，以及内容为主元素的某指定属性的值</li>
 <li><code>url()/uri()</code>，引用外部资源</li>
 <li><code>counter()</code>，调用计时器，可以不使用列表元素实现序号问题</li>
@@ -867,8 +867,20 @@ a{
 </ul>
 <h1 id="41-rgba和opacity的透明效果有什么不同">41. rgba()和opacity的透明效果有什么不同？</h1>
 <ul>
-<li><code>rgba()</code>和<code>opacity</code>都能实现透明效果，但最大的不同是<code>opacity</code>作用于元素，以及元素内的所有内容的透明度，</li>
-<li>而<code>rgba()</code>只作用于元素自身的颜色或其背景色。（设置<code>rgba</code>透明的元素的子元素不会继承透明效果！）</li>
+<li>
+<p><code>rgba()</code>和<code>opacity</code>都能实现透明效果，但最大的不同是<code>opacity</code>作用于元素，以及元素内的所有内容的透明度</p>
+<ul>
+<li>取值在0到1之间，0表示完全透明，1表示完全不透明。</li>
+</ul>
+</li>
+<li>
+<p>而<code>rgba()</code>只作用于元素自身的颜色或其背景色。（设置<code>rgba</code>透明的元素的子元素不会继承透明效果！）</p>
+<ul>
+<li>rgba中的R表示红色，G表示绿色，B表示蓝色，三种颜色的值都可以是正整数或百分数。A表示Alpha透明度。取值0~1之间，类似opacity</li>
+</ul>
+<pre><code class="language-css">.aa{background: rgba(255,0,0,0.5);}
+</code></pre>
+</li>
 </ul>
 <h1 id="42-css中可以让文字在垂直和水平方向上重叠的两个属性是什么">42. css中可以让文字在垂直和水平方向上重叠的两个属性是什么？</h1>
 <ul>
@@ -911,7 +923,7 @@ a{
     clear:both; 
  }
 .clearfix {
-    *zoom:1;
+    zoom:1;
 }
 </code></pre>
 <h1 id="46-水平居中的方法">46. 水平居中的方法</h1>

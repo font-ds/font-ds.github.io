@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1649077902474">
+<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1649080553635">
 <link rel="stylesheet" href="https://font-ds.github.io/styles/main.css">
 
 
@@ -34,7 +34,7 @@ js几种类型的值
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://font-ds.github.io">
-        <img src="https://font-ds.github.io/images/avatar.png?v=1649077902474" class="site-logo">
+        <img src="https://font-ds.github.io/images/avatar.png?v=1649080553635" class="site-logo">
         <h1 class="site-title">font-ds</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -195,7 +195,11 @@ function deepClone(obj){
 <p>在浏览器窗口关闭后还保留数据，可以使用 <a href="https://www.runoob.com/jsref/prop-win-localstorage.html">localStorage</a> 属性。</p>
 <h1 id="5-请描述一下-cookiessessionstorage-和-localstorage-的区别">5. 请描述一下 <code>cookies</code>，<code>sessionStorage</code> 和 <code>localStorage</code> 的区别</h1>
 <ul>
-<li><code>cookie</code>是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）</li>
+<li><code>cookie</code>是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）
+<ul>
+<li>后端返回的 <code>cookie</code>，浏览器自动读取后注入浏览器</li>
+</ul>
+</li>
 <li><code>cookie</code>数据始终在同源的http请求中携带（即使不需要），即会在浏览器和服务器间来回传递</li>
 <li><code>sessionStorage</code>和<code>localStorage</code>不会自动把数据发给服务器，仅在本地保存</li>
 <li>存储大小：
