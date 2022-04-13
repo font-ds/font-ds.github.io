@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://font-ds.github.io</id>
     <title>font-ds</title>
-    <updated>2022-04-04T13:55:55.958Z</updated>
+    <updated>2022-04-13T10:17:59.573Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://font-ds.github.io"/>
     <link rel="self" href="https://font-ds.github.io/atom.xml"/>
@@ -10,6 +10,229 @@
     <logo>https://font-ds.github.io/images/avatar.png</logo>
     <icon>https://font-ds.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, font-ds</rights>
+    <entry>
+        <title type="html"><![CDATA[Symbol 数据类型]]></title>
+        <id>https://font-ds.github.io/post/symbol-shu-ju-lei-xing/</id>
+        <link href="https://font-ds.github.io/post/symbol-shu-ju-lei-xing/">
+        </link>
+        <updated>2022-04-13T10:17:11.000Z</updated>
+        <content type="html"><![CDATA[<p><code>Symbol</code> 是一种原始数据类型，其创建之后会在栈内存中存在，并不会向引用值数据类型在堆内存中存在。其存在就是为了确保对象属性唯一，不会存在属性冲突。</p>
+<ul>
+<li>
+<p><strong>基本用法</strong></p>
+<ul>
+<li><code>Symbol</code></li>
+</ul>
+<pre><code class="language-js">let s1 = Symbol()
+let s2 = Symbol()
+console.log(s1 === s2)   // false
+
+let s3 = Symbol(&quot;2022&quot;)
+let s4 = Symbol(&quot;2022&quot;)
+console.log(s3 === s4)   // false
+</code></pre>
+<ul>
+<li><code>Symbol.for()</code></li>
+</ul>
+<pre><code class="language-js">let s1 = Symbol.for(&quot;2022&quot;)
+let s2 = Symbol.for(&quot;2022&quot;)
+console.log(s1 === s2)   // true
+</code></pre>
+<p><code>Symbol()</code> 中，当创建一个实例，无论传给 <code>Symbol</code> 的值是否相同,都会在内存中新建一个 <code>Symbol</code> 实例。<code>Symbol.for()</code> 中，当实例化一个对象，这个对象就会在Window中存在，也就类似于全局变量，此时就会从全局中找是否存在 <code>Symbol.for()</code> 相同的实例，如果存在，就返回原来值，如果不存在就新开辟一个内存空间。所以 <code>Symbol.for()</code> 为 <code>true</code>。</p>
+<ul>
+<li><code>Symbol.keyfor()</code> 取出 <code>Symbol.for()</code> 中的 <code>key</code> 值 ; <code>Symbol().description</code> 会返回 <code>Symbol()</code> 中的 <code>key</code></li>
+</ul>
+<pre><code class="language-js">let s1 = Symbol.for(&quot;name&quot;)
+let key = Symbol.keyfor(s1)
+console.log(key)    // name
+
+let s2 = Symbol(&quot;name2&quot;)
+let key2 = s2.description
+console.log(key2)   // name2
+</code></pre>
+</li>
+<li>
+<p><strong><code>Symbol()</code> 遍历</strong></p>
+<p>在遍历中我们使用的是 <code>for-in</code> 和 <code>for-of</code></p>
+<p><code>for–in</code>：遍历的是键，对于 <code>Array</code> 来说，<code>for–in</code> 遍历的是数组下标<br>
+<code>for–of</code>：遍历的是值，当使用对象时，必须使用 <code>Object.keys()</code> , <code>Object.values()</code></p>
+<pre><code class="language-js">let s1 = Symbol(&quot;我是2021&quot;);
+let obj = {
+	name:&quot;2021&quot;,
+	[s1]:&quot;I am winner&quot;,
+}
+for(const x in obj){
+	console.log(x);
+}  //name
+
+//使用getOwnPropertySymbols(),只获取Symbol的key
+for (const x of Object.getOwnPropertySymbols(obj)){
+	console.log(x);
+}  //Symbol(&quot;我是2021&quot;);
+
+//使用getOwnPropertyNames，不能获取Symbol的key
+for (const x of Object.getOwnPropertyNames(obj)){
+	console.log(x);
+}  //name
+
+//使用Reflect.ownKeys，Symbol的key和正常key都可以获取
+for (const x of Reflect.ownKeys(obj)){
+	console.log(x);
+}  //name，Symbol(&quot;我是2021&quot;);
+
+</code></pre>
+</li>
+<li>
+<p><code>Symbol</code> 运用场景</p>
+<ul>
+<li>使用 <code>Symbol</code> 来作为对象属性名</li>
+</ul>
+<p><code>Symbol</code>可以用于对象属性的定义和访问</p>
+<pre><code class="language-js">const PERSON_NAME = Symbol();
+const PERSON_AGE = Symbol();
+ 
+let person = {
+    [PERSON_NAME]: &quot;随笔川迹&quot;
+}
+ 
+person[PERSON_AGE] =  20;
+ 
+console.log(person[PERSON_NAME])  // 随笔川迹
+console.log(person[PERSON_AGE])   // 20
+</code></pre>
+<ul>
+<li>使用 <code>Symbol</code> 定义类的私有属性/方法</li>
+</ul>
+<pre><code class="language-js">let size = Symbol('size');  // 声明定义了一个size变量,类型是Symbol(),类型描述内容是size
+ 
+class Collection {          // class关键字定义了一个Collection类
+  constructor() {           // 构造器`constructor`函数
+    this[size] = 0;         // 在当前类上私有化了一个size属性
+  }
+ 
+  add(item) {              // Collection类下的一个方法
+    this[this[size]] = item;
+    this[size]++;
+  }
+ 
+  static sizeOf(instance) { // 静态属性
+    return instance[size];
+  }
+}
+ 
+let x = new Collection(); // 实例化x对象
+Collection.sizeOf(x) // 0
+ 
+x.add('foo');       // 调用方法
+Collection.sizeOf(x) // 1
+ 
+Object.keys(x) // ['0']
+Object.getOwnPropertyNames(x) // ['0']
+Object.getOwnPropertySymbols(x) // [Symbol(size)]
+</code></pre>
+<ul>
+<li>模块化机制</li>
+</ul>
+<p>结合<code>Symbol</code>与模块化机制,类的私有属性和方法完美实现</p>
+<pre><code class="language-js">// 在文件a.js中
+const PASSWORD = Symbol();  // 定义一个PASSWORD变量,类型是Symbol
+ 
+class Login() {      // class关键字声明一个Login类
+  constructor(username, password) {    // 构造器函数内初始化属性
+    this.username = username;
+    this[PASSWORD] = password;
+  }
+ 
+  checkPassword(pwd) {
+    return this[PASSWORD] === pwd;
+  }
+ 
+}
+export default Login;
+</code></pre>
+<pre><code class="language-js">// 在文件b.js中
+import Login from './a'
+ 
+const login = new Login('itclanCoder', '123456'); // 实例化一个login对象
+ 
+login.checkPassword('123456'); // true
+login.PASSWORD;  // 访问不到
+login[PASSWORD]; // 访问不到
+login['PASSWORD'] // 访问不到
+</code></pre>
+<ul>
+<li>使用 <code>Symbol</code> 替代常量</li>
+</ul>
+<p>在<code>Redux</code>中很常见,将<code>action</code>对象中的<code>type</code>值,给抽离出来,定义一个常量存储,来代表一种业务逻辑,通常希望这些常量是唯一的</p>
+<pre><code class="language-js">const CHANGE_INPUT_VALUE = Symbol()
+const ADD_INPUT_CONTENT = Symbol();
+const DELETE_LIST = Symbol()
+ 
+function reducer(state, action) {
+    const newState =  JSON.parse(JSON.stringify(state));
+    switch(action.type) {
+        case CHANGE_INPUT_VALUE:
+             // ...
+        case ADD_INPUT_CONTENT:
+             // ...
+        case DELETE_LIST;
+              // ...
+        default:
+             return state;
+    }
+}
+</code></pre>
+</li>
+<li>
+<p><strong>注意事项</strong></p>
+<ul>
+<li><code>Symbol</code> 值不能与其他类型的值进行运算-会报错</li>
+</ul>
+<pre><code class="language-js">let symItclan = Symbol('itclan');
+ 
+console.log(&quot;主站&quot; + symItclan)
+console.log(`主站 ${symItclan}`) // Uncaught TypeError: Cannot convert a Symbol value to a string 报错
+</code></pre>
+<ul>
+<li><code>Symbol</code> 可以转换为字符串</li>
+</ul>
+<pre><code class="language-js">let SyItclanCoder = Symbol('https://coder.itclan.cn');
+ 
+console.log(String(SyItclanCoder)) // Symbol(https://coder.itclan.cn)
+console.log(SyItclanCoder.toString()) // Symbol(https://coder.itclan.cn)
+</code></pre>
+<ul>
+<li><code>Symbol</code>值可以转为布尔值,但是不能转为数值</li>
+</ul>
+<pre><code class="language-js">let sym = Symbol();
+console.log(Boolean(sym)) // true
+console.log(!sym)  // false
+ 
+if (sym) {
+  // ...
+}
+ 
+Number(sym) // TypeError  Cannot convert a Symbol value to a number
+sym + 2 // TypeError
+</code></pre>
+<ul>
+<li><code>Symbol</code>函数不能使用<code>new</code>命令</li>
+</ul>
+<p><code>Symbol</code>函数前不能使用<code>new</code>命令,否则就会报错,<code>Symbol</code>是一个原始类型的值,不是对象,它是类似字符串的数据类型</p>
+<ul>
+<li><code>Symbol值</code>作为对象属性名时，不能用点运算符</li>
+</ul>
+<pre><code class="language-js">const username = Symbol();
+const person = {};
+person.username = '随笔川迹';
+person[username]; // undefined
+person['username']; // 随笔川迹
+</code></pre>
+<p>如果变量 <code>username</code> 不放在中括号中,该属性的键名就是字符串,而不是定义<code>Symbol</code>类型值</p>
+</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[HTML复习汇总]]></title>
         <id>https://font-ds.github.io/post/html-fu-xi-hui-zong/</id>
