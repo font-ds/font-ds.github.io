@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1649845076470">
+<link rel="shortcut icon" href="https://font-ds.github.io/favicon.ico?v=1649944471321">
 <link rel="stylesheet" href="https://font-ds.github.io/styles/main.css">
 
 
@@ -33,7 +33,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://font-ds.github.io">
-        <img src="https://font-ds.github.io/images/avatar.png?v=1649845076470" class="site-logo">
+        <img src="https://font-ds.github.io/images/avatar.png?v=1649944471321" class="site-logo">
         <h1 class="site-title">font-ds</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -330,6 +330,65 @@
 <p><code>If-None-Match</code>（服务器通过比较请求头部的<code>If-None-Match</code>与当前资源的<code>ETag</code>是否一致来判断资源是否在两次请求之间有过修改，如果没有修改，则命中协商缓存）</p>
 </li>
 </ul>
+<h1 id="10-描述浏览器的渲染过程">10. 描述浏览器的渲染过程</h1>
+<ul>
+<li>然后对 <code>CSS</code> 进行解析，生成 <code>CSSOM</code> 规则树</li>
+<li>根据 <code>DOM</code> 树和 <code>CSSOM</code> 规则树构建渲染树。渲染树的节点被称为渲染对象，渲染对象是一个包含有颜色和大小等属性的矩形，渲染对象和 <code>DOM</code> 元素相对应，但这种对应关系不是一对一的，不可见的 <code>DOM</code> 元素不会被插入渲染树。还有一些 <code>DOM</code> 元素对应几个可见对象，它们一般是一些具有复杂结构的元素，无法用一个矩形来描述。</li>
+<li>当渲染对象被创建并添加到树中，他们并没有位置和大小，所以当浏览器生成渲染树以后，就会根据渲染树来进行布局（也可以叫做回流）。这一阶段浏览器要做的事情就是弄清除各个节点在页面中的确切位置和大小。通常这一行为也被称为 “自动重排” 。</li>
+<li>布局阶段结束后是绘制阶段，遍历渲染树并调用渲染对象的 <code>paint</code> 方法将它们的内容显示在屏幕上，绘制使用 <code>UI</code> 基础组件</li>
+</ul>
+<p><strong>追问—解析文档（HTML）过程中，是将 <code>HTML</code> 都解析完了再去生成渲染树吗</strong></p>
+<ul>
+<li>这个过程是逐步完成的，为了更好的用户体验，渲染引擎将会尽可能早的将内容呈现到屏幕上，并不会等到所有的 <code>HTML</code> 都解析完了之后再去构建和布局 <code>render</code> 树（渲染树）。它是解析完一部分内容就显示一部分内容，同时，可能还在通过网络下载其余内容</li>
+</ul>
+<p><strong>追问—<code>script</code> 中的脚本文件、<code>link</code> 中的 <code>CSS</code> 文件的解析/执行会阻塞文档解析吗？如何阻塞？</strong></p>
+<ul>
+<li>脚本的加载会阻塞文档解析</li>
+</ul>
+<p>如果没有 <code>defer</code> 和 <code>async</code> 属性，浏览器会立即加载并执行相应的脚本。它不会等待后续加载的文档元素，读取到就会开始加载和执行，这样就阻塞了后续文档的加载。</p>
+<p>下图可以看出三者之间的区别</p>
+<figure data-type="image" tabindex="1"><img src="https://img-blog.csdnimg.cn/img_convert/2aa7934a848ff1c9c408c266cc8010a1.png" alt="image.png" loading="lazy"></figure>
+<p>所以 <code>script</code> 要放在底部/加 <code>async/defer</code> 关键字</p>
+<blockquote>
+<p>拓展：</p>
+<p><code>JavaScript</code> 的加载、解析与执行会阻塞文档的解析，也就是说，在构建 <code>DOM</code> 时，<code>HTML</code> 解析器若遇到了 <code>JavaScript</code> ，那么它会暂停文档的解析，<strong>将控制权移交给 <code>JavaScript</code> 引擎</strong>，等 <code>JavaScript</code> 引擎运行完毕，浏览器再从中断的地方恢复继续解析文档。</p>
+<p>也就是说，如果想要首屏渲染的越快，就越不应该在首屏就加载 <code>JS</code> 文件，这也就是建议将 <code>JavaScript</code> 标签放在 <code>body</code> 标签底部的原因。</p>
+<ul>
+<li>当然在当下，并不是说 <code>script</code> 标签必须要放在底部，因为你可以给 <code>script</code> 标签添加 <code>defer</code> 或者 <code>async</code> 属性。</li>
+</ul>
+</blockquote>
+<h1 id="11-css-如何阻塞文档解析">11. CSS 如何阻塞文档解析</h1>
+<p>理论上，既然样式表不改变 <code>DOM</code> 树，也就没有必要停下文档的解析等待它们。</p>
+<blockquote>
+<p><code>CSS</code> 的解析并不阻塞文档</p>
+<ul>
+<li>但是可以拓展一下，<code>JS</code> 的脚本会因为 <code>CSSOM</code> 树没被构建好而延迟执行，所以！要把 <code>script</code> 放在底部 / 加 <code>defer/async</code> 关键字</li>
+</ul>
+</blockquote>
+<p>存在一个问题，<code>JavaScript</code> 脚本执行时可能在文档的解析过程中<strong>请求样式信息</strong>（比如根据样式获取元素节点），如果样式还没有加载和解析，脚本将得到错误的值，显然这将会导致很多问题。</p>
+<p>所以：<strong>如果浏览器尚未完成 CSSOM 的下载和构建，而我们却想在此时运行脚本</strong>，那么浏览器将<strong>延迟 JavaScript 脚本执行和文档的解析</strong>，直至其完成 <code>CSSOM</code> 的下载和构建。也就是说，在这种情况下，浏览器会先下载和构建 <code>CSSOM</code> ,然后再执行 <code>JavaScript</code> ，最后再继续文档的解析。这样就会间接阻塞了文档解析</p>
+<p><strong>追问—什么情况会阻止浏览器渲染</strong></p>
+<p>要明确——首先<strong>渲染的前提是生成渲染树</strong></p>
+<ul>
+<li><code>HTML</code> 和 <code>CSS</code> 会阻塞渲染</li>
+</ul>
+<blockquote>
+<p>如果想渲染的越快，越应该降低一开始需要渲染的文件大小，并且扁平层级，优化选择器</p>
+</blockquote>
+<ul>
+<li>浏览器在解析到 <code>script</code> 标签时，会暂停构建 <code>DOM</code> ，完成后才会从暂停的地方重新开始</li>
+</ul>
+<blockquote>
+<p>也就是说，如果想首屏渲染的越快，越不应该在首屏就加载 <code>JS</code> 文件，这也是都建议将<code>script</code> 标签放在 <code>body</code> 标签底部的原因</p>
+</blockquote>
+<p>拓展：</p>
+<blockquote>
+<p>并不是说 script 标签必须放在底部，因为你可以给 script 标签添加 defer 或者 async 属性</p>
+<p>当 script 标签加上 defer 属性以后，表示该 JS 文件会并行下载，但是会放到 HTML 解析完成后顺序执行，所以对于这种情况你可以把 script 标签放在任意位置。<br>
+同理，对于没有任何依赖的 JS 文件可以加上 async 属性，表示 JS 文件下载和解析不会阻塞渲染（async属性不能保证JS文件的执行是按顺序的</p>
+</blockquote>
+<figure data-type="image" tabindex="2"><img src="https://img-blog.csdnimg.cn/img_convert/2aa7934a848ff1c9c408c266cc8010a1.png" alt="image.png" loading="lazy"></figure>
+<p>( 蓝色代表 js 脚本网络加载时间，红色代表 js 脚本执行时间，绿色代表 html 解析 )</p>
 
             </div>
             
